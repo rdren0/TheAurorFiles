@@ -3,6 +3,8 @@
  * These classes represent magical professions and can be used alongside D&D 5e classes
  */
 
+import { type } from "@testing-library/user-event/dist/type";
+
 export const customClassesData = {
   base_witch_wizard: {
     id: "base_witch_wizard",
@@ -194,6 +196,7 @@ export const customClassesData = {
 
   profession_healer_alchemist: {
     id: "profession_healer_alchemist",
+    type: "Cleric",
     name: "Healer-Alchemist",
     description:
       "Specialists in restorative and analytical magic who mend the wounded and unravel mysteries through potions, antidotes, and forensic chemistry. Whether working in the field or the lab, Healer-Alchemists turn ingredients and empathy into power, healing allies and exposing the unseen.",
@@ -399,8 +402,7 @@ export const customClassesData = {
           },
           {
             name: "Discipline Feature (5th)",
-            description:
-              "Your chosen Discipline grants an additional benefit.",
+            description: "Your chosen Discipline grants an additional benefit.",
             options: [
               {
                 name: "Medicinal Healer — Revitalizing Surge",
@@ -471,8 +473,7 @@ export const customClassesData = {
           },
           {
             name: "Discipline Feature (9th)",
-            description:
-              "Your Discipline grants a powerful feature.",
+            description: "Your Discipline grants a powerful feature.",
             options: [
               {
                 name: "Medicinal Healer — Mass Triage",
@@ -657,6 +658,7 @@ export const customClassesData = {
   profession_spellwright: {
     id: "profession_spellwright",
     name: "Spellwright",
+    type: "Artificer",
     description:
       "Spellwrights are the magical craftsmen, inventors, and enchanters of the modern wizarding world. They treat magic as a material to be designed and refined—capturing spells in metal, glass, and ink. Whether working for the Bureau, a private guild, or themselves, Spellwrights are the builders of the arcane infrastructure everyone else relies on.",
     hit_die: "d8",
@@ -1146,6 +1148,7 @@ export const customClassesData = {
   profession_naturalist: {
     id: "profession_naturalist",
     name: "Naturalist",
+    type: "Druid",
     description:
       "Naturalists are experts in living magic—flora, fauna, and the ley-ecology that binds them. They heal, wrangle, and weaponize the natural world through field research, herbology, and magizoology.",
     hit_die: "d8",
@@ -1608,6 +1611,7 @@ export const customClassesData = {
   profession_auror: {
     id: "profession_auror",
     name: "Auror",
+    type: "Paladin",
     description:
       "Aurors are sworn protectors of the wizarding world—front-line duelists and case officers whose magic is shaped by a personal Mandate (oath). They disable, disarm, and contain magical threats, channeling focused power through sanctioned techniques.",
     hit_die: "d10",
@@ -2141,6 +2145,7 @@ export const customClassesData = {
   profession_wordsmith: {
     id: "profession_wordsmith",
     name: "Wordsmith",
+    type: "Bard",
     description:
       "Reporters, authors, propagandists, and public narrators who weaponize language, truth, and spectacle. Wordsmiths bend crowds, rattle suspects, and steady allies with ink, voice, and glamours.",
     hit_die: "d8",
@@ -2633,6 +2638,7 @@ export const customClassesData = {
   profession_hitwizard: {
     id: "profession_hitwizard",
     name: "Hit Wizard",
+    type: "Rogue",
     description:
       "Hit Wizards are elite Bureau operatives trained for high-risk magical engagements, retrievals, and suppressions. They combine tactical precision, anti-magic technique, and ruthless efficiency. Where Aurors uphold the law, Hit Wizards enforce the silence afterward.",
     hit_die: "d8",
@@ -3129,7 +3135,7 @@ export const customClassesData = {
         "Evasion at 6, Uncanny Reflexes at 10, Reliable Talent at 11 match Rogue defensive features",
         "Level 20 Omega Protocol is gated behind resource limit (1/long rest, 1 minute duration)",
         "All save DCs standardized: 8 + PB + relevant ability (DEX or INT)",
-        "Arcane Countermeasure provides anti-magic utility without trivializing encounters"
+        "Arcane Countermeasure provides anti-magic utility without trivializing encounters",
       ],
       rules_consistency:
         "All save DCs = 8 + PB + relevant ability (DEX or INT). Features gated at levels 3/5/7/9/13/17 align with standard subclass pacing. Precision Strike follows Rogue's Sneak Attack scaling exactly.",
@@ -3139,6 +3145,7 @@ export const customClassesData = {
   profession_field_hunter: {
     id: "profession_field_hunter",
     name: "Field Hunter",
+    type: "Ranger",
     description:
       "Field Hunters are magical bounty specialists—pragmatic operatives who track fugitives, recover stolen relics, and navigate hostile wards. They don't unweave magic like Arcanists—they use quick, practical charms to pursue, corner, and contain.",
     hit_die: "d10",
@@ -3341,8 +3348,7 @@ export const customClassesData = {
         features: [
           {
             name: "Extra Attack",
-            description:
-              "Attack twice whenever you take the Attack action.",
+            description: "Attack twice whenever you take the Attack action.",
           },
           {
             name: "Echo Step",
@@ -3580,7 +3586,8 @@ export const customClassesData = {
           },
           {
             name: "Branch Feature (17th)",
-            description: "Branch achieves legendary mastery (tuned to avoid full Antimagic Field or at-will True Polymorph).",
+            description:
+              "Branch achieves legendary mastery (tuned to avoid full Antimagic Field or at-will True Polymorph).",
             options: [
               {
                 name: "Witchcatcher — Silence Lockdown",
@@ -3648,6 +3655,7 @@ export const customClassesData = {
   profession_muggle_liaison: {
     id: "profession_muggle_liaison",
     name: "Muggle Liaison",
+    type: "Monk",
     description:
       "Embedded Bureau assets who live and work among nonmagicals. Liaisons blend in, de-escalate, extract, and keep the Secret—operating effectively without magic but carrying a small kit of subtle spells for when the quiet options run out.",
     hit_die: "d8",
@@ -4127,6 +4135,473 @@ export const customClassesData = {
         "Bodyguard's Instinct bounded to WIS-mod free uses per short rest; otherwise reaction-gated.",
         "Capstone grants at-will up to 2nd-level Liaison spells during Perfect State (not unlimited higher magic); replaces automatic successes with 'floor 10' on key checks.",
       ],
+    },
+  },
+  profession_arcanist: {
+    id: "profession_arcanist",
+    name: "Arcanist",
+    type: "Warlock",
+    description:
+      "Arcanists are sanctioned researchers and field operatives who explore the boundaries of magic—legally or otherwise. Their power doesn't come from patrons or divine beings, but from disciplined study of forbidden branches of arcana. Each Arcanist walks a narrow line between discovery and disaster, wielding theory as weapon and experiment as creed.",
+    hit_die: "d8",
+    primary_abilities: ["Intelligence", "Charisma"],
+    saving_throws: ["Wisdom", "Charisma"],
+    armor_proficiencies: ["Light Armor"],
+    weapon_proficiencies: [
+      "Simple Weapons",
+      "Wands",
+      "Daggers",
+      "Light Crossbows",
+    ],
+    tool_proficiencies: ["Calligrapher's Supplies", "Alchemist's Supplies"],
+    skill_choices: {
+      choose: 2,
+      options: [
+        "Arcana",
+        "History",
+        "Investigation",
+        "Deception",
+        "Insight",
+        "Persuasion",
+      ],
+    },
+    spellcasting: {
+      progression_type: "pact-caster",
+      casting_ability: "Intelligence",
+      notes:
+        "You use Pact Magic, relying on a small number of spell slots that are always the same level and refresh on a short or long rest. Your research determines your spell focus, and your Branch of Study provides additional known spells.",
+      bonus_spells: {
+        cantrips: ["Mage Hand", "Prestidigitation"],
+        level_1_to_3: [
+          "Armor of Agathys",
+          "Detect Magic",
+          "Disguise Self",
+          "Hex",
+          "Hold Person",
+          "Counterspell",
+          "Dispel Magic",
+        ],
+      },
+    },
+    class_resources: [
+      {
+        name: "Pact Magic",
+        description:
+          "You channel your research through structured magical frameworks that condense complex formulae into reusable bursts of energy. You regain all expended spell slots when you finish a short or long rest. Your spell slots are always the highest level you can cast, following the Pact Magic progression.",
+      },
+      {
+        name: "Research Insights",
+        description:
+          "You uncover esoteric discoveries called Research Insights—repeatable magical techniques refined through experimentation. At 2nd level, choose two Insights. You gain more as you advance (see your class table). Each Insight provides a passive effect, unique ability, or minor spellcasting boon.",
+        examples: [
+          "Agonized Formula: Add your Intelligence modifier to one damage roll of a damaging cantrip you cast each turn.",
+          "Counterglyph: Cast Dispel Magic once per long rest without using a spell slot. When you do, add +2 to your ability check to dispel.",
+          "Umbral Vision: You can see normally in magical darkness up to 60 feet.",
+          "Silent Thesis: Once per short rest, you can cast a spell without verbal components.",
+          "Arcane Surveyor: You can cast Detect Magic at will without expending a spell slot.",
+          "Glyph Step: As a bonus action, teleport up to 10 ft to an unoccupied space you can see. Uses per long rest = your proficiency bonus.",
+        ],
+      },
+      {
+        name: "Analytic Curse",
+        description:
+          "As a bonus action, target one creature you can see within 90 ft for 1 hour (concentration). Once per turn, when you hit that creature, you deal an extra 1d6 damage. The target also has disadvantage on ability checks using one ability score of your choice. You regain this ability after a short or long rest.",
+      },
+    ],
+    level_features: [
+      {
+        level: 1,
+        features: [
+          {
+            name: "Pact Magic",
+            description:
+              "You gain access to Pact Magic, using a small pool of powerful spell slots that refresh on a short rest. All slots are of the same level, increasing as you gain Arcanist levels.",
+          },
+          {
+            name: "Analytic Curse",
+            description:
+              "You can mark a target through observation and resonance. As a bonus action, curse one creature within 90 ft for 1 hour (concentration). Once per turn when you hit that creature, deal +1d6 damage and impose disadvantage on one ability check type of your choice.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Research Insights",
+            description:
+              "You gain two Research Insights representing your experimental methods. Choose additional Insights as you level up.",
+          },
+          {
+            name: "Methodical Casting",
+            description:
+              "When you roll initiative and have no spell slots remaining, regain one expended Pact Magic slot. Once per long rest.",
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Branch of Study",
+            description:
+              "Choose your forbidden discipline—your Branch of Study. This determines the area of research that defines your work and shapes your powers. Choose from: **Temporal Study**, **Mentalism Study**, **Void Study**, or **Soulcraft Study**.",
+            options: [
+              {
+                name: "Temporal Study",
+                features: [
+                  {
+                    name: "Tactical Rewind",
+                    description:
+                      "When a creature within 30 ft makes an attack roll or ability check, you can use your reaction to force a reroll after seeing the roll but before knowing the outcome. They must use the new result. Uses per long rest = your proficiency bonus.",
+                  },
+                  {
+                    name: "Bonus Spells",
+                    description:
+                      "You always have *Feather Fall* and *Blur* prepared; they don't count against your known spells.",
+                  },
+                ],
+              },
+              {
+                name: "Mentalism Study",
+                features: [
+                  {
+                    name: "Telepathic Link",
+                    description:
+                      "You can telepathically communicate with a creature within 60 ft that understands a language. Establishing the link requires a bonus action and lasts for 10 minutes.",
+                  },
+                  {
+                    name: "Bonus Spells",
+                    description:
+                      "You always have *Charm Person* and *Detect Thoughts* prepared; they don't count against your known spells.",
+                  },
+                ],
+              },
+              {
+                name: "Void Study",
+                features: [
+                  {
+                    name: "Gravitic Tug",
+                    description:
+                      "As an action, target a creature within 30 ft. It must succeed on a Strength saving throw or be pulled 10 ft toward you and take force damage equal to your proficiency bonus.",
+                  },
+                  {
+                    name: "Bonus Spells",
+                    description:
+                      "You always have *Misty Step* and *Levitate* prepared; they don't count against your known spells.",
+                  },
+                ],
+              },
+              {
+                name: "Soulcraft Study",
+                features: [
+                  {
+                    name: "Warding Spirit",
+                    description:
+                      "As a bonus action, summon a protective spirit that hovers around a creature you can see within 30 ft for 1 minute. The first time each round the warded creature takes damage, reduce it by your proficiency bonus. Uses per long rest = your proficiency bonus.",
+                  },
+                  {
+                    name: "Bonus Spells",
+                    description:
+                      "You always have *Protection from Evil and Good* and *Gentle Repose* prepared; they don't count against your known spells.",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 4,
+        features: [
+          {
+            name: "Ability Score Improvement or Field Thesis",
+            description:
+              "Increase one ability score by +2, two by +1, or select a specialized thesis feat.",
+            feat_examples: [
+              {
+                name: "Ritual Engineer",
+                effect:
+                  "You can cast any known spell with the ritual tag as a ritual, even if not prepared.",
+              },
+              {
+                name: "Overclocked Matrix",
+                effect:
+                  "When you cast a spell using a Pact Magic slot, add +PB to one damage roll of that spell once per short rest.",
+              },
+              {
+                name: "Field Nullifier",
+                effect:
+                  "When you succeed on a saving throw against a spell, use your reaction to grant an ally within 30 ft advantage on the same save.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "Arcane Overdrive",
+            description:
+              "Once per short or long rest, when you cast a spell using a Pact Magic slot, you can immediately cast a cantrip as a bonus action.",
+          },
+          {
+            name: "Branch Feature (5th)",
+            description:
+              "Your chosen Branch of Study grants an additional benefit.",
+            options: [
+              {
+                name: "Temporal — Freeze Frame",
+                description:
+                  "As an action, choose a creature within 30 ft. It must succeed on a Wisdom saving throw or be restrained until the start of your next turn as time partially locks around it. Attacks against it have advantage.",
+              },
+              {
+                name: "Mentalism — Compel Truth",
+                description:
+                  "As an action, force creatures of your choice in a 15-ft cone to make a Charisma saving throw. On a failure, a creature cannot knowingly speak a lie until the end of your next turn.",
+              },
+              {
+                name: "Void — Rift Step",
+                description:
+                  "When you cast a spell, you can teleport up to 30 ft to an unoccupied space you can see and deal force damage equal to your proficiency bonus to a creature adjacent to either your starting or ending point.",
+              },
+              {
+                name: "Soulcraft — Bind Malice",
+                description:
+                  "As an action, target a creature within 60 ft. It must succeed on a Charisma saving throw or be unable to regain hit points or gain temporary hit points until the start of your next turn.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    design_notes: {
+      concept:
+        "Warlock remap with research replacing patronage. Branches of Study mirror distinct schools of controversial or restricted magical research. Pact Magic pacing fits the noir field-ops tone, allowing rapid bursts of power followed by downtime for analysis.",
+      tone: "Cold intellect and dangerous curiosity. Arcanists weaponize understanding.",
+      balance_notes:
+        "Tracks Warlock progression: Pact Magic at 1, Invocations (Research Insights) at 2, subclass (Branch) at 3 and upgrade at 5, ASI at 4. Analytic Curse replaces Hex but balances as short-rest utility. Branches focus on control, mobility, or defense.",
+      rules_consistency:
+        "Save DCs = 8 + proficiency bonus + Intelligence modifier. Research Insights mimic Invocations but re-flavored for experimental academia. Branch spells are always prepared.",
+    },
+  },
+  profession_obscurial: {
+    id: "profession_obscurial",
+    name: "Obscurial",
+    type: "Barbarian",
+    description:
+      "Obscurials are witches and wizards whose magic turns inward—repressed, volatile, and devastating when unleashed. In the field they are living anomalies: bursts of destructive power wrapped in flesh, feared by criminals and bureaucrats alike.",
+    hit_die: "d12",
+    primary_abilities: ["Strength", "Constitution"],
+    saving_throws: ["Strength", "Constitution"],
+    armor_proficiencies: ["Light Armor", "Medium Armor", "Shields"],
+    weapon_proficiencies: ["Simple Weapons", "Martial Weapons"],
+    tool_proficiencies: [],
+    skill_choices: {
+      choose: 2,
+      options: [
+        "Athletics",
+        "Intimidation",
+        "Insight",
+        "Perception",
+        "Survival",
+        "Arcana",
+      ],
+    },
+    spellcasting: {
+      progression_type: "none",
+      notes:
+        "Obscurials do not gain spell slots from this class. They rely on innate, unstable magic expressed through Outbursts rather than structured casting.",
+    },
+    class_resources: [
+      {
+        name: "Outburst",
+        description:
+          "You unleash the unstable magic inside you in a controlled frenzy.",
+        activation: "Bonus Action",
+        duration: "1 minute",
+        effects_summary: [
+          "While Outburst is active and you aren't wearing heavy armor:",
+          "• You gain advantage on Strength checks and Strength saving throws.",
+          "• When you make a melee weapon attack using Strength, you gain a bonus to the damage roll (see Surge Damage Bonus).",
+          "• You have resistance to bludgeoning, piercing, and slashing damage.",
+          "• You cannot cast spells from this class and can't concentrate on spells.",
+          "Backlash: When your Outburst ends, roll a d6. On a 1, you take psychic damage equal to 1d6 × the number of Outbursts you have used since your last long rest.",
+        ],
+        outbursts_per_long_rest_by_level: { 1: 2, 3: 3, 5: 3 },
+        surge_damage_bonus_by_level: { 1: 2, 5: 2 },
+        end_conditions: [
+          "Ends early if you are knocked unconscious or if your turn ends and you haven't attacked a hostile creature or taken damage since your last turn.",
+        ],
+      },
+    ],
+    level_features: [
+      {
+        level: 1,
+        features: [
+          {
+            name: "Outburst",
+            description:
+              "As detailed under Class Resources. Your repressed magic erupts to empower your body and dull pain, at the risk of backlash.",
+          },
+          {
+            name: "Unarmored Defense (Warped Physiology)",
+            description:
+              "While you are not wearing any armor, your AC equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Chaotic Opening (Reckless Attack)",
+            description:
+              "On your turn, you can gain advantage on all melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn.",
+          },
+          {
+            name: "Instability Sense (Danger Sense)",
+            description:
+              "You have advantage on Dexterity saving throws against effects you can see, such as traps and spells. You can't use this benefit while blinded, deafened, or incapacitated.",
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Manifestation (Primal Path)",
+            description:
+              "Choose how your inner magic expresses itself: **Decaying Touch**, **Icy Grasp**, or **Eyes of Blight**. You gain the Manifestation's 3rd-level features now and additional benefits at 5th level.",
+            options: [
+              {
+                name: "Decaying Touch",
+                features: [
+                  {
+                    name: "Entropic Aura",
+                    description:
+                      "While Outburst is active, creatures of your choice that start their turn within 5 ft of you take necrotic damage equal to your proficiency bonus. Objects and nonmagical armor you damage with melee attacks show visible corrosion.",
+                  },
+                  {
+                    name: "Rot-Borne Resilience",
+                    description:
+                      "While Outburst is active, you have resistance to necrotic damage.",
+                  },
+                ],
+              },
+              {
+                name: "Icy Grasp",
+                features: [
+                  {
+                    name: "Freezing Pressure",
+                    description:
+                      "When you hit a creature with a melee attack during Outburst, you can reduce its speed by 10 ft until the start of your next turn (once per turn).",
+                  },
+                  {
+                    name: "Cold Carapace",
+                    description:
+                      "While Outburst is active, you have resistance to cold damage and ignore difficult terrain created by ice or snow.",
+                  },
+                ],
+              },
+              {
+                name: "Eyes of Blight",
+                features: [
+                  {
+                    name: "Dreadful Glare",
+                    description:
+                      "As a bonus action while Outburst is active, force one creature within 30 ft that can see you to make a Wisdom saving throw (DC = 8 + PB + Con). On a failure, it is frightened of you until the end of your next turn. Uses per Outburst = your Constitution modifier (minimum 1).",
+                  },
+                  {
+                    name: "Psychic Shear",
+                    description:
+                      "While Outburst is active, you have resistance to psychic damage.",
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: "Bureau Reputation (Ribbon)",
+            description:
+              "You gain proficiency in one of the following skills: Intimidation, Insight, or Investigation. If you are already proficient, you may instead gain expertise with that skill.",
+          },
+        ],
+      },
+      {
+        level: 4,
+        features: [
+          {
+            name: "Ability Score Improvement or Outburst Feat",
+            description:
+              "Increase one ability score by +2, two by +1, or choose a feat tied to your volatile training.",
+            feat_examples: [
+              {
+                name: "Hardened Vessel",
+                effect:
+                  "Increase Constitution by 1 (to a max of 20). When your Outburst ends, you can choose to negate the Backlash roll once per long rest.",
+              },
+              {
+                name: "Shock Vent",
+                effect:
+                  "When you take damage while Outburst is active, you can use your reaction to deal your proficiency bonus in the Manifestation's damage type to a creature within 5 ft.",
+              },
+              {
+                name: "Containment Scars",
+                effect:
+                  "You have advantage on saving throws to end the frightened or charmed conditions while Outburst is active.",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "Extra Attack",
+            description:
+              "You can attack twice, instead of once, whenever you take the Attack action on your turn.",
+          },
+          {
+            name: "Surge Pulse",
+            description:
+              "The first time you drop to half your hit point maximum or lower during an Outburst, you emit a shockwave. Creatures of your choice within 10 ft must make a Constitution saving throw (DC = 8 + PB + Con) or take 2d6 damage of your Manifestation's type (necrotic, cold, or psychic) and be pushed 5 ft; on a success, they take half damage and aren't pushed. Once per Outburst.",
+          },
+          {
+            name: "Manifestation Feature (5th)",
+            description:
+              "Your chosen Manifestation grants an additional benefit.",
+            options: [
+              {
+                name: "Decaying Touch — Ruinous Blows",
+                description:
+                  "Your melee weapon attacks deal an extra 1d4 necrotic damage while Outburst is active. When you reduce a creature to 0 HP, you gain temporary HP equal to your proficiency bonus.",
+              },
+              {
+                name: "Icy Grasp — Absolute Zero",
+                description:
+                  "Creatures you hit while Outburst is active must succeed on a Strength saving throw (DC = 8 + PB + Con) or be restrained by rime until the start of your next turn (once per turn). A restrained target can use an action to make the save again, ending the effect on a success.",
+              },
+              {
+                name: "Eyes of Blight — Aura of Despair",
+                description:
+                  "While Outburst is active, hostile creatures within 10 ft of you have disadvantage on the first saving throw they make each round.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    design_notes: {
+      concept:
+        "Barbarian remap where Rage becomes Outburst: unstable, internalized magic that empowers the body and warps the battlefield with a small risk of backlash.",
+      tone: "Tragic weapon: feared, powerful, barely contained.",
+      balance_notes:
+        "Tracks Barbarian core: d12 HD, Unarmored Defense, Reckless Attack, Danger Sense, Path at 3, ASI at 4, Extra Attack at 5. Resistances match Barbarian's physical resistances; Manifestations add typed resistances and rider effects without eclipsing casters.",
+      rules_consistency:
+        "Save DCs use 8 + proficiency bonus + Constitution modifier. Outburst uses per long rest follow Rage cadence (2 at 1st, 3 at 3rd). Surge damage bonus mirrors Rage (+2 at this tier). Backlash is a small, thematic risk gate.",
     },
   },
 };

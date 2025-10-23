@@ -20,7 +20,7 @@ export const CASE_CATEGORIES = {
   COLD_CASE: "Cold Case",
   UNFORGIVABLE: "Use of Unforgivable Curses",
   BREACH: "Breach of Secrecy",
-  OTHER: "Other"
+  OTHER: "Other",
 };
 
 export const CASE_STATUS = {
@@ -33,7 +33,7 @@ export const CASE_STATUS = {
   SOLVED: "Solved - Closed",
   UNSOLVED_COLD: "Unsolved - Cold Case",
   DISMISSED: "Dismissed - No Merit",
-  TRANSFERRED: "Transferred to Other Department"
+  TRANSFERRED: "Transferred to Other Department",
 };
 
 export const CASE_PRIORITY = {
@@ -41,7 +41,7 @@ export const CASE_PRIORITY = {
   HIGH: "High",
   MEDIUM: "Medium",
   LOW: "Low",
-  ROUTINE: "Routine"
+  ROUTINE: "Routine",
 };
 
 export const AUROR_ROLE = {
@@ -50,7 +50,7 @@ export const AUROR_ROLE = {
   CONSULTANT: "Consultant",
   SURVEILLANCE: "Surveillance Specialist",
   FORENSICS: "Forensics Specialist",
-  COMBAT: "Combat Support"
+  COMBAT: "Combat Support",
 };
 
 export const EVIDENCE_TYPE = {
@@ -61,7 +61,7 @@ export const EVIDENCE_TYPE = {
   BIOLOGICAL: "Biological",
   PHOTOGRAPHIC: "Photographic",
   PENSIEVE: "Pensieve Memory",
-  ARTIFACT: "Magical Artifact"
+  ARTIFACT: "Magical Artifact",
 };
 
 export const SUSPICION_LEVEL = {
@@ -70,7 +70,7 @@ export const SUSPICION_LEVEL = {
   PRIME_SUSPECT: "Prime Suspect",
   ARRESTED: "Arrested",
   CLEARED: "Cleared",
-  ACCOMPLICE: "Accomplice"
+  ACCOMPLICE: "Accomplice",
 };
 
 /**
@@ -105,15 +105,21 @@ export class CaseModel {
 
   generateCaseNumber() {
     const year = new Date().getFullYear();
-    const random = Math.floor(Math.random() * 99999).toString().padStart(5, '0');
+    const random = Math.floor(Math.random() * 99999)
+      .toString()
+      .padStart(5, "0");
     return `DMLE-${year}-${random}`;
   }
 
   calculateDeadline() {
-    const daysToAdd = this.category === CASE_CATEGORIES.MURDER ? 30 :
-                      this.category === CASE_CATEGORIES.MISSING_PERSON ? 14 :
-                      this.category === CASE_CATEGORIES.TERRORISM ? 7 :
-                      60; // Default 60 days
+    const daysToAdd =
+      this.category === CASE_CATEGORIES.MURDER
+        ? 30
+        : this.category === CASE_CATEGORIES.MISSING_PERSON
+        ? 14
+        : this.category === CASE_CATEGORIES.TERRORISM
+        ? 7
+        : 60; // Default 60 days
 
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + daysToAdd);
@@ -126,7 +132,7 @@ export class CaseModel {
       [CASE_PRIORITY.HIGH]: 750,
       [CASE_PRIORITY.MEDIUM]: 500,
       [CASE_PRIORITY.LOW]: 300,
-      [CASE_PRIORITY.ROUTINE]: 150
+      [CASE_PRIORITY.ROUTINE]: 150,
     };
 
     const priorityGold = {
@@ -134,13 +140,13 @@ export class CaseModel {
       [CASE_PRIORITY.HIGH]: 150,
       [CASE_PRIORITY.MEDIUM]: 100,
       [CASE_PRIORITY.LOW]: 50,
-      [CASE_PRIORITY.ROUTINE]: 25
+      [CASE_PRIORITY.ROUTINE]: 25,
     };
 
     return {
       xp: priorityXP[this.priority] || 500,
       galleonsBonus: priorityGold[this.priority] || 100,
-      commendation: null // Set when case is solved with distinction
+      commendation: null, // Set when case is solved with distinction
     };
   }
 }
@@ -159,7 +165,7 @@ export class EvidenceModel {
       location: data.discovery?.location || "",
       discoveredBy: data.discovery?.discoveredBy || null,
       dateCollected: data.discovery?.dateCollected || new Date().toISOString(),
-      investigationRoll: data.discovery?.investigationRoll || null
+      investigationRoll: data.discovery?.investigationRoll || null,
     };
 
     this.chainOfCustody = data.chainOfCustody || [
@@ -167,8 +173,8 @@ export class EvidenceModel {
         date: new Date().toISOString(),
         action: "Collected",
         by: data.discovery?.discoveredBy || null,
-        location: data.discovery?.location || "Unknown"
-      }
+        location: data.discovery?.location || "Unknown",
+      },
     ];
 
     this.analysis = {
@@ -176,26 +182,26 @@ export class EvidenceModel {
       requestedBy: data.analysis?.requestedBy || null,
       analyst: data.analysis?.analyst || null,
       results: data.analysis?.results || null,
-      dateCompleted: data.analysis?.dateCompleted || null
+      dateCompleted: data.analysis?.dateCompleted || null,
     };
 
     this.legal = {
       admissible: data.legal?.admissible ?? true,
       properProcedure: data.legal?.properProcedure ?? true,
       warrantRequired: data.legal?.warrantRequired || false,
-      warrantObtained: data.legal?.warrantObtained || null
+      warrantObtained: data.legal?.warrantObtained || null,
     };
 
     this.storage = {
       location: data.storage?.location || "Evidence Intake",
       secured: data.storage?.secured || false,
-      accessLog: data.storage?.accessLog || []
+      accessLog: data.storage?.accessLog || [],
     };
 
     this.linkedTo = {
       suspects: data.linkedTo?.suspects || [],
       clues: data.linkedTo?.clues || [],
-      otherEvidence: data.linkedTo?.otherEvidence || []
+      otherEvidence: data.linkedTo?.otherEvidence || [],
     };
 
     this.description = data.description || "";
@@ -207,7 +213,7 @@ export class EvidenceModel {
       date: new Date().toISOString(),
       action,
       by: byCharacterId,
-      location
+      location,
     });
 
     // Check if chain is broken
@@ -260,7 +266,8 @@ export class SuspectModel {
     this.suspectId = data.suspectId || null;
     this.caseId = data.caseId || null;
     this.npcId = data.npcId || null; // Links to full NPC database
-    this.suspicionLevel = data.suspicionLevel || SUSPICION_LEVEL.PERSON_OF_INTEREST;
+    this.suspicionLevel =
+      data.suspicionLevel || SUSPICION_LEVEL.PERSON_OF_INTEREST;
     this.alibi = data.alibi || "";
     this.alibiVerified = data.alibiVerified || false;
     this.motive = data.motive || "";
@@ -377,7 +384,10 @@ export const calculateCaseComplexity = (caseData) => {
   complexity += (caseData.clues?.length || 0) * 0.3;
   complexity += (caseData.locations?.length || 0) * 0.7;
 
-  if (caseData.category === CASE_CATEGORIES.MURDER || caseData.category === CASE_CATEGORIES.TERRORISM) {
+  if (
+    caseData.category === CASE_CATEGORIES.MURDER ||
+    caseData.category === CASE_CATEGORIES.TERRORISM
+  ) {
     complexity *= 1.5;
   }
 
@@ -409,7 +419,8 @@ export const isCaseAtRisk = (caseData) => {
   }
 
   // Check if making progress
-  const discoveredClues = caseData.clues?.filter(c => c.discovered).length || 0;
+  const discoveredClues =
+    caseData.clues?.filter((c) => c.discovered).length || 0;
   const totalClues = caseData.clues?.length || 1;
   const progress = discoveredClues / totalClues;
 
@@ -429,25 +440,29 @@ export const calculateCaseProgress = (caseData) => {
 
   // Clues
   const totalClues = caseData.clues?.length || 0;
-  const discoveredClues = caseData.clues?.filter(c => c.discovered).length || 0;
+  const discoveredClues =
+    caseData.clues?.filter((c) => c.discovered).length || 0;
   totalTasks += totalClues;
   completedTasks += discoveredClues;
 
   // Evidence analysis
   const totalEvidence = caseData.evidence?.length || 0;
-  const analyzedEvidence = caseData.evidence?.filter(e => e.analysis?.results).length || 0;
+  const analyzedEvidence =
+    caseData.evidence?.filter((e) => e.analysis?.results).length || 0;
   totalTasks += totalEvidence;
   completedTasks += analyzedEvidence;
 
   // Suspect interrogations
   const totalSuspects = caseData.suspects?.length || 0;
-  const interrogatedSuspects = caseData.suspects?.filter(s => s.interrogated).length || 0;
+  const interrogatedSuspects =
+    caseData.suspects?.filter((s) => s.interrogated).length || 0;
   totalTasks += totalSuspects;
   completedTasks += interrogatedSuspects;
 
   // Locations searched
   const totalLocations = caseData.locations?.length || 0;
-  const searchedLocations = caseData.locations?.filter(l => l.searched).length || 0;
+  const searchedLocations =
+    caseData.locations?.filter((l) => l.searched).length || 0;
   totalTasks += totalLocations;
   completedTasks += searchedLocations;
 
@@ -498,9 +513,11 @@ export const generateCaseReport = (caseData) => {
     assignedAurors: caseData.assignedAurors?.length || 0,
     suspects: caseData.suspects?.length || 0,
     evidenceCollected: caseData.evidence?.length || 0,
-    cluesDiscovered: caseData.clues?.filter(c => c.discovered).length || 0,
+    cluesDiscovered: caseData.clues?.filter((c) => c.discovered).length || 0,
     totalClues: caseData.clues?.length || 0,
-    daysUntilDeadline: Math.ceil((new Date(caseData.deadline) - new Date()) / (1000 * 60 * 60 * 24))
+    daysUntilDeadline: Math.ceil(
+      (new Date(caseData.deadline) - new Date()) / (1000 * 60 * 60 * 24)
+    ),
   };
 };
 
@@ -512,24 +529,41 @@ export const EXAMPLE_CASES = [
     caseName: "The Knockturn Alley Murder",
     category: CASE_CATEGORIES.MURDER,
     priority: CASE_PRIORITY.HIGH,
-    summary: "Shopkeeper Caractacus Burke found dead in his shop. Signs of struggle, wand missing, Dark Mark present.",
+    summary:
+      "Shopkeeper Caractacus Burke found dead in his shop. Signs of struggle, wand missing, Dark Mark present.",
     clues: [
-      { description: "Scorch marks on floor suggest powerful curse", investigationDC: 15 },
+      {
+        description: "Scorch marks on floor suggest powerful curse",
+        investigationDC: 15,
+      },
       { description: "Hidden ledger in desk drawer", investigationDC: 18 },
-      { description: "Witness heard argument night before", investigationDC: 12 }
-    ]
+      {
+        description: "Witness heard argument night before",
+        investigationDC: 12,
+      },
+    ],
   },
   {
     caseName: "Disappearance at Hogsmeade",
     category: CASE_CATEGORIES.MISSING_PERSON,
     priority: CASE_PRIORITY.HIGH,
-    summary: "Tourist last seen leaving Three Broomsticks. No trace of magic, no struggle, vanished without trace.",
+    summary:
+      "Tourist last seen leaving Three Broomsticks. No trace of magic, no struggle, vanished without trace.",
     clues: [
-      { description: "Bartender remembers suspicious patron", investigationDC: 14 },
-      { description: "Faint trace of Portkey magic detected", investigationDC: 17 },
-      { description: "Missing person's wand found in alley", investigationDC: 13 }
-    ]
-  }
+      {
+        description: "Bartender remembers suspicious patron",
+        investigationDC: 14,
+      },
+      {
+        description: "Faint trace of Portkey magic detected",
+        investigationDC: 17,
+      },
+      {
+        description: "Missing person's wand found in alley",
+        investigationDC: 13,
+      },
+    ],
+  },
 ];
 
 export default {
@@ -552,5 +586,5 @@ export default {
   calculateCaseProgress,
   isEvidenceAdmissible,
   generateCaseReport,
-  EXAMPLE_CASES
+  EXAMPLE_CASES,
 };

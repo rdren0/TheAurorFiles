@@ -65,6 +65,34 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
     );
   }, [allSubclasses, characterLevel, characterClass]);
 
+  // Group accessible subclasses by level
+  const subclassesByLevel = useMemo(() => {
+    const grouped = {};
+    accessibleSubclasses.forEach((subclass) => {
+      if (!grouped[subclass.level]) {
+        grouped[subclass.level] = [];
+      }
+      grouped[subclass.level].push(subclass);
+    });
+    return grouped;
+  }, [accessibleSubclasses]);
+
+  // Group locked subclasses by level
+  const lockedSubclassesByLevel = useMemo(() => {
+    const grouped = {};
+    lockedSubclasses.forEach((subclass) => {
+      if (!grouped[subclass.level]) {
+        grouped[subclass.level] = [];
+      }
+      grouped[subclass.level].push(subclass);
+    });
+    return grouped;
+  }, [lockedSubclasses]);
+
+  // Get sorted level keys
+  const accessibleLevels = Object.keys(subclassesByLevel).map(Number).sort((a, b) => a - b);
+  const lockedLevels = Object.keys(lockedSubclassesByLevel).map(Number).sort((a, b) => a - b);
+
   useEffect(() => {
     if (selectedSubclass) {
       setExpandedSubclasses((prev) => {
@@ -155,144 +183,253 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
 
       <div style={styles.availableElementsSection}>
         <div style={styles.availableElementsContainer}>
-          {/* Show accessible subclasses for the selected class */}
-          {accessibleSubclasses.map((subclass) => {
-            const isSelected = selectedSubclass === subclass.id;
-            const isExpanded = expandedSubclasses.has(subclass.id);
-
-            return (
-              <div key={subclass.id} style={styles.featCard}>
-                <div style={styles.featHeader}>
-                  <label style={styles.featLabelClickable}>
-                    <input
-                      type="checkbox"
-                      name="subclass"
-                      value={subclass.id}
-                      checked={isSelected}
-                      onChange={() => handleSubclassToggle(subclass.id)}
-                      disabled={disabled}
-                      style={{
-                        width: "18px",
-                        height: "18px",
-                        marginRight: "8px",
-                        cursor: disabled ? "not-allowed" : "pointer",
-                        accentColor: theme.primary,
-                        transform: "scale(1.2)",
-                      }}
-                    />
-                    <span style={styles.featName}>
-                      {subclass.name}
-                      <span
-                        style={{
-                          ...styles.availableChoicesIndicator,
-                          marginLeft: "8px",
-                        }}
-                      >
-                        (Level {subclass.level})
-                      </span>
-                    </span>
-                  </label>
-                  {!isSelected && (
-                    <button
-                      onClick={() => toggleSubclassExpansion(subclass.id)}
-                      style={styles.expandButton}
-                      type="button"
-                      disabled={disabled}
-                    >
-                      {isExpanded ? "▲" : "▼"}
-                    </button>
-                  )}
+          {/* Show accessible subclasses grouped by level */}
+          {accessibleLevels.map((level) => (
+            <div key={`level-${level}`}>
+              {/* Level Header */}
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginTop: level === accessibleLevels[0] ? "0" : "24px",
+                  marginBottom: "12px",
+                  paddingBottom: "8px",
+                  borderBottom: `2px solid ${theme.border}`,
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    color: theme.primary,
+                  }}
+                >
+                  Level {level} Specializations
                 </div>
-
-                <div style={styles.featPreview}>
-                  {subclass.parentFeatureName}: {subclass.description}
+                <div
+                  style={{
+                    fontSize: "12px",
+                    fontWeight: "500",
+                    color: theme.textSecondary,
+                    padding: "2px 8px",
+                    backgroundColor: theme.surface,
+                    borderRadius: "12px",
+                    border: `1px solid ${theme.border}`,
+                  }}
+                >
+                  {subclassesByLevel[level].length} option{subclassesByLevel[level].length > 1 ? "s" : ""}
                 </div>
-
-                {(isExpanded || isSelected) && (
+                {characterLevel === level && (
                   <div
-                    style={
-                      isSelected
-                        ? styles.featDescriptionSelected
-                        : styles.featDescription
-                    }
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: "600",
+                      color: theme.success,
+                      padding: "3px 10px",
+                      backgroundColor: `${theme.success}15`,
+                      borderRadius: "12px",
+                      border: `1px solid ${theme.success}50`,
+                    }}
                   >
-                    {subclass.features.map((feature, index) => (
-                      <div
-                        key={index}
-                        style={
-                          isSelected
-                            ? styles.singleFeatureSelected
-                            : styles.singleFeature
-                        }
-                      >
-                        <strong
-                          style={
-                            isSelected
-                              ? styles.featureNameSelected
-                              : styles.featureName
-                          }
-                        >
-                          {feature.name}:
-                        </strong>
-                        <p
-                          style={
-                            isSelected
-                              ? styles.featureDescriptionSelected
-                              : styles.featureDescription
-                          }
-                        >
-                          {feature.description}
-                        </p>
-                      </div>
-                    ))}
+                    ✓ YOUR LEVEL
                   </div>
                 )}
               </div>
-            );
-          })}
 
-          {/* Show locked subclasses when a class is selected */}
+              {/* Subclasses for this level */}
+              {subclassesByLevel[level].map((subclass) => {
+                const isSelected = selectedSubclass === subclass.id;
+                const isExpanded = expandedSubclasses.has(subclass.id);
+
+                return (
+                  <div
+                    key={subclass.id}
+                    style={{
+                      ...( isSelected ? styles.selectedElementCard : styles.featCard),
+                      marginBottom: "12px",
+                    }}
+                  >
+                    <div style={styles.featHeader}>
+                      <label
+                        style={styles.featLabelClickable}
+                        onClick={(e) => {
+                          // Prevent double-firing when clicking the checkbox itself
+                          if (e.target.tagName === 'INPUT') return;
+                          handleSubclassToggle(subclass.id);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          name="subclass"
+                          value={subclass.id}
+                          checked={isSelected}
+                          onChange={(e) => {
+                            e.stopPropagation();
+                            handleSubclassToggle(subclass.id);
+                          }}
+                          disabled={disabled}
+                          style={{
+                            width: "18px",
+                            height: "18px",
+                            marginRight: "8px",
+                            cursor: disabled ? "not-allowed" : "pointer",
+                            accentColor: theme.success,
+                            transform: "scale(1.2)",
+                          }}
+                        />
+                        <span style={isSelected ? styles.featNameSelected : styles.featName}>
+                          {subclass.name}
+                        </span>
+                      </label>
+                      {!isSelected && (
+                        <button
+                          onClick={() => toggleSubclassExpansion(subclass.id)}
+                          style={styles.expandButton}
+                          type="button"
+                          disabled={disabled}
+                        >
+                          {isExpanded ? "▲" : "▼"}
+                        </button>
+                      )}
+                    </div>
+
+                    <div style={styles.featPreview}>
+                      {subclass.parentFeatureName}: {subclass.description}
+                    </div>
+
+                    {(isExpanded || isSelected) && (
+                      <div
+                        style={
+                          isSelected
+                            ? styles.featDescriptionSelected
+                            : styles.featDescription
+                        }
+                      >
+                        {subclass.features.map((feature, index) => (
+                          <div
+                            key={index}
+                            style={
+                              isSelected
+                                ? styles.singleFeatureSelected
+                                : styles.singleFeature
+                            }
+                          >
+                            <strong
+                              style={
+                                isSelected
+                                  ? styles.featureNameSelected
+                                  : styles.featureName
+                              }
+                            >
+                              {feature.name}:
+                            </strong>
+                            <p
+                              style={
+                                isSelected
+                                  ? styles.featureDescriptionSelected
+                                  : styles.featureDescription
+                              }
+                            >
+                              {feature.description}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+
+          {/* Show locked subclasses grouped by level */}
           {characterClass && lockedSubclasses.length > 0 && (
             <>
               <div
                 style={{
-                  fontSize: "14px",
-                  fontWeight: "600",
+                  fontSize: "16px",
+                  fontWeight: "700",
                   color: theme.textSecondary,
-                  marginTop: "16px",
-                  marginBottom: "8px",
+                  marginTop: "32px",
+                  marginBottom: "16px",
+                  paddingTop: "16px",
+                  borderTop: `2px dashed ${theme.border}`,
                 }}
               >
-                Locked Specializations
+                🔒 Locked Specializations
               </div>
-              {lockedSubclasses.map((subclass) => (
-                <div key={subclass.id} style={styles.featCard}>
-                  <div style={styles.featHeader}>
-                    <span
+              {lockedLevels.map((level) => (
+                <div key={`locked-level-${level}`}>
+                  {/* Locked Level Header */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "12px",
+                      marginTop: level === lockedLevels[0] ? "0" : "20px",
+                      marginBottom: "12px",
+                      paddingBottom: "6px",
+                      borderBottom: `1px dashed ${theme.border}`,
+                    }}
+                  >
+                    <div
                       style={{
-                        ...styles.featName,
+                        fontSize: "14px",
+                        fontWeight: "600",
                         color: theme.textSecondary,
                       }}
                     >
-                      {subclass.name}
-                      <span
+                      Level {level} Specializations
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: "500",
+                        color: theme.textSecondary,
+                        padding: "2px 8px",
+                        backgroundColor: theme.surface,
+                        borderRadius: "12px",
+                        border: `1px dashed ${theme.border}`,
+                        opacity: 0.7,
+                      }}
+                    >
+                      Unlocks in {level - characterLevel} level{level - characterLevel > 1 ? "s" : ""}
+                    </div>
+                  </div>
+
+                  {/* Locked subclasses for this level */}
+                  {lockedSubclassesByLevel[level].map((subclass) => (
+                    <div
+                      key={subclass.id}
+                      style={{
+                        ...styles.lockedFeature,
+                        marginBottom: "10px",
+                      }}
+                    >
+                      <div style={styles.featHeader}>
+                        <span
+                          style={{
+                            ...styles.featName,
+                            color: theme.textSecondary,
+                            opacity: 0.8,
+                          }}
+                        >
+                          🔒 {subclass.name}
+                        </span>
+                      </div>
+                      <div
                         style={{
-                          ...styles.availableChoicesIndicator,
-                          marginLeft: "8px",
+                          ...styles.featPreview,
+                          color: theme.textSecondary,
+                          fontSize: "12px",
+                          fontStyle: "italic",
                         }}
                       >
-                        (Level {subclass.level})
-                      </span>
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      ...styles.featPreview,
-                      color: theme.textSecondary,
-                    }}
-                  >
-                    🔒 Unlocks when character reaches Level {subclass.level}
-                  </div>
+                        Unlocks when your character reaches Level {subclass.level}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </>

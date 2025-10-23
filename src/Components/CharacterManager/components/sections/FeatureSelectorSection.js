@@ -1,7 +1,7 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTheme } from "../../../../contexts/ThemeContext";
 import { createBackgroundStyles } from "../../../../styles/masterStyles";
-import { standardFeats } from "../../../../SharedData/standardFeatData";
+import { getStandardFeats } from "../../../../SharedData/standardFeatData";
 import { getAllSelectedFeats } from "../../utils/characterUtils";
 
 const FeatureSelectorSection = ({
@@ -19,6 +19,26 @@ const FeatureSelectorSection = ({
 }) => {
   const { theme } = useTheme();
   const styles = createBackgroundStyles(theme);
+  const [standardFeats, setStandardFeats] = useState([]);
+  const [featsLoading, setFeatsLoading] = useState(true);
+
+  // Load feats from Open5e API
+  useEffect(() => {
+    const loadFeats = async () => {
+      try {
+        setFeatsLoading(true);
+        const feats = await getStandardFeats();
+        setStandardFeats(feats);
+      } catch (error) {
+        console.error("Failed to load feats:", error);
+        setStandardFeats([]);
+      } finally {
+        setFeatsLoading(false);
+      }
+    };
+
+    loadFeats();
+  }, []);
 
   const selectedFeats = (() => {
     const feats =
@@ -669,6 +689,30 @@ const FeatureSelectorSection = ({
     );
   }).length;
 
+  // Show loading state while feats are being fetched
+  if (featsLoading) {
+    return (
+      <div style={styles.container}>
+        <h3 style={styles.skillsHeader}>Loading Standard D&D 5e Feats...</h3>
+        <div style={{ padding: "20px", textAlign: "center", color: theme.textSecondary }}>
+          Fetching feats from Open5e API...
+        </div>
+      </div>
+    );
+  }
+
+  // Show message if no feats loaded
+  if (!featsLoading && standardFeats.length === 0) {
+    return (
+      <div style={styles.container}>
+        <h3 style={styles.skillsHeader}>Standard D&D 5e Feats</h3>
+        <div style={{ padding: "20px", textAlign: "center", color: theme.error }}>
+          Failed to load feats from Open5e API. Please check your internet connection and try again.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={styles.container}>
       <div
@@ -680,7 +724,7 @@ const FeatureSelectorSection = ({
         }}
       >
         <h3 style={enhancedStyles.skillsHeader}>
-          Standard Feats ({selectedFeats.length}/{maxFeats} selected)
+          Standard D&D 5e Feats ({selectedFeats.length}/{maxFeats} selected)
         </h3>
 
         <div style={enhancedStyles.helpText}>

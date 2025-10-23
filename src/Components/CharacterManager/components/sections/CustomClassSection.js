@@ -108,26 +108,39 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
             const lockedFeatures = getLockedFeatures(classData, character?.level || 1);
 
             return (
-              <div key={classData.id} style={styles.featCard}>
+              <div
+                key={classData.id}
+                style={isSelected ? styles.selectedElementCard : styles.featCard}
+              >
                 <div style={styles.featHeader}>
-                  <label style={styles.featLabelClickable}>
+                  <label
+                    style={styles.featLabelClickable}
+                    onClick={(e) => {
+                      // Prevent double-firing when clicking the checkbox itself
+                      if (e.target.tagName === 'INPUT') return;
+                      handleClassToggle(classData.id);
+                    }}
+                  >
                     <input
                       type="checkbox"
                       name="class"
                       value={classData.id}
                       checked={isSelected}
-                      onChange={() => handleClassToggle(classData.id)}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleClassToggle(classData.id);
+                      }}
                       disabled={disabled}
                       style={{
                         width: "18px",
                         height: "18px",
                         marginRight: "8px",
                         cursor: disabled ? "not-allowed" : "pointer",
-                        accentColor: theme.primary,
+                        accentColor: theme.success,
                         transform: "scale(1.2)",
                       }}
                     />
-                    <span style={styles.featName}>
+                    <span style={isSelected ? styles.featNameSelected : styles.featName}>
                       {classData.name}
                       {classData.type && (
                         <span

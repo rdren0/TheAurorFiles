@@ -2517,6 +2517,34 @@ export const createBackgroundStyles = (theme) => ({
     fontSize: "14px",
     color: theme.text,
   },
+  availableElementsSection: {
+    marginTop: "16px",
+    marginBottom: "16px",
+  },
+  availableChoicesIndicator: {
+    fontSize: "12px",
+    fontWeight: "500",
+    color: theme.textSecondary,
+    padding: "2px 8px",
+    backgroundColor: theme.background,
+    borderRadius: "4px",
+    border: `1px solid ${theme.border}`,
+  },
+  lockedFeature: {
+    marginTop: "16px",
+    padding: "12px",
+    backgroundColor: theme.surface,
+    borderRadius: "8px",
+    border: `2px dashed ${theme.border}`,
+    opacity: 0.7,
+  },
+  lockedContainer: {
+    fontSize: "14px",
+    color: theme.textSecondary,
+    fontStyle: "italic",
+    textAlign: "center",
+    padding: "8px",
+  },
 });
 
 export const createCharacterSheetStyles = (theme) => ({
