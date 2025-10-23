@@ -9,13 +9,11 @@ import {
   AbilityScoresSection,
   HitPointsSection,
   BackgroundSection,
-  HouseSection,
   Level1ChoiceSection,
-  SubclassSection,
+  CustomClassSection,
+  CustomSubclassSection,
   SkillsSection,
   ToolsLanguagesSection,
-  ASILevelChoices,
-  AdditionalFeatsASISection,
   MagicModifiersSection,
   MetaMagicSection,
   CastingStyleChoicesSection,
@@ -325,11 +323,11 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="House & School"
-        subtitle="Choose your magical house and school affiliation"
-        id="section-house"
+        title="Profession Class"
+        subtitle="Choose your character's magical profession and career path"
+        id="section-profession-class"
       >
-        <HouseSection
+        <CustomClassSection
           character={character}
           onChange={updateCharacter}
           mode={mode}
@@ -337,11 +335,11 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="Subclass"
-        subtitle="Specialized training and advanced features"
-        id="section-subclass"
+        title="Class Specialization"
+        subtitle="Choose your character's specialized path within their profession"
+        id="section-specialization"
       >
-        <SubclassSection
+        <CustomSubclassSection
           character={character}
           onChange={updateCharacter}
           mode={mode}
@@ -367,46 +365,13 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="Level 1 Choice"
-        subtitle="Choose either an Innate Heritage or a Standard Feat"
-        id="section-level1-choice"
+        title="Race / Species"
+        subtitle="Choose your character's innate heritage and traits"
+        id="section-race-species"
       >
         <Level1ChoiceSection
           character={character}
           onChange={(field, value) => updateCharacter(field, value)}
-          onCharacterUpdate={updateCharacterBulk}
-          mode={mode}
-        />
-      </FormSection>
-
-      {getAvailableASILevels(character.level).length > 0 && (
-        <FormSection
-          title="ASI & Feat Progression"
-          subtitle={`Level ${
-            character.level > 1 ? "4+" : ""
-          } Ability Score Improvements and Feat choices`}
-          id="section-asi-feats"
-        >
-          <ASILevelChoices
-            character={character}
-            onChange={updateCharacter}
-            onCharacterUpdate={updateCharacterBulk}
-            onASIChoiceChange={handleASIChoiceChange}
-            onASIFeatChange={handleASIFeatChange}
-            onASIAbilityChange={handleASIAbilityChange}
-            mode={mode}
-          />
-        </FormSection>
-      )}
-
-      <FormSection
-        title="Additional Feats and ASI"
-        subtitle="Extra feats and ability score improvements outside of standard progression"
-        id="section-additional-feats-asi"
-      >
-        <AdditionalFeatsASISection
-          character={character}
-          onChange={updateCharacter}
           onCharacterUpdate={updateCharacterBulk}
           mode={mode}
         />

@@ -2441,11 +2441,12 @@ export const createBackgroundStyles = (theme) => ({
   featCard: {
     marginBottom: "16px",
     padding: "16px",
-    backgroundColor: theme.surface,
+    backgroundColor: theme.background,
     borderRadius: "8px",
     border: `2px solid ${theme.border}`,
     transition: "all 0.2s ease",
     cursor: "pointer",
+    boxShadow: `0 2px 4px ${theme.border}40`,
   },
   selectedElementCard: {
     marginBottom: "16px",

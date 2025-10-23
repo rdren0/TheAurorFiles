@@ -32,8 +32,8 @@ const Bank = ({ user, selectedCharacter, supabase, adminMode }) => {
     setError(null);
 
     try {
-      const characterId = parseInt(selectedCharacter.id);
-      if (isNaN(characterId)) {
+      const characterId = selectedCharacter.id;
+      if (!characterId) {
         throw new Error("Invalid character ID");
       }
 
@@ -75,8 +75,8 @@ const Bank = ({ user, selectedCharacter, supabase, adminMode }) => {
     setError(null);
 
     try {
-      const characterId = parseInt(selectedCharacter.id);
-      if (isNaN(characterId)) {
+      const characterId = selectedCharacter.id;
+      if (!characterId) {
         throw new Error("Invalid character ID");
       }
       let query = supabase

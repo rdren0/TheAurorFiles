@@ -181,7 +181,9 @@ export const parseSubclassSkills = (character) => {
   const subclassChoices = character.subclassChoices || {};
 
   const backgroundSkills = character.backgroundSkills || [];
-  const innateHeritageSkills = character.innateHeritageSkills || [];
+  const innateHeritageSkills = Array.isArray(character.innateHeritageSkills)
+    ? character.innateHeritageSkills
+    : [];
 
   Object.values(subclassChoices).forEach((choice) => {
     if (typeof choice === "object" && choice.mainChoice && choice.subChoice) {
@@ -230,7 +232,9 @@ export const organizeSkillsBySource = (character) => {
       ? character.backgroundSkills
       : parseBackgroundSkills(character);
 
-  const innateHeritageSkills = character.innateHeritageSkills || [];
+  const innateHeritageSkills = Array.isArray(character.innateHeritageSkills)
+    ? character.innateHeritageSkills
+    : [];
   const featSkills = parseFeatSkills(character);
 
   const {

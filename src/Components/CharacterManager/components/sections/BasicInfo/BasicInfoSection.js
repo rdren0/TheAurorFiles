@@ -3,8 +3,6 @@ import { gameSessionGroups } from "../../../../../App/const";
 import { useTheme } from "../../../../../contexts/ThemeContext";
 import { createCharacterCreationStyles } from "../../../../../styles/masterStyles";
 import OptimizedImageUpload from "./OptimizedImageUpload";
-import SchoolYearSelector from "./SchoolYearSelector";
-import EnhancedCastingStyleSelector from "./EnhancedCastingStyleSelector";
 
 const BasicInfoSection = ({
   character,
@@ -21,16 +19,8 @@ const BasicInfoSection = ({
     onChange(field, value);
   };
 
-  const handleSchoolYearChange = (schoolYear) => {
-    handleInputChange("schoolYear", schoolYear);
-  };
-
   const handleLevelChange = (level) => {
     handleInputChange("level", level);
-  };
-
-  const handleCastingStyleChange = (castingStyle) => {
-    handleInputChange("castingStyle", castingStyle);
   };
 
   const handleImageChange = (file, previewUrl) => {
@@ -165,26 +155,19 @@ const BasicInfoSection = ({
         </div>
       </div>
 
-      <SchoolYearSelector
-        schoolYear={character.schoolYear}
-        onSchoolYearChange={handleSchoolYearChange}
-        level={character.level}
-        onLevelChange={handleLevelChange}
-        styles={styles}
-        disabled={disabled}
-      />
-
-      <div
-        style={{
-          ...styles.fieldContainer,
-          opacity: disabled ? 0.6 : 1,
-          pointerEvents: disabled ? "none" : "auto",
-        }}
-      >
-        <EnhancedCastingStyleSelector
-          selectedStyle={character.castingStyle || ""}
-          onStyleChange={handleCastingStyleChange}
-          required={true}
+      <div style={styles.fieldContainer}>
+        <label style={styles.label}>Level *</label>
+        <input
+          type="number"
+          min="1"
+          max="20"
+          value={character.level || 1}
+          onChange={(e) => handleLevelChange(parseInt(e.target.value) || 1)}
+          style={{
+            ...styles.input,
+            opacity: disabled ? 0.6 : 1,
+            pointerEvents: disabled ? "none" : "auto",
+          }}
           disabled={disabled}
         />
       </div>

@@ -51,15 +51,31 @@ import {
 } from "../CharacterManager/utils/featBenefitsCalculator";
 import { calculateHeritageModifiers } from "../CharacterManager/utils/utils";
 
+// D&D 5e and Custom Class Hit Dice
 const hitDiceData = {
-  Willpower: "d10",
-  "Willpower Caster": "d10",
-  Technique: "d6",
-  "Technique Caster": "d6",
-  Intellect: "d8",
-  "Intellect Caster": "d8",
-  Vigor: "d12",
-  "Vigor Caster": "d12",
+  // D&D 5e Classes
+  barbarian: "d12",
+  bard: "d8",
+  cleric: "d8",
+  druid: "d8",
+  fighter: "d10",
+  monk: "d8",
+  paladin: "d10",
+  ranger: "d10",
+  rogue: "d8",
+  sorcerer: "d6",
+  warlock: "d8",
+  wizard: "d6",
+  // Custom Wizard World Classes
+  base_witch_wizard: "d8",
+  profession_healer_alchemist: "d8",
+  profession_spellwright: "d8",
+  profession_naturalist: "d8",
+  profession_auror: "d10",
+  profession_wordsmith: "d8",
+  profession_hitwizard: "d8",
+  profession_field_hunter: "d10",
+  profession_muggle_liaison: "d8",
   default: "d8",
 };
 
@@ -129,8 +145,8 @@ const CharacterSheet = ({
     }
   };
 
-  const getHitDie = useCallback((castingStyle) => {
-    return hitDiceData[castingStyle] || hitDiceData.default;
+  const getHitDie = useCallback((characterClass) => {
+    return hitDiceData[characterClass] || hitDiceData.default;
   }, []);
   const getBaseArmorClass = useCallback((castingStyle) => {
     const baseACMap = {

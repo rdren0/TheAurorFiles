@@ -18,8 +18,6 @@ import { useTheme } from "../../contexts/ThemeContext";
 import { getInventoryStyles } from "./styles";
 import { shouldFilterFromOtherPlayers } from "../../utils/characterFiltering";
 import Bank from "../Bank/Bank";
-import OwlMail from "./OwlMail";
-import { ReactComponent as OwlIcon } from "../../Images/owl.svg";
 
 const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
   const { theme } = useTheme();
@@ -41,7 +39,6 @@ const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
   const [selectedRecipient, setSelectedRecipient] = useState(null);
   const [isSendingItem, setIsSendingItem] = useState(false);
   const [activeTab, setActiveTab] = useState("inventory");
-  const [unreadOwlMailCount, setUnreadOwlMailCount] = useState(0);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -135,26 +132,6 @@ const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
     selectedCharacter?.id,
   ]);
 
-  const fetchUnreadOwlMailCount = useCallback(async () => {
-    if (!supabase || !selectedCharacter?.id) {
-      return;
-    }
-
-    try {
-      const { count, error: fetchError } = await supabase
-        .from("owl_mail")
-        .select("*", { count: "exact", head: true })
-        .eq("recipient_character_id", selectedCharacter.id)
-        .eq("read", false);
-
-      if (fetchError) throw fetchError;
-
-      setUnreadOwlMailCount(count || 0);
-    } catch (err) {
-      console.error("Error fetching unread owl mail count:", err);
-    }
-  }, [supabase, selectedCharacter?.id]);
-
   useEffect(() => {
     const gameSession =
       selectedCharacter?.gameSession || selectedCharacter?.game_session;
@@ -166,17 +143,6 @@ const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
     selectedCharacter?.gameSession,
     selectedCharacter?.game_session,
   ]);
-
-  useEffect(() => {
-    fetchUnreadOwlMailCount();
-
-    // Set up polling to check for new messages every 30 seconds
-    const interval = setInterval(() => {
-      fetchUnreadOwlMailCount();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [fetchUnreadOwlMailCount]);
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -541,36 +507,6 @@ const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
                     Manage your character's items, equipment, and possessions
                   </p>
                 </div>
-                <button
-                  onClick={() => setActiveTab("owlmail")}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    opacity: unreadOwlMailCount > 0 ? 1 : 0.3,
-                    transition: "opacity 0.2s, transform 0.2s, color 0.2s",
-                    padding: "4px",
-                    display: "flex",
-                    alignItems: "center",
-                    color: unreadOwlMailCount > 0 ? "black" : theme.textSecondary,
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.opacity = "1";
-                    e.currentTarget.style.transform = "scale(1.1)";
-                    e.currentTarget.style.color = theme.text;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.opacity = unreadOwlMailCount > 0 ? "1" : "0.3";
-                    e.currentTarget.style.transform = "scale(1)";
-                    e.currentTarget.style.color = unreadOwlMailCount > 0 ? "black" : theme.textSecondary;
-                  }}
-                  title={unreadOwlMailCount > 0 ? `Owl Post (${unreadOwlMailCount} unread)` : "Owl Post"}
-                >
-                  <OwlIcon style={{
-                    width: "36px",
-                    height: "36px",
-                  }} />
-                </button>
               </div>
               {isLoading && !isRefreshing && (
                 <div style={styles.loadingMessage}>
@@ -1411,16 +1347,6 @@ const Inventory = ({ user, selectedCharacter, supabase, adminMode }) => {
             </>
           )}
 
-          {activeTab === "owlmail" && (
-            <OwlMail
-              user={user}
-              selectedCharacter={selectedCharacter}
-              supabase={supabase}
-              sessionCharacters={sessionCharacters}
-              onBack={() => setActiveTab("inventory")}
-              onMailRead={fetchUnreadOwlMailCount}
-            />
-          )}
         </div>
       </div>
 

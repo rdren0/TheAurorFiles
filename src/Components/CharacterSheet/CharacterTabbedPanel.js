@@ -28,8 +28,9 @@ const CharacterTabbedPanel = ({
   const styles = {
     container: {
       backgroundColor: theme.surface,
-      borderRadius: "12px",
-      border: `2px solid ${theme.border}`,
+      borderRadius: "4px",
+      border: `1px solid ${theme.border}`,
+      boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
       height: "1200px",
       display: "flex",
       flexDirection: "column",
@@ -37,39 +38,47 @@ const CharacterTabbedPanel = ({
     },
     tabsContainer: {
       display: "flex",
-      borderBottom: `2px solid ${theme.border}`,
+      flexDirection: "row",
       backgroundColor: theme.background,
-      borderRadius: "12px 12px 0 0",
+      borderBottom: `2px solid ${theme.border}`,
     },
     tab: {
-      flex: 1,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      gap: "6px",
-      padding: "12px 8px",
+      gap: "8px",
+      padding: "12px 20px",
       cursor: "pointer",
-      fontSize: "14px",
-      fontWeight: "500",
+      fontSize: "13px",
+      fontWeight: "600",
       transition: "all 0.2s ease",
-      borderBottom: "3px solid transparent",
       backgroundColor: "transparent",
       color: theme.textSecondary,
-      minHeight: "48px",
       border: "none",
+      borderBottom: `3px solid transparent`,
       outline: "none",
+      textAlign: "center",
+      position: "relative",
+      fontFamily: "'Courier New', monospace",
+      textTransform: "uppercase",
+      letterSpacing: "1.2px",
     },
     activeTab: {
-      color: theme.primary,
+      color: theme.text,
       borderBottomColor: theme.primary,
       backgroundColor: theme.surface,
-      borderRadius: "8px 8px 0 0",
+      fontWeight: "700",
+    },
+    tabLabel: {
+      display: "inline-block",
+    },
+    tabIcon: {
+      display: "inline-block",
     },
     tabContent: {
       flex: 1,
       overflow: "auto",
       padding: "0",
-      height: "calc(600px - 48px)",
     },
     placeholderContent: {
       display: "flex",
@@ -85,18 +94,20 @@ const CharacterTabbedPanel = ({
       fontWeight: "600",
       color: theme.text,
       margin: "16px 0 8px 0",
+      fontFamily: "'Courier New', monospace",
     },
     placeholderText: {
       fontSize: "14px",
       color: theme.textSecondary,
       margin: "0",
+      fontFamily: "'Courier New', monospace",
     },
   };
 
   const tabs = [
     {
       id: "diceRoller",
-      label: "Dice Roller",
+      label: "Chance Roll",
       icon: Dices,
       component: (
         <div
@@ -116,7 +127,7 @@ const CharacterTabbedPanel = ({
     },
     {
       id: "slots",
-      label: "Spellcasting & Attacks",
+      label: "Actions",
       icon: Wand,
       component: (
         <div
@@ -160,7 +171,7 @@ const CharacterTabbedPanel = ({
     },
     {
       id: "feats",
-      label: "Feats",
+      label: "Skills",
       icon: Award,
       component: (
         <CharacterFeatsDisplay
@@ -175,7 +186,7 @@ const CharacterTabbedPanel = ({
     },
     {
       id: "inventory",
-      label: "Inventory",
+      label: "Evidence",
       icon: Package,
       component: (
         <Inventory
@@ -187,7 +198,7 @@ const CharacterTabbedPanel = ({
     },
     {
       id: "creatures",
-      label: "Creatures",
+      label: "Contacts",
       icon: Rat,
       component: (
         <CreaturesPanel
@@ -215,9 +226,12 @@ const CharacterTabbedPanel = ({
                 ...(isActive ? styles.activeTab : {}),
               }}
               onClick={() => setActiveTab(tab.id)}
+              title={tab.label}
             >
-              <Icon size={16} />
-              <span style={{ fontSize: "13px" }}>{tab.label}</span>
+              <span style={styles.tabIcon}>
+                <Icon size={16} />
+              </span>
+              <span style={styles.tabLabel}>{tab.label}</span>
             </button>
           );
         })}

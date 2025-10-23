@@ -1,6 +1,6 @@
-# Witches & Snitches - Character Management System
+# The Auror Files - Character Management System
 
-A comprehensive web application for managing characters in the Witches & Snitches tabletop RPG system, featuring character creation, spell management, inventory tracking, and more.
+A comprehensive web application for managing characters in the The Auror Files tabletop RPG system, featuring character creation, spell management, inventory tracking, and more.
 
 ## 📋 Table of Contents
 
@@ -20,7 +20,7 @@ A comprehensive web application for managing characters in the Witches & Snitche
 
 ## 🎮 Overview
 
-Witches & Snitches is a full-featured character management system for a Harry Potter-inspired tabletop RPG. The application provides players and game masters with tools to create, manage, and track their magical characters through their adventures at a wizarding school.
+The Auror Files is a full-featured character management system for a Harry Potter-inspired tabletop RPG. The application provides players and game masters with tools to create, manage, and track their magical characters through their adventures at a wizarding school.
 
 ### Live Demo
 
@@ -297,7 +297,7 @@ The application integrates with Discord webhooks to send roll results to your Di
 
    - Go to Server Settings → Integrations → Webhooks
    - Click "New Webhook"
-   - Name it (e.g., "Witches & Snitches Dice Bot")
+   - Name it (e.g., "The Auror Files Dice Bot")
    - Copy the webhook URL
 
 2. **Add webhook URL to environment**
@@ -325,7 +325,7 @@ The Discord webhook sends formatted messages for various roll types:
         { name: "DC", value: dc || "—", inline: true },
         { name: "Result", value: getResultEmoji(success), inline: true },
       ],
-      footer: { text: "Witches & Snitches" },
+      footer: { text: "The Auror Files" },
       timestamp: new Date().toISOString(),
     },
   ];

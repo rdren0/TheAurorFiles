@@ -27,9 +27,9 @@ const ThemeSettings = () => {
   } = useTheme();
 
   const [expandedCategories, setExpandedCategories] = useState({
-    "Hogwarts Houses": true,
-    "Ilvermorny Houses": false,
-    "International Schools": false,
+    "Classic Detective": true,
+    "Urban Night": false,
+    "Investigation Themes": false,
   });
 
   const getColorblindDescription = (id) => {
@@ -113,10 +113,10 @@ const ThemeSettings = () => {
     },
     {
       id: "house",
-      name: "School Theme",
+      name: "Detective Theme",
       description: themeHouse
-        ? `Experience the magic of ${themeHouse}`
-        : "Choose a magical school theme",
+        ? `${themeHouse} - Noir investigation aesthetic`
+        : "Choose a detective noir theme",
       icon: Home,
       preview: HOUSE_THEMES?.[themeHouse] || {
         primary: "#6B7280",
@@ -133,8 +133,8 @@ const ThemeSettings = () => {
     setThemeMode(newTheme);
   };
 
-  const handleSchoolChange = (school) => {
-    setThemeHouse(school);
+  const handleDetectiveThemeChange = (detectiveTheme) => {
+    setThemeHouse(detectiveTheme);
   };
 
   const styles = {
@@ -338,13 +338,13 @@ const ThemeSettings = () => {
       padding: "4px 8px",
       borderRadius: "12px",
     },
-    schoolGrid: {
+    themeGrid2: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
       gap: "16px",
       marginBottom: "16px",
     },
-    schoolCard: {
+    themeCard: {
       padding: "20px",
       borderRadius: "12px",
       border: `2px solid ${theme.border}`,
@@ -355,37 +355,37 @@ const ThemeSettings = () => {
       position: "relative",
       overflow: "hidden",
     },
-    schoolCardActive: {
+    themeCardActive: {
       borderColor: theme.primary,
       backgroundColor: theme.surface,
       boxShadow: `0 0 0 2px ${theme.primary}20`,
     },
-    schoolCardHover: {
+    themeCardHover: {
       borderColor: `${theme.primary}60`,
       backgroundColor: theme.surface,
       transform: "translateY(-2px)",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
     },
-    schoolName: {
+    themeName2: {
       fontSize: "16px",
       fontWeight: "600",
       color: theme.text,
       marginBottom: "12px",
       margin: "0 0 12px 0",
     },
-    schoolColors: {
+    themeColors: {
       display: "flex",
       gap: "6px",
       justifyContent: "center",
       marginBottom: "12px",
     },
-    schoolColorSwatch: {
+    themeColorSwatch: {
       width: "20px",
       height: "20px",
       borderRadius: "50%",
       border: `1px solid ${theme.border}`,
     },
-    schoolPreview: {
+    themePreview: {
       fontSize: "12px",
       color: theme.textSecondary,
       textTransform: "uppercase",
@@ -547,7 +547,7 @@ const ThemeSettings = () => {
               Choose Colorblind Accessibility Type
             </h2>
 
-            <div style={styles.schoolGrid}>
+            <div style={styles.themeGrid2}>
               {colorblindOptions.map((option) => {
                 const isActive = selectedColorblindType === option.id;
 
@@ -555,42 +555,42 @@ const ThemeSettings = () => {
                   <div
                     key={option.id}
                     style={{
-                      ...styles.schoolCard,
-                      ...(isActive ? styles.schoolCardActive : {}),
+                      ...styles.themeCard,
+                      ...(isActive ? styles.themeCardActive : {}),
                     }}
                     onClick={() => setSelectedColorblindType(option.id)}
                   >
-                    <div style={styles.schoolName}>{option.name}</div>
-                    <div style={styles.schoolColors}>
+                    <div style={styles.themeName2}>{option.name}</div>
+                    <div style={styles.themeColors}>
                       <div
                         style={{
-                          ...styles.schoolColorSwatch,
+                          ...styles.themeColorSwatch,
                           backgroundColor: option.colors.primary,
                         }}
                       />
                       <div
                         style={{
-                          ...styles.schoolColorSwatch,
+                          ...styles.themeColorSwatch,
                           backgroundColor: option.colors.secondary,
                         }}
                       />
                       <div
                         style={{
-                          ...styles.schoolColorSwatch,
+                          ...styles.themeColorSwatch,
                           backgroundColor: option.colors.background,
                         }}
                       />
                     </div>
                     <div
                       style={{
-                        ...styles.schoolPreview,
+                        ...styles.themePreview,
                         fontSize: "11px",
                         lineHeight: "1.3",
                       }}
                     >
                       {option.description}
                     </div>
-                    <div style={{ ...styles.schoolPreview, marginTop: "8px" }}>
+                    <div style={{ ...styles.themePreview, marginTop: "8px" }}>
                       {isActive ? "Currently Active" : "Click to Apply"}
                     </div>
                   </div>
@@ -651,12 +651,12 @@ const ThemeSettings = () => {
           <div style={styles.section}>
             <h2 style={styles.sectionTitle}>
               <Home size={20} />
-              Choose Your School
+              Choose Your Detective Theme
             </h2>
 
             {SCHOOL_CATEGORIES &&
               Object.entries(SCHOOL_CATEGORIES).map(
-                ([categoryName, schools]) => (
+                ([categoryName, detectiveThemes]) => (
                   <div key={categoryName}>
                     <div
                       style={{
@@ -669,7 +669,7 @@ const ThemeSettings = () => {
                     >
                       <div style={styles.categoryTitle}>{categoryName}</div>
                       <div style={styles.categoryCount}>
-                        {schools.length} school{schools.length !== 1 ? "s" : ""}
+                        {detectiveThemes.length} theme{detectiveThemes.length !== 1 ? "s" : ""}
                       </div>
                       {expandedCategories[categoryName] ? (
                         <ChevronDown size={20} color={theme.primary} />
@@ -679,45 +679,45 @@ const ThemeSettings = () => {
                     </div>
 
                     {expandedCategories[categoryName] && (
-                      <div style={styles.schoolGrid}>
-                        {schools.map((school) => {
-                          const schoolTheme = HOUSE_THEMES?.[school] || {};
-                          const isActive = themeHouse === school;
+                      <div style={styles.themeGrid2}>
+                        {detectiveThemes.map((detectiveTheme) => {
+                          const themeColors = HOUSE_THEMES?.[detectiveTheme] || {};
+                          const isActive = themeHouse === detectiveTheme;
 
                           return (
                             <div
-                              key={school}
+                              key={detectiveTheme}
                               style={{
-                                ...styles.schoolCard,
-                                ...(isActive ? styles.schoolCardActive : {}),
+                                ...styles.themeCard,
+                                ...(isActive ? styles.themeCardActive : {}),
                               }}
-                              onClick={() => handleSchoolChange(school)}
+                              onClick={() => handleDetectiveThemeChange(detectiveTheme)}
                             >
-                              <div style={styles.schoolName}>{school}</div>
-                              <div style={styles.schoolColors}>
+                              <div style={styles.themeName2}>{detectiveTheme}</div>
+                              <div style={styles.themeColors}>
                                 <div
                                   style={{
-                                    ...styles.schoolColorSwatch,
+                                    ...styles.themeColorSwatch,
                                     backgroundColor:
-                                      schoolTheme.primary || "#6B7280",
+                                      themeColors.primary || "#6B7280",
                                   }}
                                 />
                                 <div
                                   style={{
-                                    ...styles.schoolColorSwatch,
+                                    ...styles.themeColorSwatch,
                                     backgroundColor:
-                                      schoolTheme.secondary || "#9CA3AF",
+                                      themeColors.secondary || "#9CA3AF",
                                   }}
                                 />
                                 <div
                                   style={{
-                                    ...styles.schoolColorSwatch,
+                                    ...styles.themeColorSwatch,
                                     backgroundColor:
-                                      schoolTheme.accent || "#D1D5DB",
+                                      themeColors.accent || "#D1D5DB",
                                   }}
                                 />
                               </div>
-                              <div style={styles.schoolPreview}>
+                              <div style={styles.themePreview}>
                                 {isActive
                                   ? "Currently Active"
                                   : "Click to Apply"}
@@ -734,7 +734,7 @@ const ThemeSettings = () => {
             {themeHouse && themeMode === "house" && (
               <div style={styles.currentSelection}>
                 <div style={styles.currentSelectionTitle}>
-                  Current School Theme
+                  Current Detective Theme
                 </div>
                 <div style={styles.currentSelectionContent}>
                   <div style={styles.currentSelectionColors}>

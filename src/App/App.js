@@ -418,7 +418,7 @@ const Navigation = ({ characters }) => {
       >
         <img
           src={logo}
-          alt="Witches & Snitches Logo"
+          alt="The Auror Files Logo"
           style={{
             height: "60px",
             width: "auto",
@@ -1519,7 +1519,7 @@ function AppContent() {
           >
             <h3>View Rulebook</h3>
           </a>
-          © {new Date().getFullYear()} <strong>Witches & Snitches</strong>
+          © {new Date().getFullYear()} <strong>The Auror Files</strong>
         </div>
       </footer>
     </div>
