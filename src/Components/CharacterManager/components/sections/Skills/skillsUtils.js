@@ -71,7 +71,6 @@ export const SKILL_ABILITY_MAP = {
   Stealth: "dexterity",
   Streetwise: "wisdom",
   Survival: "wisdom",
-  DimensionalTheory: "intelligence",
 };
 
 export const SKILL_SOURCES = {

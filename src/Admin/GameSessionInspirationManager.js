@@ -300,7 +300,7 @@ const GameSessionInspirationManager = ({ supabase }) => {
           ],
           timestamp: new Date().toISOString(),
           footer: {
-            text: "Witches and Snitches - Admin Action",
+            text: "The Auror Files - Admin Action",
           },
         };
 
@@ -564,7 +564,7 @@ const GameSessionInspirationManager = ({ supabase }) => {
           ],
           timestamp: new Date().toISOString(),
           footer: {
-            text: "Witches and Snitches - Admin Action",
+            text: "The Auror Files - Admin Action",
           },
         };
 
@@ -759,7 +759,9 @@ const GameSessionInspirationManager = ({ supabase }) => {
                             </div>
                           </div>
                           <div style={styles.characterDetails}>
-                            <h3 style={styles.characterName}>{character.name}</h3>
+                            <h3 style={styles.characterName}>
+                              {character.name}
+                            </h3>
                           </div>
                         </div>
                         <span style={styles.characterLevel}>

@@ -503,8 +503,8 @@ export const Skills = ({
         return (
           <Circle
             {...iconProps}
-            fill={theme.primary || "#3b82f6"}
-            stroke={theme.primary || "#3b82f6"}
+            fill="#a0522d"
+            stroke="#a0522d"
           />
         );
       case 2:
@@ -781,8 +781,8 @@ export const Skills = ({
           <div style={skillStyles.legendItem}>
             <Circle
               size={14}
-              fill={theme.primary || "#3b82f6"}
-              stroke={theme.primary || "#3b82f6"}
+              fill="#a0522d"
+              stroke="#a0522d"
             />
             <span>Proficient (+{character?.proficiencyBonus || 0})</span>
           </div>
@@ -937,14 +937,14 @@ export const Skills = ({
                           style={{
                             ...skillStyles.skillButton,
                             ...(skillLevel === 1
-                              ? { color: theme.primary, fontWeight: "600" }
+                              ? { color: "#a0522d", fontWeight: "600" }
                               : {}),
                             ...(skillLevel === 2
-                              ? { color: theme.warning, fontWeight: "700" }
+                              ? { fontWeight: "700" }
                               : {}),
                             ...(isMagicalTheory
                               ? {
-                                  color: theme.warning || "#8b5cf6",
+                                  color: theme.warning || "#f59e0b",
                                   fontWeight: "600",
                                 }
                               : {}),
@@ -1034,10 +1034,10 @@ export const Skills = ({
                           style={{
                             ...skillStyles.bonusValue,
                             ...(skillLevel === 1
-                              ? { color: theme.primary }
+                              ? { color: "#a0522d", fontWeight: "700" }
                               : {}),
                             ...(skillLevel === 2
-                              ? { color: theme.warning }
+                              ? { fontWeight: "700", color: theme.warning }
                               : {}),
                           }}
                         >
@@ -1096,7 +1096,7 @@ export const Skills = ({
                         allTools.map((toolObj) => {
                           const tool = toolObj.name;
                           const source = toolObj.source;
-                          const toolColor = "#3b82f6";
+                          const toolColor = theme.text;
                           return (
                             <tr
                               key={tool}
@@ -1146,21 +1146,13 @@ export const Skills = ({
                                   }}
                                 >
                                   {tool}
-                                  <span
-                                    style={{
-                                      fontSize: "10px",
-                                      color: toolColor,
-                                      fontWeight: "500",
-                                      marginLeft: "4px",
-                                    }}
-                                  ></span>
                                 </button>
                               </td>
                               <td style={skillStyles.cell}>
                                 <span
                                   style={{
                                     ...skillStyles.bonusValue,
-                                    color: "#3b82f6",
+                                    fontWeight: "700",
                                   }}
                                 >
                                   +{character?.proficiencyBonus || 0}

@@ -220,7 +220,7 @@ const AuthComponent = ({
             style={{
               ...styles.themeButton,
               backgroundColor: adminMode ? "#ffd700" : theme.surface,
-              color: adminMode ? theme.secondary : theme.primary,
+              color: adminMode ? theme.secondary : theme.text,
               border: adminMode
                 ? "2px solid #ffaa00"
                 : `1px solid ${theme.border}`,
@@ -266,7 +266,7 @@ const AuthComponent = ({
           style={styles.themeButton}
           title="Theme Settings"
         >
-          <Palette size={16} color={theme.primary} />
+          <Palette size={16} color={theme.text} />
         </button>
 
         <div style={styles.userInfo}>
@@ -320,7 +320,7 @@ const AuthComponent = ({
         style={styles.themeButton}
         title="Theme Settings"
       >
-        <Palette size={16} color={theme.primary} />
+        <Palette size={16} color={theme.text} />
       </button>
 
       <button
@@ -420,7 +420,7 @@ const Navigation = ({ characters }) => {
           src={logo}
           alt="The Auror Files Logo"
           style={{
-            height: "60px",
+            height: "90px",
             width: "auto",
             transition: "opacity 0.2s ease",
             marginRight: "16px",
@@ -464,7 +464,7 @@ const Navigation = ({ characters }) => {
                 ...(isAdminTab && adminMode && isActive
                   ? {
                       backgroundColor: "#ffd700",
-                      color: theme.primary,
+                      color: theme.secondary,
                       fontWeight: "bold",
                     }
                   : isAdminTab && adminMode

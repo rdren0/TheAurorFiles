@@ -463,7 +463,6 @@ export const skillMap = {
   stealth: "Stealth",
   streetwise: "Streetwise",
   survival: "Survival",
-  dimensionalTheory: "Dimensional Theory",
 };
 
 export const allSkills = [
@@ -480,7 +479,7 @@ export const allSkills = [
     ability: "intelligence",
   },
   { name: "insight", displayName: "Insight", ability: "wisdom" },
-  { name: "intimidation", displayName: "Intimidation", ability: "charisma" },
+  { name: "intimidation", displayName: "Intimidation", ability: "strength" },
   {
     name: "investigation",
     displayName: "Investigation",
@@ -512,11 +511,6 @@ export const allSkills = [
   { name: "stealth", displayName: "Stealth", ability: "dexterity" },
   { name: "streetwise", displayName: "Streetwise", ability: "wisdom" },
   { name: "survival", displayName: "Survival", ability: "wisdom" },
-  {
-    name: "dimensionalTheory",
-    displayName: "Dimensional Theory",
-    ability: "intelligence",
-  },
 ];
 
 export const abilities = [
@@ -576,6 +570,4 @@ export const skillDescriptions = {
     "Navigate urban environments, gather information from locals, or know where to find illicit contacts.",
   survival:
     "Track creatures, navigate the wilderness, locate food and shelter, or predict weather hazards.",
-  dimensionalTheory:
-    "Comprehend rifts, portals, and teleportation effects; analyze space-time anomalies.",
 };

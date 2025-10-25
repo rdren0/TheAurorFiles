@@ -1084,17 +1084,7 @@ export const spellsData = {
           higherLevels:
             "When you cast this spell using a spell slot of 1st level or higher, you may select or stack one of the following effects for each slot level above 0: Increase spell range by 100 feet, Increase weight limit by 20 pounds, Increase the number of targetable objects by 5.",
         },
-        {
-          name: "Alohomora",
-          class: ["Crime Scene Analysis"],
-          level: "Cantrip",
-          castingTime: "Action",
-          range: "60 Feet",
-          duration: "Instantaneous",
-          year: 1,
-          description:
-            "Choose a door or window that you can see within range, that uses mundane or magical means to prevent access. A target that is held shut by a mundane lock or that is stuck or barred becomes unlocked, unstuck, or unbarred. If the object has multiple locks, only one of them is unlocked. If you choose a target that is held shut with Colloportus, that spell is removed. When you cast the spell, the mechanism noisily turns and unlocks. This noise emanates from the target object and is audible from as far away as 100 feet.",
-        },
+
         {
           name: "Cistem Aperio",
           class: ["Crime Scene Analysis"],

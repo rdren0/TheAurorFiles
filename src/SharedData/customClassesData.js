@@ -4500,7 +4500,7 @@ export const customClassesData = {
   obscurial: {
     id: "obscurial",
     name: "Obscurial",
-    type: "Hybrid",
+    type: "Barbarian",
     description:
       "Obscurials are witches and wizards whose repressed magic turns inward—volatile, devastating, and barely contained. They wield raw, wandless magic through emotion or endurance, walking the line between power and destruction.",
     hit_die: "d10",
