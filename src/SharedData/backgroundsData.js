@@ -1,347 +1,405 @@
 export const backgroundsData = {
-  Activist: {
-    name: "Activist",
+  Whistleblower: {
+    name: "Whistleblower",
     description:
-      "Raise your voice! You've never been one to accept injustices or fail to call out privilege, even at a young age. Your words cut through the hearts of your peers and help them to see your point of view. Just because society has maintained certain ideas as truth does not mean it's just. You've never been one to conform to things for the sake of ease.",
+      "You exposed rot inside a ministry office, guild, or megacorp and paid for it. You know how systems break—and where the bodies are filed.",
     preview:
-      "A voice for justice who challenges inequality and fights for what's right",
+      "An insider-turned-advocate who knows how institutions really work",
     skillProficiencies: ["Persuasion", "History of Magic"],
     features: [
       {
-        name: "Rally the Cause",
+        name: "Paper Trail",
         description:
-          "As an activist, you have a knack for rallying others to support your cause. You can use your persuasive abilities to inspire people and gather support for your goals. It is through your words and actions that you help convince them to take action, offer aid, or provide information that may assist your efforts.",
-      },
+          "You can quickly piece together chains of custody and approvals. When given a few names or documents, you infer who signed off, who benefits, and where to pull next."
+      }
     ],
     backgroundBonus:
-      "Ability to rally support and inspire others to action through persuasive communication",
+      "Advantage on checks to navigate bureaucracy, request records, or leverage policy loopholes",
     typicalEquipment:
-      "A set of artisan's tools, a sign or banner with a slogan related to your cause, an analog bullhorn",
+      "Encrypted notepad, burner wand-holster, folded ethics memo with incriminating annotations"
   },
 
-  Artist: {
-    name: "Artist",
+  "Forensic Artist": {
+    name: "Forensic Artist",
     description:
-      "You see yourself as an observer of the world around you, capturing little glimpses of that world. You express yourself through those glimpses, satisfying your need to create and communicating your own unique perspective. Your chosen medium might be magically developed moving photographs, a painted portrait with a personality, a bewitched sculpture or even enchanted cartography.",
+      "You turn memories and evidence into images: moving photographs, composite sketches, and reconstructed scenes.",
     preview:
-      "A creative observer who captures and expresses the world through art",
-    skillProficiencies: ["Insight", "Performance"],
+      "A crime-scene sketcher and photo specialist with a steady hand",
+    skillProficiencies: ["Investigation", "Insight"],
     features: [
       {
-        name: "Apprentice",
+        name: "Scene Reconstruction",
         description:
-          "Although you're not yet able to create original works, you have enough knowledge and rudimentary skills to begin an apprenticeship under a mentor, should you find one willing to teach you. Additionally, you've become practiced in hand-eye coordination and precise work.",
-      },
+          "Given partial evidence (blurry photo, witness description, scuffed floor), you produce an actionable sketch or moving plate highlighting likely positions and key details."
+      }
     ],
     backgroundBonus:
-      "Enhanced hand-eye coordination and ability to find artistic mentors",
+      "Advantage to recall visual details you've studied or sketched within the last month",
     typicalEquipment:
-      "The tools of the art medium of your choice (e.g. painter's supplies, musical instrument, costume, etc.), and a sketch pad with charcoal sticks",
+      "Camera or sketch kit, charmed darkroom folio, grease pencil, evidence envelopes"
   },
 
-  Bookworm: {
-    name: "Bookworm",
+  Archivist: {
+    name: "Archivist",
     description:
-      "You've always been known to have your nose in a book, whether obsessing over homework or escaping reality into a world of fiction. You often solve your problems through research and study. Because you absorb so much from others, you've learned things, traveled places, felt emotions, and seen wonders far beyond your own experiences.",
+      "Stacks, stacks, and more stacks. You lived in records rooms, morgues (the paper kind), and private collections.",
     preview:
-      "A dedicated scholar who finds answers and adventure through knowledge",
+      "A records hound who knows where knowledge is buried—literally",
     skillProficiencies: ["Magical Theory", "Investigation"],
     features: [
       {
-        name: "Teacher's Pet",
+        name: "Knowing Where To Look",
         description:
-          "Because you are a bright individual, teachers and those in positions of authority are more likely to interpret your actions and intentions favorably. You might be in a better position to enlist their help, or have plausible deniability based on your academic reputation.",
-      },
+          "When you search a library, archive, or newsroom morgue, you find useful leads in half the normal time and identify one unconventional source others would miss."
+      }
     ],
     backgroundBonus:
-      "Favorable treatment from teachers and authority figures due to academic reputation",
+      "Restricted reading access at most public institutions with an hour and a plausible pretext",
     typicalEquipment:
-      "Your favorite book, a book you're currently reading, and a small back-up quill",
+      "Archive card, index tabs, pocket catalog of coded references"
   },
 
-  Bully: {
-    name: "Bully",
+  Enforcer: {
+    name: "Enforcer",
     description:
-      "When you feel powerless, you hurt those weaker than you to regain some semblance of control. It might be a necessary coping mechanism, an assertive demeanor or an innately sadistic nature. You might even be very selective about your victims or only lash out in relatively harmless ways. Regardless, you're a bully and you thrive off of feeling superior.",
+      "Some problems answer to force. You've bounced in back-alley clubs, collected debts, and stood your ground when wands came out.",
     preview:
-      "Someone who uses power over others to cope with feelings of powerlessness",
-    skillProficiencies: ["Insight", "Intimidation"],
+      "A steady-handed intimidator who keeps doors shut and clients safe",
+    skillProficiencies: ["Intimidation", "Athletics"],
     features: [
       {
-        name: "Common Thug",
+        name: "Show of Force",
         description:
-          "Everyone who's heard of you has heard of your misdeeds, and they will know to come to you when they need someone to take care of their dirty work. The faint of heart will immediately fear you and try to escape your ire by letting you boss them around.",
-      },
+          "When you make a credible threat or physical demonstration, bystanders hesitate or clear the way, and low-level muscle thinks twice."
+      }
     ],
     backgroundBonus:
-      "Reputation for intimidation makes others fear you and seek your help for unsavory tasks",
+      "Advantage on checks to coerce street toughs or break up a brawl without lethal escalation",
     typicalEquipment:
-      "2 Detection proof dungbombs, 3 stink sap vials and a miniature spyglass",
+      "Sap or baton, reinforced coat, list of favors owed"
   },
 
-  Camper: {
-    name: "Camper",
+  Tracker: {
+    name: "Tracker",
     description:
-      "You've spent a large part of your life in the comfort of the great outdoors. Experiencing the wonders of the wilderness, you have an unnatural sense of calm in the middle of nowhere. With all of nature's tools at your disposal how can anyone be found wanting after stepping out of their door.",
+      "Cities, moors, or border wastes—you follow sign, read weather, and move quiet.",
     preview:
-      "An outdoor enthusiast with deep wilderness experience and survival skills",
+      "A patient hunter of people and things across any terrain",
     skillProficiencies: ["Survival", "Perception"],
     features: [
       {
-        name: "Outdoor Survival",
+        name: "Sign Reader",
         description:
-          "You are experienced in surviving and navigating the wilderness. The intricacies of travel and terrain are not lost on you. You can determine the general geographical direction and time of day with reasonable accuracy, even without tools or a map.",
-      },
+          "You determine direction, pace, and group size from minimal traces; in cities, you replace tracks with habits—routes, vendors, and patterns."
+      }
     ],
     backgroundBonus:
-      "Expert wilderness navigation and survival abilities even without tools",
+      "Not slowed by difficult terrain while tracking and can estimate how far ahead your quarry is",
     typicalEquipment:
-      "A sturdy backpack, a compass, and a map of the local area",
+      "Waxed cloak, compass, city map marked with bolt-holes"
   },
 
-  "Class Clown": {
-    name: "Class Clown",
+  Grifter: {
+    name: "Grifter",
     description:
-      "You are always the bright spot in any room you inhabit. You have an uncanny ability to sense the mood and immediately uplift everyone's spirits. 'How?' you ask. By making yourself the center of attention in the most absurd ways possible. Even the stoniest of faces can't help to crack a frustrated smile at your antics.",
+      "You get in by being who they expect to see. Badges, smiles, and the right paperwork.",
     preview:
-      "A natural entertainer who brightens any room with humor and absurd antics",
-    skillProficiencies: ["Performance", "Sleight of Hand"],
+      "A charming impostor who lives by the con and the cover",
+    skillProficiencies: ["Deception", "Persuasion"],
     features: [
       {
-        name: "Crowd Pleaser",
+        name: "Borrowed Authority",
         description:
-          "You are a natural entertainer and have a way with people. Whenever you perform in front of a group of people, you can captivate and charm them. You can entertain a crowd and gain their favor, making it easier to distract people, gather information, make friends, or negotiate with them.",
-      },
+          "With a minute of prep and a prop, you convincingly pass as minor staff or contracted help in most institutions for a short window."
+      }
     ],
     backgroundBonus:
-      "Natural ability to captivate crowds and use entertainment to influence others",
+      "Advantage to create plausible alibis or covers on the fly",
     typicalEquipment:
-      "A Magical Whoopee Cushion, a musical instrument of your choice, a goofy costume suitable for entertaining",
+      "Forged lanyard, reversible jacket, pocketful of believable tickets/receipts"
   },
 
-  Dreamer: {
-    name: "Dreamer",
+  Medium: {
+    name: "Medium",
     description:
-      "Your dreams fill your thoughts, distracted by all of life's possibilities. Introspection comes easily to you and frankly, you don't understand how a person can live without looking for meaning, thinking deeply about society's values, or being overcome with wonder. You might even feel out of place in a world of people focused on material success and just getting through the day.",
+      "The dead talk, if you listen. You don't romanticize it—you just pick up whispers others miss.",
     preview:
-      "A contemplative soul who seeks meaning and wonder in life's possibilities",
+      "A spirit-listener who reads omens and interviews the deceased",
     skillProficiencies: ["Insight", "Perception"],
     toolProficiencies: ["Astronomer's tools"],
     features: [
       {
-        name: "Stargazer",
+        name: "Cold Read",
         description:
-          "Many of your nights are spent staring up at space, contemplating existence. You're a natural at Astronomy and share the Centaurs' views on the importance of the heavens. Your affinity for the ethereal also leads ghosts to be more trusting of you and more forthcoming with information.",
-      },
+          "You sense recent strong emotions in a room or object and can ask a simple question of a nearby lingering spirit once per scene."
+      }
     ],
     backgroundBonus:
-      "Natural astronomy skills and enhanced ability to communicate with ghosts",
+      "Advantage on checks to communicate with ghosts or interpret omens",
     typicalEquipment:
-      "Astronomer's tools, and a mystical trinket you believe gives you protection (but doesn't)",
+      "Astronomer's tools, chalk circle kit, pocket talisman (sentimental, not magical)"
   },
 
-  Follower: {
-    name: "Follower",
+  "Grey Man": {
+    name: "Grey Man",
     description:
-      "Instead of building social status through the force of your own personality, you've found success by following someone who is more influential or popular than you are. You know how to stay useful to them and use their reputation to influence others. Whether you see yourself as a hero's sidekick or a bully's sycophant, you're happy to watch from the sidelines and be second best.",
+      "You excel at being unremarkable. People's eyes skid off you; cameras catch you mid-blink.",
     preview:
-      "A loyal supporter who gains influence through association with others",
+      "An inconspicuous shadow who passes anywhere without notice",
     skillProficiencies: ["Stealth", "Persuasion"],
     features: [
       {
         name: "Forgettable Face",
         description:
-          "If a person were to take you at face value, you'd come across as inconsequential and they would assume your unimportance. It's also unusually difficult to pick your face out from a crowd, making it easier for you to blend in and harder for someone to blame you in particular.",
-      },
+          "After brief contact, casual witnesses struggle to recall your details unless they beat your check; you blend seamlessly into queues and crowds."
+      }
     ],
     backgroundBonus:
-      "Exceptional ability to blend into crowds and avoid being singled out",
+      "Advantage to tail a mark in public without detection",
     typicalEquipment:
-      "A small keepsake from someone you admire, a notebook of observations, a self-correcting quill, and a pocket calendar",
+      "Neutral coat, cap, pocket calendar of shift changes"
   },
 
-  Groundskeeper: {
-    name: "Groundskeeper",
+  "Beast Wrangler": {
+    name: "Beast Wrangler",
     description:
-      "Your childhood has always been spent outdoors, climbing trees or capturing insects. You've always felt an intense connection to all forms of life around you, and that drives you to be considerate towards other beings. Going without fresh air leaves you feeling trapped, but some greenery and a ray of sunshine is all it takes to put you in a great mood.",
+      "You handle magical creatures for ports, customs, or private menageries. Claws, fangs, and contracts.",
     preview:
-      "A nature-loving caretaker with deep connections to all living beings",
-    skillProficiencies: ["Survival", "Magical Creatures"],
+      "A calm hand with creatures—and those who profit from them",
+    skillProficiencies: ["Magical Creatures", "Survival"],
     toolProficiencies: ["Herbologist's tools"],
     features: [
       {
         name: "Value All Life",
         description:
-          "You've earned a reputation for your compassionate demeanor. Magical beings and intelligent beasts are more likely to treat you favorably or grant you an audience. If they have any prejudices against wizardkind, you'll have the chance to prove yourself and become exempt from those prejudices.",
-      },
+          "Creatures and sentient beasts are less hostile to you by default; handlers will hear you out before reaching for shackles."
+      }
     ],
     backgroundBonus:
-      "Enhanced rapport with magical creatures and beasts due to compassionate nature",
-    typicalEquipment: "Herbologist's tools, and a compass",
+      "Advantage to calm or corral non-hostile beasts and read their stress cues",
+    typicalEquipment:
+      "Herbologist's tools, thick gloves, soothing salve, whistle with three coded calls"
   },
 
-  Investigator: {
-    name: "Investigator",
+  Detective: {
+    name: "Detective",
     description:
-      "Magnifying glass in hand, you've always had a knack for investigation and hijinks. Maybe you love the thrill of the mystery or maybe you've read one too many Nancy Drew books or watched an unhealthy amount of Scooby-Doo. Either way, your problem solving and deductive skills are second to none.",
+      "You connect the dots. Private eye, internal affairs, or Bureau—your methods get results.",
     preview:
-      "A keen detective with exceptional deductive and problem-solving abilities",
+      "A seasoned investigator with a nose for the missing piece",
     skillProficiencies: ["Investigation", "Insight"],
     features: [
       {
         name: "Investigator's Insight",
         description:
-          "You have a knack for picking up on subtle clues and making connections others might miss. You tend to pick up traces and faint hints in even the most squeaky clean environments. With a little elbow grease and a few more minutes you can start to put together a picture.",
-      },
+          "Given ten minutes at any scene, you identify one actionable lead others overlooked."
+      }
     ],
     backgroundBonus:
-      "Exceptional ability to detect subtle clues and make deductive connections",
+      "A small network of informants who trade minor tips for small favors",
     typicalEquipment:
-      "You start with a magnifying glass, a notebook and pen, and a deerstalker hat",
+      "Notebook and pen, magnifier, battered brimmed hat"
   },
 
-  Klutz: {
-    name: "Klutz",
+  "Hard-Luck": {
+    name: "Hard-Luck",
     description:
-      "Maybe you're an incredibly uncoordinated person, or perhaps you inherited a particularly petty curse. Whatever the cause, you continually find yourself in the middle of mishaps and blunders. Since being accident-prone is a very dangerous thing to be in the wizarding world, you tend to be hypervigilant and wary of your surroundings.",
+      "You learned the world's angles by hitting every one of them. You're resilient, resourceful, and a magnet for falling objects.",
     preview:
-      "An accident-prone individual who has developed keen awareness through necessity",
+      "A survivor whose misfortune taught caution and grit",
     skillProficiencies: ["Medicine", "Perception"],
     features: [
       {
         name: "Walking Disaster",
         description:
-          "You've seen so many situations go completely awry that you've started being able to predict all the ways things can go wrong. If you're looking to hinder something or bring about a dangerous accident, you'll have no shortage of ideas.",
-      },
-      {
-        name: "Punching Bag",
-        description:
-          "You may not be coordinated, but at least you've learned how to take a punch. You have resistance to damage dealt by falling, traps or inanimate objects. You also have disadvantage on saving throws made to avoid or resist traps, any rolls made to detect traps and Dexterity (Acrobatics) checks.",
-      },
+          "You anticipate preventable hazards and improvise stopgaps to keep operations from snowballing into calamity."
+      }
     ],
     backgroundBonus:
-      "Ability to predict disasters and resistance to physical mishaps, but increased vulnerability to traps",
-    typicalEquipment: "A lucky charm, and a package of plasters",
+      "Resistance to incidental damage from falls, debris, and mundane traps",
+    typicalEquipment:
+      "Roll of plasters, lucky charm, pocket toolkit"
   },
 
-  Loser: {
-    name: "Loser",
+  Scapegoat: {
+    name: "Scapegoat",
     description:
-      "You've spent your life at the bottom of the social ladder, blending into the shadows while others basked in the spotlight. Whether it's because of a humiliating incident, a series of unfortunate blunders, or simply bad luck, you've earned a reputation as a target for ridicule. At Hogwarts, the hallways seem longer when you're dodging jinxes from classmates, and the Great Hall feels colder when laughter erupts at your expense. Yet, despite it all, you've survived, and survival has taught you resilience, wit, and an uncanny ability to observe the things others overlook.",
+      "You've been the butt of jokes, the name on the blame line, and you're still here—watching, learning.",
     preview:
-      "A resilient survivor who has learned to observe and endure through hardship",
+      "An overlooked survivor who notices what others ignore",
     skillProficiencies: ["Insight", "Stealth"],
     features: [
       {
-        name: "Punching Bag",
+        name: "Fade and Endure",
         description:
-          "You may not be coordinated, but at least you've learned how to take a punch. You have resistance to damage dealt by falling, traps or inanimate objects. You also have disadvantage on saving throws made to avoid or resist traps, any rolls made to detect traps and Dexterity (Acrobatics) checks.",
-      },
+          "You keep your head down in a tense room; hostile attention slides to louder targets while you observe."
+      }
     ],
     backgroundBonus:
-      "Physical resilience from hardship but increased vulnerability to certain dangers",
+      "Advantage on checks to eavesdrop or go unnoticed in familiar workplaces",
     typicalEquipment:
-      "A shabby wand holster, a 'lucky' trinket from your childhood, a notebook filled with scribbles and observations",
+      "Shabby wand holster, scuffed notebook packed with observations"
   },
 
-  Potioneer: {
-    name: "Potioneer",
+  "Forensic Alchemist": {
+    name: "Forensic Alchemist",
     description:
-      "More than once, you've been accused of perfectionism, but your attention to detail allows you to succeed where others fail. This trait shines when you turn your focus to brewing potions. You approach situations with drive and vigor, and live with strong conviction in your values and principles.",
+      "You brew answers—reagents, traces, residues, timelines. Your bench tells stories.",
     preview:
-      "A perfectionist artisan who excels at potion-making through meticulous attention to detail",
+      "A meticulous potion-maker who reads evidence at a glance",
     skillProficiencies: ["Herbology", "Potion-making"],
     toolProficiencies: ["Potioneer's kit"],
     features: [
       {
-        name: "Regular Customer",
+        name: "Chain of Evidence",
         description:
-          "You're a familiar face to any prominent wizarding apothecary, and as a frequent customer, you get access to new and unusual inventory that potion supplies stores may not want to open up to the public. You've also picked up one common and one uncommon potion recipe of your choice.",
-      },
+          "You gain quick access at reputable apothecaries and labs and can identify one common and one uncommon reagent or brew by trace alone."
+      }
     ],
     backgroundBonus:
-      "Access to rare potion ingredients and knowledge of additional potion recipes",
+      "Advantage on checks to analyze substances, toxins, or potion residues",
     typicalEquipment:
-      "A potioneer's kit, and a muggle notebook with a ballpoint pen",
+      "Potioneer's kit, labeled vials, muggle notebook with ballpoint pen"
   },
 
-  Protector: {
-    name: "Protector",
+  Bodyguard: {
+    name: "Bodyguard",
     description:
-      "You have a strong sense of justice and do everything you can to stand up for victims, likely because of an instinctive empathy or your own history of being victimized. Seeing a narcissist take advantage of someone else makes you feel sick. You've made sure you're physically capable of stopping the people you care about from being hurt, so you make an excellent ally to the downtrodden.",
+      "You take hits meant for others and shepherd them through red zones.",
     preview:
-      "A guardian who stands up for the vulnerable and fights against injustice",
+      "A protector who plans routes, reads threats, and stands fast",
     skillProficiencies: ["Athletics", "Intimidation"],
     features: [
       {
-        name: "People's Champ",
+        name: "People's Shield",
         description:
-          "The way you carry yourself makes people comfortable and confident that you can help them when they're feeling harassed or imperiled. As long as you live up to your reputation, your noble deeds can make you a shoo-in for prefect, team captain or other small positions of authority.",
-      },
+          "When defending a client, you can secure a path to safety or hold a doorway long enough for noncombatants to clear out."
+      }
     ],
     backgroundBonus:
-      "Natural leadership qualities and reputation that opens doors to positions of authority",
-    typicalEquipment: "A Beater's bat, and a picture of a loved one",
+      "Advantage on checks to detect ambush setups and pick safe seating/egress",
+    typicalEquipment:
+      "Earpiece charm, reinforced coat, photo of the principal with routes scribbled on back"
   },
 
-  "Quidditch Fan": {
-    name: "Quidditch Fan",
+  "Broom Courier": {
+    name: "Broom Courier",
     description:
-      "Whether your fondest childhood memories were at your local team's matches or you just discovered the sport upon arriving at Hogwarts, you love quidditch. It makes complete sense, given your competitive streak and affinity for rough-housing. You use your common sense and ability to take initiative to get by.",
+      "You flew the night lanes with parcels and secrets. Speed, routes, and timing are your gospel.",
     preview:
-      "An enthusiastic sports fan with competitive spirit and athletic knowledge",
+      "A daring pilot who knows the skyways and who uses them",
     skillProficiencies: ["Acrobatics", "Athletics"],
     toolProficiencies: ["Broomstick"],
     features: [
       {
-        name: "Superfan",
+        name: "Sky Network",
         description:
-          "It seems like you can only think about broomsticks and quaffles. You're always on top of recent matches, the latest brooms, and quidditch tactics. Also, you can easily strike up conversation and build rapport with a fellow enthusiast.",
-      },
+          "You know the rooftops, owl posts, and weather windows; you can find a rooftop landing or sympathetic waystation in most districts."
+      }
     ],
     backgroundBonus:
-      "Encyclopedic knowledge of Quidditch and ability to connect with other sports enthusiasts",
+      "Advantage on aerial navigation and courier contacts for rumors about shipments",
     typicalEquipment:
-      "A quaffle, and a chocolate frog card of your favorite quidditch player",
+      "Tuned broom, courier satchel, brass wind gauge"
   },
 
   Socialite: {
     name: "Socialite",
     description:
-      "You seem to make friends wherever you go. It might be your forceful personality or the delicious gossip, but no matter what it is, people are drawn to you. You enjoy being the center of attention and feel invigorated by lively crowds, but you might get carried away with impressing your admirers.",
+      "You move where the champagne flows and secrets change hands. Parties are your office.",
     preview:
-      "A charismatic social butterfly who thrives in crowds and collects connections",
+      "A connector with a velvet smile and a razor memory",
     skillProficiencies: ["Deception", "Persuasion"],
     features: [
       {
         name: "Rumor-Monger",
         description:
-          "Your skill at making connections has earned you inroads with people in the know. When you attempt to uncover a particularly juicy secret or a dangerous rumor, your sources may be able to help you or point you in the right direction.",
-      },
+          "You can surface one pertinent rumor per scene from your network—accurate, but framed by the source's bias."
+      }
     ],
     backgroundBonus:
-      "Extensive social network that provides access to rumors and secrets",
+      "Advantage on checks to gain invitations or extract gossip at social events",
     typicalEquipment:
-      "A ring with a family crest or another type of heirloom jewelry, and a peacock feather quill",
+      "Heirloom ring, peacock feather quill, engraved calling cards"
   },
 
-  Troublemaker: {
-    name: "Troublemaker",
+  Burglar: {
+    name: "Burglar",
     description:
-      "Whether you consider yourself a purveyor of pranks or simply a curious soul, trouble tends to follow you wherever you go. As a result, you've learned to be a little more careful and avoid the obvious pitfalls of rule-breaking. That's very useful, as there's no shortage of messes you get yourself into.",
+      "Locks are just puzzles with worse attitudes. You specialize in quiet entries and quieter exits.",
     preview:
-      "A mischievous spirit who has learned cunning through countless misadventures",
+      "A stealth specialist for break-ins, lifts, and sabotage",
     skillProficiencies: ["Sleight of Hand", "Stealth"],
     features: [
       {
-        name: "Creative Thinker",
+        name: "Creative Entry",
         description:
-          "Having found yourself in some predicaments, you're quick to look for a way out; 'work smart, not hard' is your motto. Your invented alibis always sound half-reasonable to others, and you're good at finding figurative and literal shortcuts. Also, rule-breakers are more willing to share their secrets with you.",
-      },
+          "You can find or improvise an unconventional access route—service corridors, rooflines, dumbwaiters—given a few minutes of scouting."
+      }
     ],
     backgroundBonus:
-      "Exceptional ability to find shortcuts, create believable alibis, and connect with other rule-breakers",
+      "Advantage to bypass simple locks and mundane security without leaving obvious traces",
     typicalEquipment:
-      "A fake hall pass, and a small pack of Exploding Whizz Poppers",
+      "Thieves' tools, glass cutter, soft-soled shoes"
   },
+
+  "Occult Antiquarian": {
+    name: "Occult Antiquarian",
+    description:
+      "You traffic in old grimoires, cursed heirlooms, and provenance.",
+    preview:
+      "A scholar-dealer who knows which relics bite back",
+    skillProficiencies: ["History of Magic", "Magical Theory"],
+    features: [
+      {
+        name: "Provenance Check",
+        description:
+          "With a short inspection, you identify likely origin, school, and hazards of an artifact—and who might pay for it."
+      }
+    ],
+    backgroundBonus:
+      "Advantage on checks to appraise or negotiate over magical antiques",
+    typicalEquipment:
+      "Loop, ledger of clients, warded specimen wrap"
+  },
+
+  "Street Medico": {
+    name: "Street Medico",
+    description:
+      "Alleys and safehouses are your clinic. You patch people up—quietly.",
+    preview:
+      "A back-alley healer with steady hands and sealed lips",
+    skillProficiencies: ["Medicine", "Insight"],
+    features: [
+      {
+        name: "No Questions Asked",
+        description:
+          "You can secure a discreet treatment space and basic supplies almost anywhere and calm panicked patients quickly."
+      }
+    ],
+    backgroundBonus:
+      "Advantage on checks to stabilize allies and identify recent injuries' cause",
+    typicalEquipment:
+      "Field kit, antiseptic charm, stained apron"
+  },
+
+  Reporter: {
+    name: "Reporter",
+    description:
+      "You chase stories through rain, threats, and lockouts. You don't spook easy.",
+    preview:
+      "A relentless journalist who trades favors for truths",
+    skillProficiencies: ["Persuasion", "Investigation"],
+    features: [
+      {
+        name: "Press Pass (Kinda)",
+        description:
+          "Flash a badge (or a convincing replica) to gain brief access or stall officials. You also maintain one editor or fixer contact for on-the-record leverage."
+      }
+    ],
+    backgroundBonus:
+      "Advantage on checks to interview reluctant sources or sift rumors for what's actionable",
+    typicalEquipment:
+      "Press card, pocket recorder quill, list of burner tip lines"
+  }
 };

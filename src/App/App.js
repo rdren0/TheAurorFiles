@@ -27,7 +27,7 @@ import { createAppStyles } from "../styles/masterStyles";
 import PotionBrewingSystem from "../Components/Potions/Potions";
 import Inventory from "../Components/Inventory/Inventory";
 import CharacterManager from "../Components/CharacterManager/CharacterManager";
-import logo from "./../Images/logo/Thumbnail-01.png";
+import logo from "./../Images/logo/TheAurorFilesLogo.png";
 import BetaBanner from "./BetaBanner";
 import { AdminProvider, useAdmin } from "../contexts/AdminContext";
 import AdminDashboard from "../Admin/AdminDashboard";
@@ -220,7 +220,7 @@ const AuthComponent = ({
             style={{
               ...styles.themeButton,
               backgroundColor: adminMode ? "#ffd700" : theme.surface,
-              color: adminMode ? theme.secondary : theme.primary,
+              color: adminMode ? theme.secondary : theme.text,
               border: adminMode
                 ? "2px solid #ffaa00"
                 : `1px solid ${theme.border}`,
@@ -266,7 +266,7 @@ const AuthComponent = ({
           style={styles.themeButton}
           title="Theme Settings"
         >
-          <Palette size={16} color={theme.primary} />
+          <Palette size={16} color={theme.text} />
         </button>
 
         <div style={styles.userInfo}>
@@ -320,7 +320,7 @@ const AuthComponent = ({
         style={styles.themeButton}
         title="Theme Settings"
       >
-        <Palette size={16} color={theme.primary} />
+        <Palette size={16} color={theme.text} />
       </button>
 
       <button
@@ -420,7 +420,7 @@ const Navigation = ({ characters }) => {
           src={logo}
           alt="The Auror Files Logo"
           style={{
-            height: "60px",
+            height: "90px",
             width: "auto",
             transition: "opacity 0.2s ease",
             marginRight: "16px",
@@ -464,7 +464,7 @@ const Navigation = ({ characters }) => {
                 ...(isAdminTab && adminMode && isActive
                   ? {
                       backgroundColor: "#ffd700",
-                      color: theme.primary,
+                      color: theme.secondary,
                       fontWeight: "bold",
                     }
                   : isAdminTab && adminMode
@@ -667,18 +667,6 @@ const HomePage = ({ user, customUsername, hasCharacters }) => {
           </p>
         )}
 
-        <div style={styles.featureGrid}>
-          <a
-            href={RULE_BOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <div style={styles.featureCard}>
-              <h3>View Rulebook</h3>
-            </div>
-          </a>
-        </div>
 
         {hasCharacters && (
           <div style={styles.featureGrid}>
@@ -1507,18 +1495,6 @@ function AppContent() {
         }}
       >
         <div>
-          <a
-            href={RULE_BOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: "none",
-              color: theme.primary,
-              fontWeight: "700",
-            }}
-          >
-            <h3>View Rulebook</h3>
-          </a>
           © {new Date().getFullYear()} <strong>The Auror Files</strong>
         </div>
       </footer>

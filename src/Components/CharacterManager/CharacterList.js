@@ -56,28 +56,20 @@ const CharacterList = ({
     });
 
     const grouped = {
-      haunting: [],
-      knights: [],
-      other: [],
+      liminalBreach: [],
       development: [],
     };
 
     Object.entries(sessionCounts).forEach(([session, count]) => {
       const sessionData = { session, count };
-      if (gameSessionGroups.haunting.includes(session)) {
-        grouped.haunting.push(sessionData);
-      } else if (gameSessionGroups.knights.includes(session)) {
-        grouped.knights.push(sessionData);
+      if (gameSessionGroups.liminalBreach.includes(session)) {
+        grouped.liminalBreach.push(sessionData);
       } else if (gameSessionGroups.development.includes(session)) {
         grouped.development.push(sessionData);
-      } else {
-        grouped.other.push(sessionData);
       }
     });
 
-    grouped.haunting.sort((a, b) => a.session.localeCompare(b.session));
-    grouped.knights.sort((a, b) => a.session.localeCompare(b.session));
-    grouped.other.sort((a, b) => a.session.localeCompare(b.session));
+    grouped.liminalBreach.sort((a, b) => a.session.localeCompare(b.session));
     grouped.development.sort((a, b) => a.session.localeCompare(b.session));
 
     return grouped;
@@ -166,9 +158,7 @@ const CharacterList = ({
   useEffect(() => {
     if (filterValue) {
       const allSessions = [
-        ...availableGameSessions.haunting,
-        ...availableGameSessions.knights,
-        ...availableGameSessions.other,
+        ...availableGameSessions.liminalBreach,
         ...availableGameSessions.development,
       ];
       if (!allSessions.some(({ session }) => session === filterValue)) {
@@ -527,9 +517,7 @@ const CharacterList = ({
               minWidth: "250px",
             }}
             disabled={
-              availableGameSessions.haunting.length === 0 &&
-              availableGameSessions.knights.length === 0 &&
-              availableGameSessions.other.length === 0 &&
+              availableGameSessions.liminalBreach.length === 0 &&
               availableGameSessions.development.length === 0
             }
           >
@@ -538,9 +526,9 @@ const CharacterList = ({
               {savedCharacters.length > 0 && `(${savedCharacters.length})`}
             </option>
 
-            {availableGameSessions.haunting.length > 0 && (
-              <optgroup label="Haunting Sessions">
-                {availableGameSessions.haunting.map(({ session, count }) => (
+            {availableGameSessions.liminalBreach.length > 0 && (
+              <optgroup label="Active Case Files">
+                {availableGameSessions.liminalBreach.map(({ session, count }) => (
                   <option key={session} value={session}>
                     {session} ({count})
                   </option>
@@ -548,40 +536,7 @@ const CharacterList = ({
               </optgroup>
             )}
 
-            {availableGameSessions.haunting.length > 0 &&
-              (availableGameSessions.knights.length > 0 ||
-                availableGameSessions.other.length > 0 ||
-                availableGameSessions.development.length > 0) && (
-                <option disabled>──────────</option>
-              )}
-
-            {availableGameSessions.knights.length > 0 && (
-              <optgroup label="Knights Sessions">
-                {availableGameSessions.knights.map(({ session, count }) => (
-                  <option key={session} value={session}>
-                    {session} ({count})
-                  </option>
-                ))}
-              </optgroup>
-            )}
-
-            {availableGameSessions.knights.length > 0 &&
-              (availableGameSessions.other.length > 0 ||
-                availableGameSessions.development.length > 0) && (
-                <option disabled>──────────</option>
-              )}
-
-            {availableGameSessions.other.length > 0 && (
-              <optgroup label="Other Sessions">
-                {availableGameSessions.other.map(({ session, count }) => (
-                  <option key={session} value={session}>
-                    {session} ({count})
-                  </option>
-                ))}
-              </optgroup>
-            )}
-
-            {availableGameSessions.other.length > 0 &&
+            {availableGameSessions.liminalBreach.length > 0 &&
               availableGameSessions.development.length > 0 && (
                 <option disabled>──────────</option>
               )}
@@ -593,9 +548,7 @@ const CharacterList = ({
                 </option>
               ))}
 
-            {availableGameSessions.haunting.length === 0 &&
-              availableGameSessions.knights.length === 0 &&
-              availableGameSessions.other.length === 0 &&
+            {availableGameSessions.liminalBreach.length === 0 &&
               availableGameSessions.development.length === 0 && (
                 <option value="" disabled>
                   No sessions available

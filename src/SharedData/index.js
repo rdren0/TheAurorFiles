@@ -2,6 +2,8 @@ export { backgroundsData } from "./backgroundsData.js";
 
 export { ALL_CHARACTERS as charactersData } from "./charactersData.js";
 
+export { customClassesData } from "./customClassesData.js";
+
 export * from "./data.js";
 
 export { downtime as downtimeActivities } from "./downtime.js";

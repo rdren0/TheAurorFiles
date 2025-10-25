@@ -134,10 +134,9 @@ const MagicModifiersSection = ({ character, onChange, disabled = false }) => {
           paddingRight: "4px",
         }}
       >
-        <h3 style={customStyles.header}>Magic Subject Modifiers</h3>
+        <h3 style={customStyles.header}>Spellcasting Proficiency Bonuses</h3>
         <div style={customStyles.helpText}>
-          Enter your wand's bonuses/penalties for each subject of magic (The DM
-          will provide these values)
+          Apply bonuses to your spell attack rolls and save DCs for specific schools of magic based on your wand's specializations (The DM will provide these buff values)
         </div>
 
         <div style={customStyles.magicModifiersGrid}>

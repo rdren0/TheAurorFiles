@@ -300,7 +300,7 @@ const GameSessionInspirationManager = ({ supabase }) => {
           ],
           timestamp: new Date().toISOString(),
           footer: {
-            text: "Witches and Snitches - Admin Action",
+            text: "The Auror Files - Admin Action",
           },
         };
 
@@ -466,9 +466,7 @@ const GameSessionInspirationManager = ({ supabase }) => {
           }
 
           const allSessionsOrdered = [
-            ...gameSessionGroups.haunting,
-            ...gameSessionGroups.knights,
-            ...gameSessionGroups.other,
+            ...gameSessionGroups.liminalBreach,
             ...gameSessionGroups.development,
           ];
 
@@ -566,7 +564,7 @@ const GameSessionInspirationManager = ({ supabase }) => {
           ],
           timestamp: new Date().toISOString(),
           footer: {
-            text: "Witches and Snitches - Admin Action",
+            text: "The Auror Files - Admin Action",
           },
         };
 
@@ -668,28 +666,8 @@ const GameSessionInspirationManager = ({ supabase }) => {
           >
             <option value="all">All Sessions</option>
 
-            <optgroup label="Haunting Sessions">
-              {gameSessionGroups.haunting.map((session) => (
-                <option key={session} value={session}>
-                  {session}
-                </option>
-              ))}
-            </optgroup>
-
-            <option disabled>──────────</option>
-
-            <optgroup label="Knights Sessions">
-              {gameSessionGroups.knights.map((session) => (
-                <option key={session} value={session}>
-                  {session}
-                </option>
-              ))}
-            </optgroup>
-
-            <option disabled>──────────</option>
-
-            <optgroup label="Other Sessions">
-              {gameSessionGroups.other.map((session) => (
+            <optgroup label="Active Case Files">
+              {gameSessionGroups.liminalBreach.map((session) => (
                 <option key={session} value={session}>
                   {session}
                 </option>
@@ -781,7 +759,9 @@ const GameSessionInspirationManager = ({ supabase }) => {
                             </div>
                           </div>
                           <div style={styles.characterDetails}>
-                            <h3 style={styles.characterName}>{character.name}</h3>
+                            <h3 style={styles.characterName}>
+                              {character.name}
+                            </h3>
                           </div>
                         </div>
                         <span style={styles.characterLevel}>

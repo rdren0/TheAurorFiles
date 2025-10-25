@@ -51,7 +51,10 @@ export const useCharacterData = (
       }
 
       if (loadedCharacter) {
+        console.log("📥 loadCharacter - DB response:", JSON.stringify(loadedCharacter, null, 2));
+
         const transformedCharacter = transformCharacterFromDB(loadedCharacter);
+        console.log("📥 loadCharacter - after transform:", JSON.stringify(transformedCharacter, null, 2));
 
         if (loadedCharacter.base_ability_scores) {
           transformedCharacter.abilityScores =
@@ -64,6 +67,8 @@ export const useCharacterData = (
         };
 
         finalCharacter._originalHitPoints = loadedCharacter.hit_points;
+
+        console.log("📥 loadCharacter - final character state:", JSON.stringify(finalCharacter, null, 2));
 
         setCharacter(finalCharacter);
         setOriginalCharacter(finalCharacter);
@@ -113,6 +118,10 @@ export const useCharacterData = (
   }, [originalCharacter]);
 
   const saveCharacter = useCallback(async () => {
+    console.log("=== SAVE CHARACTER START ===");
+    console.log("1. Current Form State:", JSON.stringify(character, null, 2));
+    console.log("1a. Class field specifically:", character.class);
+
     let effectiveUserId;
 
     if (adminMode && isUserAdmin) {
@@ -168,9 +177,13 @@ export const useCharacterData = (
       characterToSave.base_ability_scores = baseScores;
       characterToSave.ability_modifiers = modifiers;
 
+      console.log("2. Request Payload (after transform):", JSON.stringify(characterToSave, null, 2));
+      console.log("2a. Class field in payload:", characterToSave.class);
+
       let result;
 
       if (character.id) {
+        console.log("Updating existing character with ID:", character.id);
         if (adminMode && isUserAdmin) {
           result = await characterService.updateCharacterAsAdmin(
             character.id,
@@ -184,32 +197,41 @@ export const useCharacterData = (
           );
         }
       } else {
+        console.log("Creating new character");
         result = await characterService.saveCharacter(
           characterToSave,
           effectiveUserId
         );
       }
 
+      console.log("3. Response Payload from DB:", JSON.stringify(result, null, 2));
+
       if (result) {
         const transformedResult = transformCharacterFromDB(result);
+        console.log("4. Response after transformCharacterFromDB:", JSON.stringify(transformedResult, null, 2));
 
         if (result.base_ability_scores) {
           transformedResult.abilityScores = result.base_ability_scores;
         }
 
+        // Start with defaults, then apply DB response - this ensures clean state
         const savedCharacter = {
-          ...character,
+          ...DEFAULT_CHARACTER,
           ...transformedResult,
         };
 
         savedCharacter._originalHitPoints = result.hit_points;
 
+        console.log("5. Final saved character state (should match DB):", JSON.stringify(savedCharacter, null, 2));
+
         setCharacter(savedCharacter);
         setOriginalCharacter(savedCharacter);
 
+        console.log("=== SAVE CHARACTER SUCCESS ===");
         return result;
       }
     } catch (err) {
+      console.error("=== SAVE CHARACTER ERROR ===");
       console.error("Error saving character:", err);
       setError(err.message);
       throw err;

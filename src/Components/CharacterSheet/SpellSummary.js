@@ -33,11 +33,11 @@ const SpellSummary = ({
   const [runicTags, setRunicTags] = useState({});
   const [isExpanded, setIsExpanded] = useState(() => {
     try {
-      const saved = localStorage.getItem("spellSummaryExpanded");
+      const saved = localStorage.getItem("aurorfiles-spellSummaryExpanded");
       return saved !== null ? JSON.parse(saved) : false;
     } catch (error) {
       console.error(
-        "Error reading spellSummaryExpanded from localStorage:",
+        "Error reading aurorfiles-spellSummaryExpanded from localStorage:",
         error
       );
       return false;
@@ -48,11 +48,11 @@ const SpellSummary = ({
   const [selectedSpellLevels, setSelectedSpellLevels] = useState({});
   const [showCanAttempt, setShowCanAttempt] = useState(() => {
     try {
-      const saved = localStorage.getItem("spellSummaryShowCanAttempt");
+      const saved = localStorage.getItem("aurorfiles-spellSummaryShowCanAttempt");
       return saved !== null ? JSON.parse(saved) : false;
     } catch (error) {
       console.error(
-        "Error reading spellSummaryShowCanAttempt from localStorage:",
+        "Error reading aurorfiles-spellSummaryShowCanAttempt from localStorage:",
         error
       );
       return false;
@@ -62,10 +62,10 @@ const SpellSummary = ({
 
   useEffect(() => {
     try {
-      localStorage.setItem("spellSummaryExpanded", JSON.stringify(isExpanded));
+      localStorage.setItem("aurorfiles-spellSummaryExpanded", JSON.stringify(isExpanded));
     } catch (error) {
       console.error(
-        "Error saving spellSummaryExpanded to localStorage:",
+        "Error saving aurorfiles-spellSummaryExpanded to localStorage:",
         error
       );
     }
@@ -74,12 +74,12 @@ const SpellSummary = ({
   useEffect(() => {
     try {
       localStorage.setItem(
-        "spellSummaryShowCanAttempt",
+        "aurorfiles-spellSummaryShowCanAttempt",
         JSON.stringify(showCanAttempt)
       );
     } catch (error) {
       console.error(
-        "Error saving spellSummaryShowCanAttempt to localStorage:",
+        "Error saving aurorfiles-spellSummaryShowCanAttempt to localStorage:",
         error
       );
     }

@@ -2,7 +2,14 @@ import { useState, useCallback } from "react";
 import { FORM_SECTIONS } from "../constants/formSections";
 
 export const useFormSections = () => {
-  const [expandedSections, setExpandedSections] = useState({});
+  // Initialize all sections as expanded by default
+  const [expandedSections, setExpandedSections] = useState(() => {
+    const initialState = {};
+    FORM_SECTIONS.forEach(section => {
+      initialState[`section-${section.id}`] = true;
+    });
+    return initialState;
+  });
 
   const toggleSectionExpansion = useCallback((sectionId) => {
     setExpandedSections((prev) => ({

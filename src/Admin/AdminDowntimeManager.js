@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { Trash2, FileText, Clock, CheckCircle, XCircle } from "lucide-react";
 import AdminDowntimeReviewForm from "./AdminDowntimeReviewForm";
-import { gameSessionGroups } from "../App/const";
 
 const AdminDowntimeManager = ({ supabase }) => {
   const { theme } = useTheme();
@@ -591,52 +590,7 @@ const AdminDowntimeManager = ({ supabase }) => {
 
       <div style={styles.filtersContainer}>
         <div style={styles.filtersGrid}>
-          <div style={styles.filterGroup}>
-            <label style={styles.label}>Game Session</label>
-            <select
-              style={styles.select}
-              value={selectedGameSession}
-              onChange={(e) => setSelectedGameSession(e.target.value)}
-            >
-              <option value="">All Sessions</option>
-
-              <optgroup label="Haunting Sessions">
-                {gameSessionGroups.haunting.map((session) => (
-                  <option key={session} value={session}>
-                    {session}
-                  </option>
-                ))}
-              </optgroup>
-
-              <option disabled>──────────</option>
-
-              <optgroup label="Knights Sessions">
-                {gameSessionGroups.knights.map((session) => (
-                  <option key={session} value={session}>
-                    {session}
-                  </option>
-                ))}
-              </optgroup>
-
-              <option disabled>──────────</option>
-
-              <optgroup label="Other Sessions">
-                {gameSessionGroups.other.map((session) => (
-                  <option key={session} value={session}>
-                    {session}
-                  </option>
-                ))}
-              </optgroup>
-
-              <option disabled>──────────</option>
-
-              {gameSessionGroups.development.map((session) => (
-                <option key={session} value={session}>
-                  {session}
-                </option>
-              ))}
-            </select>
-          </div>
+          {/* Game Session selector hidden - single case file only */}
 
           <div style={styles.filterGroup}>
             <label style={styles.label}>Year</label>

@@ -172,12 +172,6 @@ const HeritageChoiceSelector = ({
                 </div>
               );
             })}
-
-            {!currentChoice && !feature.isMultiSelect && (
-              <div style={styles.choiceRequired}>
-                ⚠️ Please select an option for {feature.name}
-              </div>
-            )}
           </div>
         );
       })}
@@ -198,11 +192,7 @@ const InnateHeritageSection = ({
   const styles = createBackgroundStyles(theme);
   const [expandedHeritages, setExpandedHeritages] = useState(new Set());
   const [heritageFilter, setHeritageFilter] = useState("");
-  const [showWarning, setShowWarning] = useState(false);
-  const [pendingHeritage, setPendingHeritage] = useState("");
 
-  const isHigherLevel = character.level > 1;
-  const shouldShowLevelWarning = isHigherLevel && isEditing;
   const hasSelectedHeritage = character.innateHeritage ? 1 : 0;
 
   const enhancedStyles = {
@@ -418,12 +408,6 @@ const InnateHeritageSection = ({
     const newValue =
       character.innateHeritage === heritageName ? "" : heritageName;
 
-    if (shouldShowLevelWarning && newValue !== character.innateHeritage) {
-      setPendingHeritage(newValue);
-      setShowWarning(true);
-      return;
-    }
-
     const updatedCharacter = applyHeritageProficiencies(
       character,
       newValue,
@@ -473,27 +457,6 @@ const InnateHeritageSection = ({
     );
   };
 
-  const confirmChange = () => {
-    const updatedCharacter = applyHeritageProficiencies(
-      character,
-      pendingHeritage,
-      heritageChoices
-    );
-
-    handleInputChange("innateHeritage", updatedCharacter.innateHeritage);
-    handleInputChange(
-      "skillProficiencies",
-      updatedCharacter.skillProficiencies
-    );
-    handleInputChange(
-      "innateHeritageSkills",
-      updatedCharacter.innateHeritageSkills
-    );
-
-    setShowWarning(false);
-    setPendingHeritage("");
-  };
-
   const getRequiredChoices = (heritageData) => {
     if (!heritageData?.features) {
       return { total: 0, missing: [], isComplete: true };
@@ -535,46 +498,6 @@ const InnateHeritageSection = ({
           paddingRight: "4px",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            marginBottom: "8px",
-          }}
-        >
-          <h3 style={enhancedStyles.skillsHeader}>
-            Innate Heritage ({hasSelectedHeritage}/1 selected)
-            {character.innateHeritage && !choiceStatus.isComplete && (
-              <span
-                style={{
-                  color: theme.warning,
-                  fontSize: "14px",
-                  marginLeft: "8px",
-                }}
-              >
-                - {choiceStatus.missing.length} Choice
-                {choiceStatus.missing.length > 1 ? "s" : ""} Required
-              </span>
-            )}
-          </h3>
-          {shouldShowLevelWarning && (
-            <div style={enhancedStyles.warningBadge}>
-              ⚠️ Editing Level {character.level} Character
-            </div>
-          )}
-        </div>
-
-        {shouldShowLevelWarning && (
-          <div style={enhancedStyles.levelRestrictionWarning}>
-            <strong>⚠️ Editing Existing Character:</strong> You are modifying
-            the Innate Heritage of an existing Level {character.level}{" "}
-            character. Heritage is typically established during character
-            creation. This change may require DM approval and could affect
-            character balance.
-          </div>
-        )}
-
         <div style={enhancedStyles.featFilterContainer}>
           <input
             type="text"
@@ -596,51 +519,6 @@ const InnateHeritageSection = ({
             </button>
           )}
         </div>
-
-        {showWarning && (
-          <div style={enhancedStyles.modalOverlay}>
-            <div style={enhancedStyles.modalContent}>
-              <h3 style={{ color: theme.warning, marginBottom: "16px" }}>
-                ⚠️ Confirm Heritage Change
-              </h3>
-              <p style={{ marginBottom: "16px", lineHeight: "1.4" }}>
-                You are changing the Innate Heritage of a Level{" "}
-                {character.level} character. This change will affect:
-              </p>
-              <ul style={{ marginBottom: "16px", paddingLeft: "20px" }}>
-                <li>Character abilities and features</li>
-                <li>Skill proficiencies</li>
-                <li>Overall character balance</li>
-              </ul>
-              <p style={{ marginBottom: "20px", fontWeight: "600" }}>
-                This change may require DM approval. Continue?
-              </p>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "12px",
-                  justifyContent: "flex-end",
-                }}
-              >
-                <button
-                  onClick={() => {
-                    setShowWarning(false);
-                    setPendingHeritage("");
-                  }}
-                  style={enhancedStyles.cancelButton}
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmChange}
-                  style={enhancedStyles.confirmButton}
-                >
-                  Confirm Change
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         <div style={enhancedStyles.availableElementsContainer}>
           {filteredHeritages.map((heritage) => {
@@ -833,8 +711,8 @@ const InnateHeritageSection = ({
 
         <div style={enhancedStyles.helpText}>
           {character.innateHeritage
-            ? "Your Innate Heritage provides unique magical abilities and characteristics that are part of your character's core nature."
-            : "Choose an Innate Heritage that represents your character's magical lineage and inherent abilities."}
+            ? "Your selected heritage provides unique magical abilities and characteristics. You can change this at any time."
+            : "Choose a heritage that represents your character's species and inherent abilities. This is optional - you may leave it blank if desired."}
         </div>
       </div>
     </div>
