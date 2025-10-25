@@ -113,17 +113,18 @@ export const SPELL_ACCESS = {
     description: "Spell creation and modification specialist",
   },
 
-  // NATURALIST - Nature and creature magic
+  // NATURALIST - Dangerous flora, fauna, and magical creatures
   naturalist: {
     categories: [
       ...UNIVERSAL_CATEGORIES,
-      "Magizoo",
-      "Healing",
-      "Divinations",
-      "Elemental",
-      "Transfigurations",
+      "Magizoo", // Dangerous creatures
+      "Healing", // Venoms, antidotes, biological knowledge
+      "Divinations", // Tracking, identifying creature signs
+      "Elemental", // Natural forces
+      "Grim", // Toxic plants, death, decay
+      "Transfigurations", // Biological transfigurations
     ],
-    description: "Nature and creature magic specialist",
+    description: "Dangerous magical creatures and plants specialist - the noir magizoologist",
   },
 
   // WORDSMITH - Language and communication magic
@@ -150,14 +151,15 @@ export const SPELL_ACCESS = {
     description: "Tracking and wilderness combat specialist",
   },
 
-  // SCRAPPER - Street fighting and improvised magic
-  scrapper: {
+  // SPELLBRAWLER - Underground duelist with rune-based magic
+  spellbrawler: {
     categories: [
       ...UNIVERSAL_CATEGORIES,
       "Combat Operations",
-      "Jinxes, Hexes & Curses",
+      "Specialized Arsenal",
+      "Grim", // Dark fighting ring magic
     ],
-    description: "Street combat specialist - limited but practical magic",
+    description: "Rune-carved brawler - magic earned through violence, not study",
   },
 
   // OBSCURIAL - Unstable magic user (Barbarian equivalent)
@@ -170,6 +172,19 @@ export const SPELL_ACCESS = {
       "Elemental", // Raw destructive power
     ],
     description: "Unstable magic user with access to raw destructive power",
+  },
+
+  // URBAN SHAMAN - City druid, communes with urban ecosystems
+  urban_shaman: {
+    categories: [
+      ...UNIVERSAL_CATEGORIES,
+      "Elemental", // Pollution, electricity, fire, urban elements
+      "Magizoo", // Urban animals/vermin
+      "Healing", // Toxic knowledge, fungal medicine
+      "Divinations", // City sense, tracking
+      "Grim", // Urban decay, rust, corruption
+    ],
+    description: "Urban nature magic - vermin, pollution, city spirits, and decay",
   },
 };
 

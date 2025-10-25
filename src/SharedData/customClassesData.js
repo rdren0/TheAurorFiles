@@ -1193,66 +1193,58 @@ export const customClassesData = {
     name: "Naturalist",
     type: "Druid",
     description:
-      "Naturalists are experts in living magic—flora, fauna, and the ley-ecology that binds them. They heal, wrangle, and weaponize the natural world through field research, herbology, and magizoology.",
+      "Naturalists are experts in dangerous magical flora and fauna—the kind that kills, poisons, or drives men mad. They work the dark edges of magizoology: tracking werewolf packs through urban sprawl, harvesting venom from illegal Acromantula farms, or investigating when magical creatures start turning up dead. Part forensic expert, part beast wrangler, part black market supplier—they know that nature, magical or not, is rarely kind.",
     hit_die: "d8",
-    primary_abilities: ["Wisdom"],
+    primary_abilities: ["Wisdom", "Constitution"],
     saving_throws: ["Wisdom", "Intelligence"],
-    armor_proficiencies: ["Light Armor"],
+    armor_proficiencies: ["Light Armor", "Dragon Hide"],
     weapon_proficiencies: ["Wands", "Daggers", "Quarterstaffs"],
-    tool_proficiencies: ["Herbalism Kit"],
+    tool_proficiencies: ["Herbalism Kit", "Poisoner's Kit"],
     skill_choices: {
-      choose: 1,
+      choose: 2,
       options: [
         "Nature",
         "Animal Handling",
         "Medicine",
         "Survival",
-        "Arcana",
         "Investigation",
         "Perception",
       ],
     },
     spellcasting: {
       progression_type: "augmented",
-      casting_ability_choice: ["Wisdom"],
+      casting_ability: "Wisdom",
       notes:
-        "Naturalist levels do not grant additional spell slots. They add themed spells and techniques fueled by Field Manifestation and Living Reagents.",
+        "Naturalists enhance base magic with creature abilities and deadly plants. They don't gain extra slots but add specialized nature magic.",
       bonus_spells: {
-        cantrips: ["Druidcraft", "Guidance"],
-        level_1_to_3: [
-          "Speak with Animals",
-          "Animal Friendship",
-          "Entangle",
-          "Goodberry",
-          "Beast Sense",
-          "Lesser Restoration",
-          "Spike Growth",
-          "Plant Growth",
-          "Conjure Animals",
-        ],
+        cantrips: ["Thorn Whip", "Poison Spray"],
+        1: ["Beast Speech", "Creature Command", "Devil's Snare", "Blood Replenisher"],
+        2: ["Beast Sight", "Antivenom", "Venomous Tentacula"],
+        3: ["Fungal Bloom", "Pack Summons"],
       },
     },
     class_resources: [
       {
         name: "Field Manifestation",
-        uses_formula: "proficiency_bonus per short rest",
-        duration: "10 minutes (can be ended early as a bonus action)",
-        recharge: "Short Rest",
+        uses_formula: "proficiency_bonus",
+        recovery: "short rest",
+        duration: "10 minutes",
         modes: [
-          "Embody Traits: Choose one natural trait you have documented (two traits at level 5; three traits at level 13). Examples: climb speed equal to your speed, darkvision 60 ft, keen smell (advantage on Perception relying on smell), resistance to poison, swim speed equal to your speed, water breathing, tremorsense 10 ft.",
-          "Manifest Companion: Summon a Primal Companion (beast/plant spirit) that uses a Naturalist Primal Companion stat block scaling with your level and proficiency bonus. It acts on your initiative, obeys your commands, and vanishes at 0 HP or when the effect ends.",
+          "Beast Traits: Adopt abilities from creatures you've studied (werewolf regeneration, Acromantula climb, Thestral death sight)",
+          "Manifest Companion: Summon a magical creature ally (uses Naturalist Companion stat block). It obeys without question—you've earned its respect or fear.",
         ],
       },
       {
         name: "Living Reagents",
-        uses_formula:
-          "proficiency_bonus + Wisdom_mod (minimum proficiency_bonus) per long rest",
-        recharge: "Long Rest",
-        range: "30 ft (touch if you lack line of sight)",
+        uses_formula: "proficiency_bonus + Wisdom_mod",
+        recovery: "long rest",
+        description:
+          "Vials of venom, spores, and worse things. The Ministry would arrest you for half of what's in your kit.",
         spend_examples: [
-          "Vital Tincture: As a bonus action, a creature regains 1d6 + Wisdom_mod HP.",
-          "Antitoxin Draught: A creature gains +1d4 to its next saving throw against poison or disease within 1 minute.",
-          "Catalytic Infusion: Your next spell cast this turn adds +1d4 to one damage or healing roll.",
+          "Healing Draught: Restore 1d6 + WIS HP (tastes like blood)",
+          "Antitoxin: +1d4 to saves vs poison/disease",
+          "Catalyst Venom: Next spell adds +1d4 poison damage",
+          "Paralytic Spores: Target must save or be paralyzed 1 round",
         ],
       },
     ],
@@ -1298,53 +1290,59 @@ export const customClassesData = {
           {
             name: "Branch of Study",
             description:
-              "Choose Herbology, Zoology, or Mycology. You gain its 3rd-level features now and additional benefits at level 5.",
+              "Choose your specialization in the dark edges of nature magic: Herbology, Zoology, or Mycology.",
             options: [
               {
-                name: "Branch of Herbology",
+                name: "Herbology",
                 branchPath: "Herbology",
+                description:
+                  "Specialist in magical plants—the dangerous kind the Ministry regulates",
                 features: [
                   {
-                    name: "Bonus Spells (Herbology)",
+                    name: "Devil's Snare Expert",
                     description:
-                      "Entangle and Barkskin are always prepared and don't count against your limit.",
+                      "You have advantage on saves against plant-based effects and can identify plant-based poisons by taste. You gain immunity to poison damage from plant sources.",
                   },
                   {
-                    name: "Verdant Surge",
+                    name: "Venomous Cultivation",
                     description:
-                      "When you cast a spell that creates/manipulates plants or terrain, choose one: (a) one ally you can see regains 1d8 + WIS HP, or (b) one creature affected by the spell must succeed on a STR save (DC = 8 + PB + WIS) or become restrained by roots until the start of your next turn.",
+                      "You can cultivate dangerous plants. During a long rest, you can prepare one plant-based poison (uses Poisoner's Kit). The poison deals 2d6 poison damage (CON save half, DC = 8 + PB + WIS) and lasts 24 hours.",
                   },
                 ],
               },
               {
-                name: "Branch of Zoology",
+                name: "Zoology",
                 branchPath: "Zoology",
+                description:
+                  "Magical creature tracker—specializes in the ones that kill",
                 features: [
                   {
-                    name: "Bonus Spells (Zoology)",
+                    name: "Predator Tracker",
                     description:
-                      "Animal Friendship and Beast Sense are always prepared and don't count against your limit.",
+                      "You have advantage on checks to track magical creatures. You can identify bite marks, claw patterns, and creature residue. You have advantage on saves against being frightened by beasts and monstrosities.",
                   },
                   {
-                    name: "Field Familiar",
+                    name: "Beast Handler",
                     description:
-                      "Gain a loyal magical companion (use Beast of the Land/Air/Sea style stat block; PB to AC/attacks/saves). It acts on your turn and adds your Wisdom modifier to its damage rolls. If dismissed or reduced to 0 HP, you can resummon it after a short or long rest or by expending a Field Manifestation use.",
+                      "You can cast Speak with Animals at will. Additionally, when you use Field Manifestation to adopt beast traits, you gain two traits instead of one.",
                   },
                 ],
               },
               {
-                name: "Branch of Mycology",
+                name: "Mycology",
                 branchPath: "Mycology",
+                description:
+                  "Fungal specialist—deals in spores, molds, and magical plagues",
                 features: [
                   {
-                    name: "Bonus Spells (Mycology)",
+                    name: "Toxic Immunity",
                     description:
-                      "Ray of Sickness and Blindness/Deafness are always prepared and don't count against your limit.",
+                      "You have immunity to poison damage and the poisoned condition. You can touch and handle toxic substances safely.",
                   },
                   {
                     name: "Spore Cloud",
                     description:
-                      "As an action, release spores in a 15-ft radius within 30 ft. Creatures of your choice must succeed on a CON save (DC = 8 + PB + WIS) or become poisoned until the start of your next turn. Allies in the area gain 1d4 temp HP. Uses: PB per long rest.",
+                      "As an action, release toxic spores in a 15-ft radius centered on you. Creatures of your choice must succeed on a CON save (DC = 8 + PB + WIS) or become poisoned until the start of your next turn. Uses: proficiency bonus per long rest.",
                   },
                 ],
               },
@@ -1651,10 +1649,10 @@ export const customClassesData = {
     ],
     design_notes: {
       concept:
-        "Combined herbology + magizoology chassis that fills the Druid niche via living-magic science.",
-      tone: "Field biologist meets eco-witch: specimens, spores, and spectral companions.",
+        "Newt Scamander meets noir—handles the magical creatures and plants that proper wizards fear.",
+      tone: "Professional but dangerous. The person you call when a Nundu escapes or when bodies show strange bite marks.",
       balance_notes:
-        "Augmented progression prevents slot bloat. Short-rest Field Manifestation mirrors Wild Shape flexibility; Living Reagents provide low-die support without eclipsing Healer.",
+        "Augmented progression prevents slot bloat. Living Reagents provide utility without stepping on Mediwizard's healing role. Field Manifestation offers flexibility for investigation and combat.",
     },
   },
 
@@ -4624,33 +4622,45 @@ export const customClassesData = {
         "Save DC = 8 + proficiency bonus + chosen spellcasting modifier (Con or Cha). Wandless Channeling advantage is balanced by the risk of Surge backlash.",
     },
   },
-  scrapper: {
-    id: "scrapper",
-    name: "Scrapper",
+  spellbrawler: {
+    id: "spellbrawler",
+    name: "Spellbrawler",
     type: "Fighter",
     description:
-      "A gritty fighter who thrives in chaos, using improvisation, endurance, and raw tenacity to overcome any challenge.",
+      "Spellbrawlers are underground duelists who merge brutal physical combat with crude battle magic. They learned their craft in illegal fighting rings, wizard gangs, and knockturn alley brawls. Unlike proper duelists with their formal stances and incantations, Spellbrawlers carve runes into their flesh, enchant brass knuckles, and use wands as clubs when the magic runs dry. Every scar tells a story, and every rune was earned in blood.",
     hit_die: "d10",
-    primary_abilities: ["Strength", "Dexterity"],
+    primary_abilities: ["Strength", "Constitution", "Dexterity"],
     saving_throws: ["Strength", "Constitution"],
     armor_proficiencies: ["Light Armor", "Medium Armor", "Shields"],
     weapon_proficiencies: [
       "Simple Weapons",
       "Martial Weapons",
       "Improvised Weapons",
+      "Wands (as clubs)",
     ],
     skill_proficiencies: {
       choose: 2,
       from: [
-        "Acrobatics",
-        "Animal Handling",
         "Athletics",
-        "History",
-        "Insight",
         "Intimidation",
         "Perception",
+        "Sleight of Hand",
         "Survival",
+        "Acrobatics",
       ],
+    },
+    spellcasting: {
+      progression_type: "rune-based",
+      casting_ability: "Constitution",
+      notes:
+        "Spellbrawlers don't cast spells traditionally. They activate runes carved into their skin and gear. Each rune can be triggered using Rune Charges for combat effects.",
+      rune_slots: {
+        3: 2, // Level 3: 2 runes
+        7: 3, // Level 7: 3 runes
+        10: 4, // Level 10: 4 runes
+        15: 5, // Level 15: 5 runes
+        18: 6, // Level 18: 6 runes
+      },
     },
     class_resources: [
       {
@@ -4662,11 +4672,19 @@ export const customClassesData = {
           18: 3,
         },
         description:
-          "As a bonus action, regain hit points equal to 1d10 + your Scrapper level.",
+          "As a bonus action, healing runes flare across your scars, knitting wounds. Regain 1d10 + Spellbrawler level hit points.",
         effects_summary: [
-          "Bonus action: Regain 1d10 + Scrapper level hit points",
+          "Bonus action: Regain 1d10 + Spellbrawler level hit points",
+          "Healing runes activate across your scars",
           "Once per short rest (twice at 10th, thrice at 18th)",
         ],
+      },
+      {
+        name: "Rune Charges",
+        recovery: "short rest",
+        uses: "Constitution modifier (minimum 1)",
+        description:
+          "Fuel for activating your combat runes. The pain of activation would kill a lesser wizard.",
       },
     ],
     level_features: [
@@ -4676,35 +4694,35 @@ export const customClassesData = {
           {
             name: "Fighting Style",
             description:
-              "Choose one of the following fighting styles to represent your scrappy approach to combat.",
+              "Choose your brawling specialty from years in the fighting pits.",
             options: [
               {
-                name: "Close Quarters",
+                name: "Cage Fighter",
                 features: [
                   {
-                    name: "Close Quarters",
+                    name: "Cage Fighter",
                     description:
-                      "You gain a +1 bonus to AC while you are wielding a melee weapon and another creature is within 5 feet of you.",
+                      "+1 AC when an enemy is within 5 feet. Your defensive runes react to close threats.",
                   },
                 ],
               },
               {
-                name: "Improviser",
+                name: "Dirty Fighter",
                 features: [
                   {
-                    name: "Improviser",
+                    name: "Dirty Fighter",
                     description:
-                      "When you hit with an improvised weapon or unarmed strike, you deal an extra 1d4 damage.",
+                      "Improvised weapons and unarmed strikes deal +1d4 damage. You can inscribe temporary runes on anything.",
                   },
                 ],
               },
               {
-                name: "Momentum",
+                name: "Berserker Charge",
                 features: [
                   {
-                    name: "Momentum",
+                    name: "Berserker Charge",
                     description:
-                      "When you take the Dash action, you can make one melee weapon attack as a bonus action.",
+                      "After Dashing, make one melee attack as a bonus action. Speed runes burn on your legs.",
                   },
                 ],
               },
@@ -4713,7 +4731,7 @@ export const customClassesData = {
           {
             name: "Shake It Off",
             description:
-              "As a bonus action, you can regain hit points equal to 1d10 + your Scrapper level. Once you use this feature, you can't use it again until you finish a short or long rest.",
+              "Pain is an old friend. As a bonus action, activate healing runes to regain 1d10 + level hit points. Once per short rest.",
           },
         ],
       },
@@ -4723,7 +4741,7 @@ export const customClassesData = {
           {
             name: "Push Through",
             description:
-              "Starting at 2nd level, you can push beyond your normal limits for a moment. On your turn, you can take one additional action. Once you use this feature, you must finish a short or long rest before you can use it again. Starting at 17th level, you can use it twice before a rest, but only once on the same turn.",
+              "Overcharge your runes for explosive action. Take one additional action on your turn. Your runes glow white-hot, dealing 1d4 fire damage to you (no resistance applies). Once per short rest (twice at 17th level).",
             resource_uses: {
               recovery: "short rest",
               uses_per_rest_by_level: {
@@ -4738,52 +4756,90 @@ export const customClassesData = {
         level: 3,
         features: [
           {
-            name: "Scrapper Archetype",
+            name: "Rune Carver",
             description:
-              "Choose an archetype that reflects your scrappy combat style: Pit Fighter, Vanguard, or Rubble Runner.",
+              "You've learned to carve permanent battle runes. During a long rest, inscribe 2 runes on your body or equipment (increases at higher levels). Each provides a passive benefit and can be activated with a Rune Charge.",
+            rune_options: [
+              {
+                name: "Blood Rune",
+                passive: "While below half health, +2 to damage rolls",
+                active:
+                  "Next hit deals 2d6 necrotic damage and heals you for half damage dealt",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Iron Rune",
+                passive: "+1 AC when not wearing heavy armor",
+                active: "Reaction: Reduce damage from one attack by 2d6 + CON mod",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Storm Rune",
+                passive: "Immunity to being paralyzed",
+                active: "Next attack has advantage and deals 1d8 lightning damage",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Beast Rune",
+                passive: "Advantage on Intimidation checks",
+                active:
+                  "Gain 15 temp HP and your attacks knock targets back 10 ft (STR save negates)",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Shadow Rune",
+                passive: "Darkvision 30 ft",
+                active: "Bonus action: Teleport 30 ft to unoccupied space you can see",
+                cost: "1 Rune Charge",
+              },
+            ],
+          },
+          {
+            name: "Spellbrawler Archetype",
+            description: "Choose your fighting ring background.",
             options: [
               {
                 name: "Pit Fighter",
                 features: [
                   {
-                    name: "Dirty Tactics",
+                    name: "Brutal Strikes",
                     description:
-                      "When you hit a creature with a melee weapon attack, you can attempt to hinder them. The target must succeed on a Strength or Dexterity saving throw (their choice) or be knocked prone, disarmed, or have their speed reduced to 0 until the end of their next turn (your choice). DC = 8 + your proficiency bonus + your Strength or Dexterity modifier. You can use this feature a number of times equal to your proficiency bonus per long rest.",
+                      "Critical hits knock targets prone. When you score a critical, activate one rune without spending a Charge.",
                   },
                   {
-                    name: "Brawler's Resilience",
+                    name: "Scarred Veteran",
                     description:
-                      "You have advantage on saving throws against being frightened, and you can add your Constitution modifier (minimum +1) to death saving throws.",
-                  },
-                ],
-              },
-              {
-                name: "Vanguard",
-                features: [
-                  {
-                    name: "Protective Instinct",
-                    description:
-                      "When a creature you can see attacks a target other than you that is within 5 feet of you, you can use your reaction to impose disadvantage on the attack roll. You can use this feature a number of times equal to your proficiency bonus per long rest.",
-                  },
-                  {
-                    name: "Stand Your Ground",
-                    description:
-                      "You have advantage on saving throws and ability checks to resist being moved against your will or knocked prone.",
+                      "Advantage on saves vs fear. Add CON modifier to death saves.",
                   },
                 ],
               },
               {
-                name: "Rubble Runner",
+                name: "Gang Enforcer",
                 features: [
                   {
-                    name: "Urban Agility",
+                    name: "Pack Fighter",
                     description:
-                      "You gain a climbing speed equal to your walking speed. Additionally, difficult terrain made of rubble, debris, or urban structures doesn't cost you extra movement.",
+                      "When an ally is within 5 ft of your target, your attacks deal +1d4 damage.",
                   },
                   {
-                    name: "Hit and Run",
+                    name: "Threatening Presence",
                     description:
-                      "When you hit a creature with a melee weapon attack, you can move up to half your speed without provoking opportunity attacks from that creature. You can use this feature a number of times equal to your proficiency bonus per long rest.",
+                      "Enemies have disadvantage on opportunity attacks against your allies within 5 ft of you.",
+                  },
+                ],
+              },
+              {
+                name: "Prize Fighter",
+                features: [
+                  {
+                    name: "Crowd Pleaser",
+                    description:
+                      "When you reduce an enemy to 0 HP, gain a Rune Charge (once per turn).",
+                  },
+                  {
+                    name: "Champion's Resilience",
+                    description:
+                      "Regain 1 Rune Charge when you succeed on a saving throw against a spell.",
                   },
                 ],
               },
@@ -4814,17 +4870,17 @@ export const customClassesData = {
     ],
     design_notes: {
       concept:
-        "The Scrapper is a resilient, adaptable fighter who excels in improvisation and grit. They're survivors who make do with what they have.",
-      tone: "Gritty, determined, resourceful",
+        "Harry Potter meets Fight Club - wizards who learned magic through violence rather than academia.",
+      tone: "Brutal, scarred, survivor. Every rune tells a story of a fight survived.",
       balance_notes: [
-        "d10 hit die matches Fighter",
-        "Shake It Off is slightly weaker than Second Wind (d10 vs d10+level) but recovers on short rest",
-        "Push Through mirrors Action Surge exactly",
-        "Fighting styles are balanced variations of Fighter styles",
-        "Archetypes provide tactical diversity without overwhelming power",
+        "Rune system provides magical flexibility without spell slots",
+        "Constitution-based magic reflects physical toughness",
+        "Limited charges prevent rune spam",
+        "Self-damage on Push Through prevents abuse",
+        "d10 hit die matches Fighter baseline",
       ],
       rules_consistency:
-        "Follows 5e Fighter progression pattern with class-specific flavor",
+        "Follows 5e Fighter progression pattern. Rune mechanics similar to Rune Knight but more limited and gritty.",
     },
   },
 
@@ -5018,6 +5074,226 @@ export const customClassesData = {
         "Uses Wizard's spell slot table. Research Dice emulate light metamagic flexibility without breaking action economy. Department features mirror subclass variety (similar to Wizard traditions).",
       rules_consistency:
         "No concentration stacking or spell slot abuse. Dice-based resource prevents overuse of manipulation mechanics.",
+    },
+  },
+
+  urban_shaman: {
+    id: "urban_shaman",
+    name: "Urban Shaman",
+    type: "Druid",
+    description:
+      "Urban Shamans understand that cities are ecosystems too—concrete jungles with their own predators, prey, and magic. They commune with city spirits: rats in the walls, pigeons on rooftops, mold in abandoned buildings, and the electric pulse of the metro. Where traditional druids see forests, Urban Shamans see subway tunnels as root systems and skyscrapers as steel trees.",
+
+    hit_die: "d8",
+    primary_abilities: ["Wisdom", "Constitution"],
+    saving_throws: ["Wisdom", "Intelligence"],
+
+    armor_proficiencies: ["Light armor", "Medium armor", "Shields"],
+    weapon_proficiencies: ["Clubs", "Daggers", "Darts", "Javelins", "Maces", "Quarterstaffs", "Scimitars", "Sickles", "Slings", "Spears"],
+    tool_proficiencies: ["Herbalism kit"],
+
+    skill_choices: {
+      choose: 2,
+      options: [
+        "Animal Handling",
+        "Arcana",
+        "Insight",
+        "Medicine",
+        "Nature",
+        "Perception",
+        "Stealth",
+        "Survival",
+      ],
+    },
+
+    spellcasting: {
+      progression_type: "full-caster",
+      casting_ability: "Wisdom",
+      notes: "Urban Shamans channel the magic of the city itself",
+
+      cantrips_known: {
+        1: 2,
+        4: 3,
+        10: 4,
+      },
+
+      spells_prepared_formula: "wisdom_mod + druid_level",
+
+      bonus_spells: {
+        cantrips: ["Mold Earth", "Control Flames", "Shocking Grasp"],
+        1: ["Speak with Animals", "Fog Cloud", "Grease"],
+        2: ["Web", "Heat Metal", "Shatter"],
+        3: ["Spider Climb", "Gaseous Form", "Meld into Stone"],
+      },
+    },
+
+    class_resources: [
+      {
+        name: "Urban Wild Shape",
+        description: "Transform into urban creatures and swarms",
+        uses_formula: "proficiency_bonus",
+        recovery: "short rest",
+        forms: [
+          "Rat Swarm - Move through spaces, disease attack",
+          "Feral Dog - Track by scent, pack tactics",
+          "Pigeon Flock - Flight, surveillance",
+          "Roach Colony - Immunity to poison, climb speed",
+          "Alley Cat - Stealth, night vision",
+        ],
+      },
+      {
+        name: "City Spirits",
+        description: "Commune with urban infrastructure and city magic",
+        abilities: [
+          "Speak with Machines - Communicate with ATMs, cameras, phones",
+          "Rust and Ruin - Corrode metal rapidly",
+          "Power Surge - Manipulate electrical systems",
+          "Subway Sense - Know all tunnel layouts within city",
+          "Pollution Cloud - Create toxic fog as weapon",
+        ],
+      },
+    ],
+
+    level_features: [
+      {
+        level: 1,
+        features: [
+          {
+            name: "Druidic",
+            description:
+              "You know Druidic, the secret language of druids. Urban Shamans use graffiti tags, scratches on walls, and coded marks.",
+          },
+          {
+            name: "Urban Spellcasting",
+            description:
+              "You can cast druid spells using urban components: rust instead of moss, broken glass instead of crystal, smog instead of fog.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Urban Wild Shape",
+            description:
+              "You can use your action to magically assume the shape of an urban creature or swarm. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a short or long rest.",
+            resource_uses: {
+              recovery: "short rest",
+              uses_formula: "proficiency_bonus",
+            },
+          },
+          {
+            name: "City Sense",
+            description:
+              "While in an urban environment, you have advantage on Wisdom (Survival) checks to track creatures and on Intelligence checks to recall information about local areas, streets, and infrastructure.",
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Urban Circle",
+            description:
+              "Choose an Urban Circle that reflects your connection to the city: Sewer Shaman, Industrial Druid, or Vermin Lord.",
+            options: [
+              {
+                name: "Sewer Shaman",
+                description: "Master of the undercity - sewers, tunnels, forgotten spaces",
+                features: [
+                  {
+                    name: "Toxic Immunity",
+                    description:
+                      "You have immunity to poison damage and the poisoned condition. Additionally, you can create a 10-foot radius cloud of toxic gas as an action (DC = spell save DC, Constitution save, poisoned on fail).",
+                  },
+                  {
+                    name: "Tunnel Fighter",
+                    description:
+                      "You have darkvision out to 60 feet (or +30 feet if you already have it). You can move through tight spaces and pipes as if you were one size smaller.",
+                  },
+                  {
+                    name: "Fungal Growths",
+                    description:
+                      "You can cast Infestation at will. At 5th level, you can cast Ray of Sickness without using a spell slot a number of times equal to your Wisdom modifier per long rest.",
+                  },
+                ],
+              },
+              {
+                name: "Industrial Druid",
+                description: "Controls machinery, electricity, and urban decay",
+                features: [
+                  {
+                    name: "Technomancy",
+                    description:
+                      "You can speak to machines and understand their function. You have advantage on Intelligence checks related to mechanical or electrical devices.",
+                  },
+                  {
+                    name: "Rust Monster",
+                    description:
+                      "As an action, you can touch a nonmagical metal object and cause it to corrode. Weapons take a permanent -1 penalty to damage rolls (minimum 0), armor takes a permanent -1 penalty to AC. You can use this feature a number of times equal to your Wisdom modifier per long rest.",
+                  },
+                  {
+                    name: "Electric Affinity",
+                    description:
+                      "You gain resistance to lightning damage. At 5th level, you can cast Shocking Grasp as a bonus action.",
+                  },
+                ],
+              },
+              {
+                name: "Vermin Lord",
+                description: "Commands urban wildlife - rats, roaches, pigeons, stray animals",
+                features: [
+                  {
+                    name: "Rat King",
+                    description:
+                      "You can cast Speak with Animals at will, but only with urban creatures (rats, pigeons, dogs, cats, insects). As an action, you can summon a swarm of rats within 60 feet (use Swarm of Rats stat block). The swarm obeys your commands and lasts for 1 hour or until dismissed. Once you use this feature, you can't use it again until you finish a long rest.",
+                  },
+                  {
+                    name: "Disease Carrier",
+                    description:
+                      "You are immune to diseases. When you hit a creature with a melee attack while in Wild Shape, you can force it to make a Constitution saving throw against your spell save DC or become poisoned until the end of your next turn.",
+                  },
+                  {
+                    name: "Urban Pack Master",
+                    description:
+                      "Urban beasts and swarms have advantage on attack rolls against targets within 5 feet of you. You can also add your Wisdom modifier to the damage rolls of any beast you summon.",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 4,
+        features: [
+          {
+            name: "Ability Score Improvement",
+            description:
+              "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "City Spirits",
+            description:
+              "You can commune with the spirit of the city itself. Once per long rest, you can cast Commune (city spirits answer instead of a deity). Additionally, you learn one ability from your City Spirits resource based on your Urban Circle.",
+          },
+        ],
+      },
+    ],
+
+    design_notes: {
+      concept:
+        "Urban Shaman is a druid remapping that replaces nature with city. Instead of forests and animals, they work with concrete, vermin, and urban decay. This fits the noir investigator theme perfectly.",
+      tone: "Gritty, street-level, survivalist. Someone who sees magic in rust, power in rats, and wisdom in the city's dark corners.",
+      balance_notes:
+        "Uses Druid's spell slot progression. Wild Shape limited to urban creatures keeps the core druid identity while being thematically distinct. Circles provide variety similar to druid circles.",
+      rules_consistency:
+        "Follows standard Druid progression. Urban Wild Shape uses same mechanics as regular Wild Shape but with different creature options.",
     },
   },
 };
