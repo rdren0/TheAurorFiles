@@ -361,25 +361,60 @@ export const castingStyleData = {
 };
 
 export const SUBJECT_TO_MODIFIER_MAP = {
+  combatOperations: {
+    abilityScore: "strength",
+    wandModifier: "combatOperations",
+  },
+
+  crimeSceneAnalysis: {
+    abilityScore: "intelligence",
+    wandModifier: "crimeSceneAnalysis",
+  },
+
+  surveillanceTracking: {
+    abilityScore: "wisdom",
+    wandModifier: "surveillanceTracking",
+  },
+
+  interrogationTechniques: {
+    abilityScore: "charisma",
+    wandModifier: "interrogationTechniques",
+  },
+
+  fieldMedicine: {
+    abilityScore: "intelligence",
+    wandModifier: "fieldMedicine",
+  },
+
+  specializedArsenal: {
+    abilityScore: "constitution",
+    wandModifier: "specializedArsenal",
+  },
+
+  unforgivableCurses: {
+    abilityScore: "charisma",
+    wandModifier: "unforgivableCurses",
+  },
+
   charms: {
-    abilityScore: "dexterity",
-    wandModifier: "charms",
+    abilityScore: "intelligence",
+    wandModifier: "crimeSceneAnalysis",
   },
   jhc: {
-    abilityScore: "charisma",
-    wandModifier: "jinxesHexesCurses",
+    abilityScore: "strength",
+    wandModifier: "combatOperations",
   },
   transfiguration: {
-    abilityScore: "strength",
-    wandModifier: "transfiguration",
+    abilityScore: "constitution",
+    wandModifier: "specializedArsenal",
   },
   healing: {
     abilityScore: "intelligence",
-    wandModifier: "healing",
+    wandModifier: "fieldMedicine",
   },
   divinations: {
     abilityScore: "wisdom",
-    wandModifier: "divinations",
+    wandModifier: "surveillanceTracking",
   },
 };
 
@@ -407,71 +442,81 @@ export const hpData = {
 };
 
 export const skillMap = {
-  athletics: "Athletics",
   acrobatics: "Acrobatics",
-  sleightOfHand: "Sleight of Hand",
-  stealth: "Stealth",
+  animalHandling: "Animal Handling",
+  arcana: "Arcana",
+  athletics: "Athletics",
+  deception: "Deception",
+  forensics: "Forensics",
   herbology: "Herbology",
   historyOfMagic: "History of Magic",
-  investigation: "Investigation",
-  magicalTheory: "Magical Theory",
-  muggleStudies: "Muggle Studies",
   insight: "Insight",
+  intimidation: "Intimidation",
+  investigation: "Investigation",
   magicalCreatures: "Magical Creatures",
   medicine: "Medicine",
+  muggleIntegration: "Muggle Integration",
   perception: "Perception",
-  potionMaking: "Potion Making",
-  survival: "Survival",
-  deception: "Deception",
-  intimidation: "Intimidation",
-  performance: "Performance",
   persuasion: "Persuasion",
+  potionMaking: "Potion Making",
+  sleightOfHand: "Sleight of Hand",
+  stealth: "Stealth",
+  streetwise: "Streetwise",
+  survival: "Survival",
+  dimensionalTheory: "Dimensional Theory",
 };
 
 export const allSkills = [
-  { name: "athletics", displayName: "Athletics", ability: "strength" },
   { name: "acrobatics", displayName: "Acrobatics", ability: "dexterity" },
-  {
-    name: "sleightOfHand",
-    displayName: "Sleight of Hand",
-    ability: "dexterity",
-  },
-  { name: "stealth", displayName: "Stealth", ability: "dexterity" },
+  { name: "animalHandling", displayName: "Animal Handling", ability: "wisdom" },
+  { name: "arcana", displayName: "Arcana", ability: "intelligence" },
+  { name: "athletics", displayName: "Athletics", ability: "strength" },
+  { name: "deception", displayName: "Deception", ability: "charisma" },
+  { name: "forensics", displayName: "Forensics", ability: "intelligence" },
   { name: "herbology", displayName: "Herbology", ability: "intelligence" },
   {
     name: "historyOfMagic",
     displayName: "History of Magic",
     ability: "intelligence",
   },
+  { name: "insight", displayName: "Insight", ability: "wisdom" },
+  { name: "intimidation", displayName: "Intimidation", ability: "charisma" },
   {
     name: "investigation",
     displayName: "Investigation",
     ability: "intelligence",
   },
   {
-    name: "magicalTheory",
-    displayName: "Magical Theory",
-    ability: "intelligence",
-  },
-  {
-    name: "muggleStudies",
-    displayName: "Muggle Studies",
-    ability: "intelligence",
-  },
-  { name: "insight", displayName: "Insight", ability: "wisdom" },
-  {
     name: "magicalCreatures",
     displayName: "Magical Creatures",
     ability: "wisdom",
   },
   { name: "medicine", displayName: "Medicine", ability: "wisdom" },
+  {
+    name: "muggleIntegration",
+    displayName: "Muggle Integration",
+    ability: "charisma",
+  },
   { name: "perception", displayName: "Perception", ability: "wisdom" },
-  { name: "potionMaking", displayName: "Potion Making", ability: "wisdom" },
-  { name: "survival", displayName: "Survival", ability: "wisdom" },
-  { name: "deception", displayName: "Deception", ability: "charisma" },
-  { name: "intimidation", displayName: "Intimidation", ability: "charisma" },
-  { name: "performance", displayName: "Performance", ability: "charisma" },
   { name: "persuasion", displayName: "Persuasion", ability: "charisma" },
+  {
+    name: "potionMaking",
+    displayName: "Potion Making",
+    ability: "intelligence",
+  },
+  {
+    name: "sleightOfHand",
+    displayName: "Sleight of Hand",
+    ability: "dexterity",
+  },
+  { name: "stealth", displayName: "Stealth", ability: "dexterity" },
+  { name: "streetwise", displayName: "Streetwise", ability: "wisdom" },
+  { name: "survival", displayName: "Survival", ability: "wisdom" },
+  {
+    name: "dimensionalTheory",
+    displayName: "Dimensional Theory",
+    ability: "intelligence",
+  },
 ];
 
 export const abilities = [
@@ -490,40 +535,47 @@ export const getAbilityAbbr = (ability) => {
 
 export const skillDescriptions = {
   acrobatics:
-    "Balance, tumble, perform stunts, escape grapples, avoid falling damage",
-  athletics: "Jump, climb, swim, grapple, shove, resist being pushed",
+    "Balance, tumble, perform stunts, escape grapples, or recover from falls gracefully.",
+  animalHandling:
+    "Calm or control beasts, train creatures, or read the intent of animals and familiars.",
+  arcana:
+    "Recall magical lore, identify spells and enchantments, or interpret arcane symbols.",
+  athletics:
+    "Jump, climb, swim, grapple, shove, or resist being pushed by force or magic.",
   deception:
-    "Lie convincingly, disguise yourself, con others, create false impressions",
+    "Lie convincingly, disguise your intentions, or create false impressions to mislead.",
+  forensics:
+    "Analyze magical residue, reconstruct events, identify spell traces, and examine evidence.",
   herbology:
-    "Identify magical plants, harvest ingredients, understand plant properties, cultivate magical flora",
+    "Identify magical plants, harvest ingredients, or understand their medicinal and alchemical uses.",
   historyOfMagic:
-    "Recall magical events, know famous wizards, understand magical conflicts, recognize historical artifacts",
+    "Recall magical events, recognize enchanted relics, or cite legal and historical precedents.",
   insight:
-    "Detect lies, read emotions, understand motivations, sense hidden intentions",
+    "Detect lies, read emotions, understand motivations, or sense hidden intentions.",
   intimidation:
-    "Threaten others, coerce information, demoralize enemies, display dominance",
+    "Coerce, threaten, or impose your will through presence, tone, or reputation.",
   investigation:
-    "Search for clues, find hidden objects, research information, analyze evidence",
+    "Search for clues, analyze patterns, deduce motives, or piece together complex mysteries.",
   magicalCreatures:
-    "Identify creatures, understand behaviors, handle safely, know weaknesses and strengths",
-  magicalTheory:
-    "Understand magical principles, earn bonus dice for spellcasting attempts!",
+    "Identify and handle magical beasts, know their habits, or spot signs of their presence.",
   medicine:
-    "Stabilize dying creatures, diagnose illnesses, treat wounds, identify causes of death",
-  muggleStudies:
-    "Understand non-magical technology, blend into muggle society, operate muggle devices",
+    "Stabilize the dying, diagnose curses or illnesses, and determine cause of death.",
+  muggleIntegration:
+    "Blend into Muggle society, understand their customs and technology, or operate without revealing magic.",
   perception:
-    "Notice hidden things, spot danger, hear faint sounds, detect ambushes",
-  performance:
-    "Sing, dance, act, tell stories, play instruments, entertain crowds",
+    "Spot danger, detect hidden details, hear faint sounds, or sense magical disturbances.",
   persuasion:
-    "Influence others diplomatically, negotiate deals, inspire cooperation, make friends",
+    "Negotiate, charm, or inspire cooperation through diplomacy, empathy, or rhetoric.",
   potionMaking:
-    "Brew potions accurately, identify ingredients, follow complex recipes, improvise mixtures",
+    "Brew potions, identify concoctions, or improvise mixtures under pressure.",
   sleightOfHand:
-    "Pickpocket, conceal objects, perform tricks, pick locks, plant items",
+    "Pick pockets, conceal wands or tools, perform tricks, or plant items unnoticed.",
   stealth:
-    "Hide, move silently, sneak past guards, blend into crowds, avoid detection",
+    "Hide in shadows, move silently, or avoid detection both magically and mundanely.",
+  streetwise:
+    "Navigate urban environments, gather information from locals, or know where to find illicit contacts.",
   survival:
-    "Track creatures, navigate, find food/shelter, predict weather, avoid natural hazards",
+    "Track creatures, navigate the wilderness, locate food and shelter, or predict weather hazards.",
+  dimensionalTheory:
+    "Comprehend rifts, portals, and teleportation effects; analyze space-time anomalies.",
 };

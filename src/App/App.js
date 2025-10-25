@@ -27,7 +27,7 @@ import { createAppStyles } from "../styles/masterStyles";
 import PotionBrewingSystem from "../Components/Potions/Potions";
 import Inventory from "../Components/Inventory/Inventory";
 import CharacterManager from "../Components/CharacterManager/CharacterManager";
-import logo from "./../Images/logo/Thumbnail-01.png";
+import logo from "./../Images/logo/TheAurorFilesLogo.png";
 import BetaBanner from "./BetaBanner";
 import { AdminProvider, useAdmin } from "../contexts/AdminContext";
 import AdminDashboard from "../Admin/AdminDashboard";
@@ -667,18 +667,6 @@ const HomePage = ({ user, customUsername, hasCharacters }) => {
           </p>
         )}
 
-        <div style={styles.featureGrid}>
-          <a
-            href={RULE_BOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            <div style={styles.featureCard}>
-              <h3>View Rulebook</h3>
-            </div>
-          </a>
-        </div>
 
         {hasCharacters && (
           <div style={styles.featureGrid}>
@@ -1507,18 +1495,6 @@ function AppContent() {
         }}
       >
         <div>
-          <a
-            href={RULE_BOOK_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              textDecoration: "none",
-              color: theme.primary,
-              fontWeight: "700",
-            }}
-          >
-            <h3>View Rulebook</h3>
-          </a>
           © {new Date().getFullYear()} <strong>The Auror Files</strong>
         </div>
       </footer>

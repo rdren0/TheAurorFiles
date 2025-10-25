@@ -19,6 +19,7 @@ import {
   CastingStyleChoicesSection,
   NotesSection,
   BasicInfoSection,
+  InnateHeritageSection,
 } from "../sections";
 
 import {
@@ -302,6 +303,9 @@ const CharacterForm = ({
         title="Basic Information"
         subtitle="Character name, level, and core details"
         id="section-basic-info"
+        collapsible={true}
+        isExpanded={expandedSections["section-basic-info"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-basic-info")}
       >
         <BasicInfoSection
           character={character}
@@ -315,6 +319,9 @@ const CharacterForm = ({
         title="Casting Style Features"
         subtitle="Level-based casting style feature choices"
         id="section-casting-style-choices"
+        collapsible={true}
+        isExpanded={expandedSections["section-casting-style-choices"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-casting-style-choices")}
       >
         <CastingStyleChoicesSection
           character={character}
@@ -323,26 +330,47 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="Profession Class"
-        subtitle="Choose your character's magical profession and career path"
-        id="section-profession-class"
+        title="Heritage / Species"
+        subtitle="Character species and innate magical abilities"
+        id="section-heritage"
+        collapsible={true}
+        isExpanded={expandedSections["section-heritage"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-heritage")}
       >
-        <CustomClassSection
+        <InnateHeritageSection
           character={character}
-          onChange={updateCharacter}
-          mode={mode}
+          handleInputChange={(field, value) => updateCharacter(field, value)}
+          isEditing={mode === "edit"}
+          heritageChoices={character.heritageChoices || {}}
+          onHeritageChoicesChange={(choices) => {
+            const updatedCharacter = {
+              ...character,
+              heritageChoices: choices,
+            };
+            updateCharacterBulk(updatedCharacter);
+          }}
+          onCharacterUpdate={updateCharacterBulk}
+          disabled={false}
         />
       </FormSection>
 
       <FormSection
-        title="Class Specialization"
-        subtitle="Choose your character's specialized path within their profession"
-        id="section-specialization"
+        title="Ability Scores"
+        subtitle="Set your character's base ability scores"
+        id="section-ability-scores"
+        collapsible={true}
+        isExpanded={expandedSections["section-ability-scores"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-ability-scores")}
       >
-        <CustomSubclassSection
+        <AbilityScoresSection
           character={character}
           onChange={updateCharacter}
+          onCharacterUpdate={updateCharacterBulk}
           mode={mode}
+          featChoices={getAllSelectedFeats(character)}
+          houseChoices={character.houseChoices || character.house_choices}
+          heritageChoices={character.heritageChoices || {}}
+          showModifiers={true}
         />
       </FormSection>
 
@@ -350,6 +378,9 @@ const CharacterForm = ({
         title="Background"
         subtitle="Character background and starting proficiencies"
         id="section-background"
+        collapsible={true}
+        isExpanded={expandedSections["section-background"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-background")}
       >
         <BackgroundSection
           value={character.background}
@@ -365,30 +396,42 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="Race / Species"
-        subtitle="Choose your character's innate heritage and traits"
-        id="section-race-species"
+        title="Profession Class"
+        subtitle="Choose your character's magical profession and career path"
+        id="section-profession-class"
+        collapsible={true}
+        isExpanded={expandedSections["section-profession-class"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-profession-class")}
       >
-        <Level1ChoiceSection
+        <CustomClassSection
           character={character}
-          onChange={(field, value) => updateCharacter(field, value)}
-          onCharacterUpdate={updateCharacterBulk}
+          onChange={updateCharacter}
           mode={mode}
         />
       </FormSection>
 
       <FormSection
-        title="Metamagic"
-        subtitle="Select metamagic options available to your character"
-        id="section-metamagic"
+        title="Class Specialization"
+        subtitle="Choose your character's specialized path within their profession"
+        id="section-specialization"
+        collapsible={true}
+        isExpanded={expandedSections["section-specialization"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-specialization")}
       >
-        <MetaMagicSection character={character} onChange={updateCharacter} />
+        <CustomSubclassSection
+          character={character}
+          onChange={updateCharacter}
+          mode={mode}
+        />
       </FormSection>
 
       <FormSection
         title="Skills & Proficiencies"
         subtitle="Skill proficiencies and expertise"
         id="section-skills"
+        collapsible={true}
+        isExpanded={expandedSections["section-skills"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-skills")}
       >
         <SkillsSection
           character={character}
@@ -402,6 +445,9 @@ const CharacterForm = ({
         title="Tool Proficiencies"
         subtitle="Tool proficiencies"
         id="section-tools"
+        collapsible={true}
+        isExpanded={expandedSections["section-tools"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-tools")}
       >
         <ToolsLanguagesSection
           character={character}
@@ -411,19 +457,16 @@ const CharacterForm = ({
       </FormSection>
 
       <FormSection
-        title="Ability Scores"
-        subtitle="Set your character's base ability scores"
-        id="section-ability-scores"
+        title="Magic Modifiers & Wand"
+        subtitle="Wand bonuses and character wand information"
+        id="section-magic-modifiers"
+        collapsible={true}
+        isExpanded={expandedSections["section-magic-modifiers"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-magic-modifiers")}
       >
-        <AbilityScoresSection
+        <MagicModifiersSection
           character={character}
           onChange={updateCharacter}
-          onCharacterUpdate={updateCharacterBulk}
-          mode={mode}
-          featChoices={getAllSelectedFeats(character)}
-          houseChoices={character.houseChoices || character.house_choices}
-          heritageChoices={character.heritageChoices || {}}
-          showModifiers={true}
         />
       </FormSection>
 
@@ -431,24 +474,31 @@ const CharacterForm = ({
         title="Hit Points"
         subtitle="Calculate your character's hit points based on casting style and constitution"
         id="section-hit-points"
+        collapsible={true}
+        isExpanded={expandedSections["section-hit-points"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-hit-points")}
       >
         <HitPointsSection character={character} onChange={updateCharacter} />
       </FormSection>
 
       <FormSection
-        title="Magic Modifiers & Wand"
-        subtitle="Wand bonuses and character wand information"
-        id="section-magic-modifiers"
+        title="Metamagic"
+        subtitle="Select metamagic options available to your character"
+        id="section-metamagic"
+        collapsible={true}
+        isExpanded={expandedSections["section-metamagic"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-metamagic")}
       >
-        <MagicModifiersSection
-          character={character}
-          onChange={updateCharacter}
-        />
+        <MetaMagicSection character={character} onChange={updateCharacter} />
       </FormSection>
+
       <FormSection
         title="Character Notes"
         subtitle="Additional notes, character flaws, backstory etc"
         id="section-notes"
+        collapsible={true}
+        isExpanded={expandedSections["section-notes"]}
+        onToggleExpansion={() => toggleSectionExpansion("section-notes")}
       >
         <NotesSection character={character} onChange={updateCharacter} />
       </FormSection>

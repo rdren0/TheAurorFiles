@@ -144,13 +144,15 @@ const SpellBook = ({
 
   const getAvailableSpellsData = useCallback(() => ({ ...spellsData }), []);
 
-  // Define core subjects that are always visible
+  // Define core subjects that are always visible - Investigator Toolkit Categories
   const coreSubjects = [
-    "Charms",
-    "Jinxes, Hexes & Curses",
-    "Transfigurations",
-    "Divinations",
-    "Healing",
+    "Combat Operations",
+    "Crime Scene Analysis",
+    "Surveillance & Tracking",
+    "Interrogation Techniques",
+    "Field Medicine",
+    "Specialized Arsenal",
+    "Unforgivable Curses",
   ];
 
   const isSpecializedSubject = (subjectName) => {
@@ -1322,30 +1324,6 @@ const SpellBook = ({
               Clear Filters
             </button>
           )}
-
-          <a
-            href="https://docs.google.com/document/d/1m-TbIj7gFzYUlA_ASa7pCrW8cbt5KOvV16r8CXF78NE/edit?tab=t.0#heading=h.camndhcqq8qn"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              marginLeft: "auto",
-              padding: "6px 12px",
-              borderRadius: "6px",
-              border: `1px solid ${theme.border}`,
-              backgroundColor: theme.primary || "#6366f1",
-              color: "white",
-              textDecoration: "none",
-              fontSize: "12px",
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              transition: "all 0.2s ease",
-              fontWeight: "500",
-            }}
-            title="View class spell lists"
-          >
-            Classes Spell List
-          </a>
         </div>
 
         {(searchTerm ||

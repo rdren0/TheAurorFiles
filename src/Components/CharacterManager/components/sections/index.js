@@ -2,6 +2,7 @@ export { default as BasicInfoSection } from "./BasicInfo/BasicInfoSection";
 export { default as AbilityScoresSection } from "./AbilityScoresSection";
 export { default as HitPointsSection } from "./HitPointsSection";
 export { default as BackgroundSection } from "./BackgroundSection";
+export { default as InnateHeritageSection } from "./InnateHeritageSection";
 export { default as CustomClassSection } from "./CustomClassSection";
 export { default as CustomSubclassSection } from "./CustomSubclassSection";
 export { default as Level1ChoiceSection } from "./Level1ChoiceSection";

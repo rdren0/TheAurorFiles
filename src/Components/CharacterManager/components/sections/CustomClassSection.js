@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../../../../contexts/ThemeContext";
 import { createBackgroundStyles } from "../../../../styles/masterStyles";
-import { getCustomClasses, getCustomClassDetails } from "../../../../SharedData/customClassesData";
+import {
+  getCustomClasses,
+  getCustomClassDetails,
+} from "../../../../SharedData/customClassesData";
 
 const CustomClassSection = ({ character, onChange, disabled = false }) => {
   const { theme } = useTheme();
@@ -80,22 +83,11 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
 
   return (
     <div style={styles.fieldContainer}>
-      <h3 style={styles.skillsHeader}>
-        Profession Class ({hasSelectedClass}/1 selected)
-      </h3>
-
-      <div style={styles.helpText}>
-        Choose your character's profession class. Each class represents a specialized magical career path.
-        <span style={{ display: "block", marginTop: "4px", fontStyle: "italic" }}>
-          Showing {availableClasses.length} available profession classes.
-        </span>
-      </div>
-
       {hasSelectedClass === 1 && (
         <div style={styles.completionMessage}>
-          ✓ Class selected: {
-            availableClasses.find((cls) => cls.id === selectedClass)?.name || selectedClass
-          }
+          ✓ Class selected:{" "}
+          {availableClasses.find((cls) => cls.id === selectedClass)?.name ||
+            selectedClass}
         </div>
       )}
 
@@ -104,20 +96,28 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
           {availableClasses.map((classData) => {
             const isSelected = selectedClass === classData.id;
             const isExpanded = expandedClasses.has(classData.id);
-            const accessibleFeatures = getAccessibleFeatures(classData, character?.level || 1);
-            const lockedFeatures = getLockedFeatures(classData, character?.level || 1);
+            const accessibleFeatures = getAccessibleFeatures(
+              classData,
+              character?.level || 1
+            );
+            const lockedFeatures = getLockedFeatures(
+              classData,
+              character?.level || 1
+            );
 
             return (
               <div
                 key={classData.id}
-                style={isSelected ? styles.selectedElementCard : styles.featCard}
+                style={
+                  isSelected ? styles.selectedElementCard : styles.featCard
+                }
               >
                 <div style={styles.featHeader}>
                   <label
                     style={styles.featLabelClickable}
                     onClick={(e) => {
                       // Prevent double-firing when clicking the checkbox itself
-                      if (e.target.tagName === 'INPUT') return;
+                      if (e.target.tagName === "INPUT") return;
                       handleClassToggle(classData.id);
                     }}
                   >
@@ -140,7 +140,11 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
                         transform: "scale(1.2)",
                       }}
                     />
-                    <span style={isSelected ? styles.featNameSelected : styles.featName}>
+                    <span
+                      style={
+                        isSelected ? styles.featNameSelected : styles.featName
+                      }
+                    >
                       {classData.name}
                       {classData.type && (
                         <span
@@ -176,168 +180,229 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
                         : styles.featDescription
                     }
                   >
-                    {/* Class basics */}
+                    {/* Class Stats Card */}
                     <div
-                      style={
-                        isSelected
-                          ? styles.singleFeatureSelected
-                          : styles.singleFeature
-                      }
+                      style={{
+                        backgroundColor: isSelected
+                          ? theme.backgroundAlt
+                          : theme.background,
+                        border: `1px solid ${
+                          isSelected ? theme.success : theme.border
+                        }`,
+                        borderRadius: "8px",
+                        padding: "12px",
+                        marginBottom: "16px",
+                      }}
                     >
-                      <div style={{ marginBottom: "8px" }}>
-                        <strong
-                          style={
-                            isSelected
-                              ? styles.featureNameSelected
-                              : styles.featureName
-                          }
+                        <h4
+                          style={{
+                            margin: "0 0 12px 0",
+                            color: isSelected ? theme.success : theme.text,
+                            fontSize: "16px",
+                            fontWeight: "600",
+                          }}
                         >
-                          Hit Die:
-                        </strong>
-                        <span
-                          style={
-                            isSelected
-                              ? styles.featureDescriptionSelected
-                              : styles.featureDescription
-                          }
+                          Class Statistics
+                        </h4>
+                        <div
+                          style={{
+                            display: "grid",
+                            gridTemplateColumns: "repeat(2, 1fr)",
+                            gap: "8px",
+                            fontSize: "14px",
+                          }}
                         >
-                          {" "}{classData.hit_die}
-                        </span>
-                      </div>
+                          <div>
+                            <strong
+                              style={{
+                                color: isSelected
+                                  ? theme.success
+                                  : theme.textSecondary,
+                              }}
+                            >
+                              Hit Die:
+                            </strong>{" "}
+                            <span
+                              style={{
+                                color: isSelected ? theme.text : theme.text,
+                              }}
+                            >
+                              {classData.hit_die}
+                            </span>
+                          </div>
 
-                      {classData.primary_abilities && (
-                        <div style={{ marginBottom: "8px" }}>
-                          <strong
-                            style={
-                              isSelected
-                                ? styles.featureNameSelected
-                                : styles.featureName
-                            }
-                          >
-                            Primary Abilities:
-                          </strong>
-                          <span
-                            style={
-                              isSelected
-                                ? styles.featureDescriptionSelected
-                                : styles.featureDescription
-                            }
-                          >
-                            {" "}{classData.primary_abilities.join(", ")}
-                          </span>
-                        </div>
-                      )}
+                          {classData.primary_abilities && (
+                            <div>
+                              <strong
+                                style={{
+                                  color: isSelected
+                                    ? theme.success
+                                    : theme.textSecondary,
+                                }}
+                              >
+                                Primary:
+                              </strong>{" "}
+                              <span
+                                style={{
+                                  color: isSelected ? theme.text : theme.text,
+                                }}
+                              >
+                                {classData.primary_abilities.join(", ")}
+                              </span>
+                            </div>
+                          )}
 
-                      {classData.saving_throws && (
-                        <div style={{ marginBottom: "8px" }}>
-                          <strong
-                            style={
-                              isSelected
-                                ? styles.featureNameSelected
-                                : styles.featureName
-                            }
-                          >
-                            Saving Throws:
-                          </strong>
-                          <span
-                            style={
-                              isSelected
-                                ? styles.featureDescriptionSelected
-                                : styles.featureDescription
-                            }
-                          >
-                            {" "}{classData.saving_throws.join(", ")}
-                          </span>
-                        </div>
-                      )}
+                          {classData.saving_throws && (
+                            <div style={{ gridColumn: "1 / -1" }}>
+                              <strong
+                                style={{
+                                  color: isSelected
+                                    ? theme.success
+                                    : theme.textSecondary,
+                                }}
+                              >
+                                Saving Throws:
+                              </strong>{" "}
+                              <span
+                                style={{
+                                  color: isSelected ? theme.text : theme.text,
+                                }}
+                              >
+                                {classData.saving_throws.join(", ")}
+                              </span>
+                            </div>
+                          )}
 
-                      {classData.skill_choices && (
-                        <div style={{ marginBottom: "8px" }}>
-                          <strong
-                            style={
-                              isSelected
-                                ? styles.featureNameSelected
-                                : styles.featureName
-                            }
-                          >
-                            Skills:
-                          </strong>
-                          <span
-                            style={
-                              isSelected
-                                ? styles.featureDescriptionSelected
-                                : styles.featureDescription
-                            }
-                          >
-                            {" "}Choose {classData.skill_choices.choose} from{" "}
-                            {classData.skill_choices.options.join(", ")}
-                          </span>
+                          {classData.skill_choices && (
+                            <div style={{ gridColumn: "1 / -1" }}>
+                              <strong
+                                style={{
+                                  color: isSelected
+                                    ? theme.success
+                                    : theme.textSecondary,
+                                }}
+                              >
+                                Skills:
+                              </strong>{" "}
+                              <span
+                                style={{
+                                  color: isSelected ? theme.text : theme.text,
+                                }}
+                              >
+                                Choose {classData.skill_choices.choose} from{" "}
+                                {classData.skill_choices.options.join(", ")}
+                              </span>
+                            </div>
+                          )}
                         </div>
-                      )}
                     </div>
 
-                    {/* Accessible features */}
-                    {accessibleFeatures.map((levelFeature) => (
-                      <div
-                        key={`level-${levelFeature.level}`}
-                        style={styles.featureContainer}
-                      >
-                        <h5
-                          style={
-                            isSelected
-                              ? styles.levelHeaderSelected
-                              : styles.levelHeader
-                          }
-                        >
-                          Level {levelFeature.level} Features:
-                        </h5>
-                        {levelFeature.features.map((feature, index) => (
+                    {/* Accessible features - Card layout */}
+                    <div
+                      style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                        gap: "12px",
+                        marginBottom: "16px",
+                      }}
+                    >
+                      {accessibleFeatures.map((levelFeature) =>
+                        levelFeature.features.map((feature, index) => (
                           <div
-                            key={index}
-                            style={
-                              isSelected
-                                ? styles.singleFeatureSelected
-                                : styles.singleFeature
-                            }
+                            key={`level-${levelFeature.level}-${index}`}
+                            style={{
+                              backgroundColor: isSelected
+                                ? theme.background
+                                : theme.backgroundAlt,
+                              border: `1px solid ${
+                                isSelected ? theme.success : theme.border
+                              }`,
+                              borderRadius: "8px",
+                              padding: "12px",
+                              transition: "transform 0.2s, box-shadow 0.2s",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform =
+                                "translateY(-2px)";
+                              e.currentTarget.style.boxShadow = `0 4px 12px ${theme.shadowColor}40`;
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform =
+                                "translateY(0)";
+                              e.currentTarget.style.boxShadow = "none";
+                            }}
                           >
-                            <strong
-                              style={
-                                isSelected
-                                  ? styles.featureNameSelected
-                                  : styles.featureName
-                              }
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                marginBottom: "8px",
+                              }}
                             >
-                              {feature.name}:
-                            </strong>
+                              <strong
+                                style={{
+                                  color: isSelected
+                                    ? theme.success
+                                    : theme.text,
+                                  fontSize: "14px",
+                                  fontWeight: "600",
+                                }}
+                              >
+                                {feature.name}
+                              </strong>
+                              <span
+                                style={{
+                                  backgroundColor: isSelected
+                                    ? theme.success
+                                    : theme.primary,
+                                  color: theme.background,
+                                  padding: "2px 8px",
+                                  borderRadius: "12px",
+                                  fontSize: "12px",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                Lv {levelFeature.level}
+                              </span>
+                            </div>
                             <p
-                              style={
-                                isSelected
-                                  ? styles.featureDescriptionSelected
-                                  : styles.featureDescription
-                              }
+                              style={{
+                                color: isSelected
+                                  ? theme.text
+                                  : theme.textSecondary,
+                                fontSize: "13px",
+                                lineHeight: "1.5",
+                                margin: 0,
+                              }}
                             >
                               {feature.description}
                             </p>
                           </div>
-                        ))}
-                      </div>
-                    ))}
+                        ))
+                      )}
+                    </div>
 
                     {/* Locked features */}
                     {lockedFeatures.length > 0 && (
-                      <div style={styles.lockedFeature}>
-                        <h5
+                      <div
+                        style={{
+                          backgroundColor: theme.backgroundAlt,
+                          border: `1px dashed ${theme.border}`,
+                          borderRadius: "8px",
+                          padding: "12px",
+                          textAlign: "center",
+                        }}
+                      >
+                        <div
                           style={{
-                            ...styles.levelHeader,
                             color: theme.textSecondary,
+                            fontSize: "14px",
                           }}
                         >
-                          Higher Level Features (Locked):
-                        </h5>
-                        <div style={styles.lockedContainer}>
                           🔒 {lockedFeatures.length} feature level
-                          {lockedFeatures.length > 1 ? "s" : ""} unlock at higher
-                          character levels (
+                          {lockedFeatures.length > 1 ? "s" : ""} unlock at
+                          higher character levels (
                           {lockedFeatures.map((lf) => lf.level).join(", ")})
                         </div>
                       </div>
@@ -351,8 +416,9 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
       </div>
 
       <div style={styles.helpText}>
-        Note: All characters also have the base Witch / Wizard class automatically.
-        Choose a profession class to specialize your magical training.
+        Note: All characters also have the base Witch / Wizard class
+        automatically. Choose a profession class to specialize your magical
+        training.
         {selectedClass && (
           <span
             style={{

@@ -1,62 +1,17 @@
 export const gameSessionOptions = [
-  "One-Shot",
-  "Sunday - Knights",
-  "Sunday - Haunting",
-  "Monday - Haunting",
-  "Tuesday - Knights",
-  "Tuesday - Haunting",
-  "Wednesday - Haunting",
-  "Thursday - Knights",
-  "Thursday - Jaguaras",
-  "Friday - Knights",
-  "Friday - Haunting",
-  "Saturday - Haunting",
-  "Saturday - Knights AM",
-  "Saturday - Knights PM",
+  "Case File: Liminal Breach",
   "DEVELOPMENT",
 ];
 
 export const gameSessionGroups = {
-  haunting: [
-    "Sunday - Haunting",
-    "Monday - Haunting",
-    "Tuesday - Haunting",
-    "Wednesday - Haunting",
-    "Friday - Haunting",
-    "Saturday - Haunting",
+  liminalBreach: [
+    "Case File: Liminal Breach",
   ],
-  knights: [
-    "Sunday - Knights",
-    "Tuesday - Knights",
-    "Thursday - Knights",
-    "Friday - Knights",
-    "Saturday - Knights AM",
-    "Saturday - Knights PM",
-  ],
-  other: ["One-Shot", "Thursday - Jaguaras"],
   development: ["DEVELOPMENT"],
 };
 
 export const DISCORD_WEBHOOKS = {
-  "One-Shot": process.env.REACT_APP_DISCORD_WEBHOOK_ONE_SHOT,
-  "Sunday - Knights": process.env.REACT_APP_DISCORD_WEBHOOK_SUNDAY_KNIGHTS,
-  "Sunday - Haunting": process.env.REACT_APP_DISCORD_WEBHOOK_SUNDAY_HAUNTING,
-  "Monday - Haunting": process.env.REACT_APP_DISCORD_WEBHOOK_MONDAY_HAUNTING,
-  "Tuesday - Knights": process.env.REACT_APP_DISCORD_WEBHOOK_TUESDAY_KNIGHTS,
-  "Tuesday - Haunting": process.env.REACT_APP_DISCORD_WEBHOOK_TUESDAY_HAUNTING,
-  "Wednesday - Haunting":
-    process.env.REACT_APP_DISCORD_WEBHOOK_WEDNESDAY_HAUNTING,
-  "Thursday - Knights": process.env.REACT_APP_DISCORD_WEBHOOK_THURSDAY_KNIGHTS,
-  "Thursday - Jaguaras":
-    process.env.REACT_APP_DISCORD_WEBHOOK_THURSDAY_JAGUARAS,
-  "Friday - Knights": process.env.REACT_APP_DISCORD_WEBHOOK_FRIDAY_KNIGHTS,
-  "Friday - Haunting": process.env.REACT_APP_DISCORD_WEBHOOK_FRIDAY_HAUNTING,
-  "Saturday - Haunting":
-    process.env.REACT_APP_DISCORD_WEBHOOK_SATURDAY_HAUNTING,
-  "Saturday - Knights AM":
-    process.env.REACT_APP_DISCORD_WEBHOOK_SATURDAY_KNIGHTS_AM,
-  "Saturday - Knights PM":
-    process.env.REACT_APP_DISCORD_WEBHOOK_SATURDAY_KNIGHTS_PM,
+  "Case File: Liminal Breach": process.env.REACT_APP_DISCORD_WEBHOOK_LIMINAL_BREACH,
   DEVELOPMENT: process.env.REACT_APP_DISCORD_WEBHOOK_DEVELOPMENT,
   FALLBACK: process.env.REACT_APP_DISCORD_WEBHOOK_FALLBACK,
 };
