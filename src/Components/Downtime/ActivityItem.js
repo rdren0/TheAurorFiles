@@ -374,7 +374,7 @@ const ActivityItem = memo(
                             "Intelligence";
                           return `${spellAbility} (Spellcasting Ability) (${modStr})`;
                         } else if (skill === "muggleStudies") {
-                          return `Muggle Studies (${modStr})`;
+                          return `Muggle Integration (${modStr})`;
                         } else if (skill === "historyOfMagic") {
                           return `History of Magic (${modStr})`;
                         } else {
@@ -403,7 +403,7 @@ const ActivityItem = memo(
 
                         let displayName;
                         if (skill === "muggleStudies") {
-                          displayName = "Muggle Studies";
+                          displayName = "Muggle Integration";
                         } else if (skill === "historyOfMagic") {
                           displayName = "History of Magic";
                         } else if (skill === "spellcastingAbility") {
@@ -605,7 +605,7 @@ const ActivityItem = memo(
                               "Intelligence"
                             } (Spellcasting)`
                           : activity.selectedCheckSkill === "muggleStudies"
-                          ? "Muggle Studies"
+                          ? "Muggle Integration"
                           : activity.selectedCheckSkill === "historyOfMagic"
                           ? "History of Magic"
                           : activity.selectedCheckSkill}

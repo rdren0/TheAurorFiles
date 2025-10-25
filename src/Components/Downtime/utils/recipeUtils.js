@@ -157,7 +157,7 @@ export const handleRecipeDiceAssignment = (
 export const getSkillDisplayName = (skillName) => {
   const skillMappings = {
     survival: "Survival",
-    muggleStudies: "Muggle Studies",
+    muggleStudies: "Muggle Integration",
     historyOfMagic: "History of Magic",
     spellcastingAbility: "Spellcasting Ability",
     intelligence: "Intelligence",
@@ -235,7 +235,7 @@ export const validateRecipeActivity = (activity) => {
 export const initializeRecipeActivity = () => {
   return {
     activity:
-      "Create a New Recipe - Must complete three distinct checks across separate downtime slots: Survival Check, Cultural Research Check (Muggle Studies OR History of Magic), and Spellcasting Ability Check",
+      "Create a New Recipe - Must complete three distinct checks across separate downtime slots: Survival Check, Cultural Research Check (Muggle Integration OR History of Magic), and Spellcasting Ability Check",
     recipeName: "",
     selectedCheckType: "",
     selectedCheckSkill: "",

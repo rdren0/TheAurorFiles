@@ -2415,12 +2415,12 @@ export const subclassesData = {
           {
             name: "No Reservations",
             description:
-              "You are a devoted lover of Muggle cuisine. Gain proficiency in Muggle Studies. When Culinarian features require Survival (Wisdom) checks, you may use Muggle Studies (Intelligence) instead.",
+              "You are a devoted lover of Muggle cuisine. Gain proficiency in Muggle Integration. When Culinarian features require Survival (Wisdom) checks, you may use Muggle Integration (Intelligence) instead.",
             benefits: {
               skillProficiencies: [
                 {
                   type: "fixed",
-                  skills: ["Muggle Studies"],
+                  skills: ["Muggle Integration"],
                 },
               ],
               specialAbilities: [
@@ -2428,7 +2428,7 @@ export const subclassesData = {
                   name: "Worldly Cuisine",
                   type: "passive",
                   description:
-                    "Use Muggle Studies (Int) for Survival (Wis) in Culinarian features",
+                    "Use Muggle Integration (Int) for Survival (Wis) in Culinarian features",
                 },
               ],
             },
@@ -5426,7 +5426,7 @@ export const subclassesData = {
           {
             name: "Study Buddy",
             description:
-              "After 1 hour studying, automatically improve one subject grade by one category. Can help others with homework instead. Choose: Herbology or History of Magic or Investigation or Magical Theory or Muggle Studies to gain proficiency in (expertise if already proficient).",
+              "After 1 hour studying, automatically improve one subject grade by one category. Can help others with homework instead. Choose: Herbology or History of Magic or Investigation or Magical Theory or Muggle Integration to gain proficiency in (expertise if already proficient).",
             benefits: {
               skillProficiencies: [
                 {
@@ -5436,7 +5436,7 @@ export const subclassesData = {
                     "History of Magic",
                     "Investigation",
                     "Magical Theory",
-                    "Muggle Studies",
+                    "Muggle Integration",
                   ],
                   count: 1,
                   expertise: "if already proficient",

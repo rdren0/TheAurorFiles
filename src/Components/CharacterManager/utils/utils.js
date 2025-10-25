@@ -65,7 +65,7 @@ export const skillsByCastingStyle = {
     "Magical Creatures",
     "History of Magic",
     "Medicine",
-    "Muggle Studies",
+    "Muggle Integration",
     "Survival",
   ],
   "Vigor Caster": [
@@ -756,6 +756,7 @@ export const applyHeritageProficiencies = (
         character.innateHeritage
       ),
       innateHeritageSkills: [],
+      innateHeritageExpertise: [],
     };
   }
 
@@ -769,7 +770,11 @@ export const applyHeritageProficiencies = (
 
   const newHeritageSkills = checkForSkillProficiencies(heritage);
 
+  // Get expertise from heritage modifiers
+  const heritageExpertise = heritage.modifiers?.expertise || [];
+
   const choiceSkills = [];
+  const choiceExpertise = [];
   if (heritage.features && heritageChoices[heritageName]) {
     heritage.features.forEach((feature) => {
       if (feature.isChoice && feature.options) {
@@ -781,12 +786,18 @@ export const applyHeritageProficiencies = (
         if (selectedChoice) {
           const choiceSkillProfs = checkForSkillProficiencies(selectedChoice);
           choiceSkills.push(...choiceSkillProfs);
+
+          // Get expertise from choice
+          if (selectedChoice.expertise) {
+            choiceExpertise.push(...selectedChoice.expertise);
+          }
         }
       }
     });
   }
 
   const allHeritageSkills = [...newHeritageSkills, ...choiceSkills];
+  const allHeritageExpertise = [...heritageExpertise, ...choiceExpertise];
   const newSkillProficiencies = [
     ...cleanedSkillProficiencies,
     ...allHeritageSkills,
@@ -797,5 +808,6 @@ export const applyHeritageProficiencies = (
     innateHeritage: heritageName,
     skillProficiencies: [...new Set(newSkillProficiencies)],
     innateHeritageSkills: allHeritageSkills,
+    innateHeritageExpertise: allHeritageExpertise,
   };
 };

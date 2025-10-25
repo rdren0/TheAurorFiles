@@ -33,7 +33,7 @@ export const skillsByCastingStyle = {
     "Magical Creatures",
     "History of Magic",
     "Medicine",
-    "Muggle Studies",
+    "Muggle Integration",
     "Survival",
   ],
   "Vigor Caster": [
@@ -90,7 +90,7 @@ export const SUBCLASS_SKILL_NAMES = [
   "History of Magic",
   "Investigation",
   "Magical Theory",
-  "Muggle Studies",
+  "Muggle Integration",
 ];
 
 export const getAvailableSkillsForCastingStyle = (castingStyle) => {
@@ -106,7 +106,8 @@ export const hasSkillProficiency = (character, skill) => {
 export const hasSkillExpertise = (character, skill) => {
   const expertiseSkills =
     character.skill_expertise || character.skillExpertise || [];
-  return expertiseSkills.includes(skill);
+  const heritageExpertise = character.innateHeritageExpertise || [];
+  return expertiseSkills.includes(skill) || heritageExpertise.includes(skill);
 };
 
 const convertSkillDisplayNameToInternalName = (displayName) => {

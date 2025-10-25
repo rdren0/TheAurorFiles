@@ -742,6 +742,148 @@ export const heritageDescriptions = {
         musicalInstrumentProficiency: true,
         satyrTraits: true,
       },
+      other: {},
+    },
+    features: [
+      {
+        name: "Heritage Path",
+        description: "Choose your halfblood heritage focus",
+        isChoice: true,
+        options: [
+          {
+            name: "Magical Focus",
+            description:
+              "History of Magic expertise (double proficiency) + two skills from the list.",
+            skillProficiencies: ["History of Magic"],
+            expertise: ["History of Magic"],
+            bonusSkillChoices: [
+              "Acrobatics",
+              "Herbology",
+              "Magical Creatures",
+              "Potion-Making",
+              "Intimidation",
+            ],
+            bonusSkillCount: 2,
+          },
+          {
+            name: "Muggle Focus",
+            description:
+              "Muggle Integration expertise (double proficiency) + two skills from the list.",
+            skillProficiencies: ["Muggle Integration"],
+            expertise: ["Muggle Integration"],
+            bonusSkillChoices: [
+              "Athletics",
+              "Investigation",
+              "Medicine",
+              "Survival",
+              "Persuasion",
+            ],
+            bonusSkillCount: 2,
+          },
+        ],
+      },
+    ],
+  },
+
+  Muggleborn: {
+    description:
+      "First in the family to hold a wand. You read both the papers and the tabloids—and you know which one to believe.",
+    benefits: [
+      "You gain expertise in Muggle Integration (double proficiency bonus).",
+      "Tool Proficiency: Choose one—Disguise Kit, Navigator's Tools, Poisoner's Kit, Thieves' Tools, Cook's Utensils, or one Musical Instrument.",
+      "You have advantage on Muggle Integration checks to blend into Muggle society and explain Muggle culture/technology to wizards.",
+    ],
+    modifiers: {
+      abilityIncreases: [],
+      skillProficiencies: ["Muggle Integration"],
+      expertise: ["Muggle Integration"],
+      other: { muggleCultureAdvantage: true },
+    },
+    features: [
+      {
+        name: "Tool Proficiency",
+        description: "Choose a tool proficiency from your background",
+        isChoice: true,
+        options: [
+          {
+            name: "Disguise Kit",
+            description: "Gain proficiency with Disguise Kit",
+            toolProficiencies: ["Disguise Kit"],
+          },
+          {
+            name: "Navigator's Tools",
+            description: "Gain proficiency with Navigator's Tools",
+            toolProficiencies: ["Navigator's Tools"],
+          },
+          {
+            name: "Poisoner's Kit",
+            description: "Gain proficiency with Poisoner's Kit",
+            toolProficiencies: ["Poisoner's Kit"],
+          },
+          {
+            name: "Thieves' Tools",
+            description: "Gain proficiency with Thieves' Tools",
+            toolProficiencies: ["Thieves' Tools"],
+          },
+          {
+            name: "Cook's Utensils",
+            description: "Gain proficiency with Cook's Utensils",
+            toolProficiencies: ["Cook's Utensils"],
+          },
+          {
+            name: "Musical Instrument",
+            description: "Gain proficiency with one instrument",
+            toolProficiencies: ["Musical Instrument (Choice)"],
+          },
+        ],
+      },
+    ],
+  },
+
+  "Metamorph Magic": {
+    description:
+      "A rare metamorphmagus gift—change your face, your voice, your hair. Handy when the truth wears a different mask.",
+    benefits: [
+      "Ability Score Increase: Increase your Charisma by 1 (max 20).",
+      "Transform: At will, you can alter your appearance (height, weight, features, voice, hair, coloration). Your size category remains the same.",
+    ],
+    modifiers: {
+      abilityIncreases: [{ type: "fixed", ability: "charisma", amount: 1 }],
+      skillProficiencies: [],
+      expertise: [],
+      other: { metamorphTransform: true },
+    },
+    features: [],
+  },
+
+  Parseltongue: {
+    description:
+      "The hiss of secrets. You can commune with serpents—and they often have seen more than people think.",
+    benefits: [
+      "Ability Score Increase: Increase your Charisma by 1 (max 20).",
+      "Parselmouth: You speak Parseltongue and have advantage on Charisma checks made to influence snakes.",
+    ],
+    modifiers: {
+      abilityIncreases: [{ type: "fixed", ability: "charisma", amount: 1 }],
+      skillProficiencies: [],
+      expertise: [],
+      other: { parseltongue: true, snakeCharismaAdvantage: true },
+    },
+    features: [],
+  },
+
+  "Hex-Scarred": {
+    description:
+      "A brush with wild magic left a mark—subtle, uncanny, and not always polite. People say lights flicker when you enter.",
+    benefits: [
+      "Choose one: gain proficiency in Survival or Stealth.",
+      "Twist of Fate: Once per long rest, after seeing a roll but before the outcome is known, add or subtract 1d4 from a creature’s ability check, attack roll, or saving throw within 30 ft.",
+    ],
+    modifiers: {
+      abilityIncreases: [],
+      skillProficiencies: [],
+      expertise: [],
+      other: { twistOfFate: true },
     },
     features: [
       {

@@ -164,7 +164,7 @@ export const castingStyleData = {
       "Magical Creatures",
       "History of Magic",
       "Medicine",
-      "Muggle Studies",
+      "Muggle Integration",
       "Survival",
     ],
     keyFeatures: [

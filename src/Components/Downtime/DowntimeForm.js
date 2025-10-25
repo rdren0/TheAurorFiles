@@ -912,7 +912,7 @@ const DowntimeForm = ({
                           "Intelligence";
                         return `${spellAbility} (Spellcasting Ability) (${modStr})`;
                       } else if (skill === "muggleStudies") {
-                        return `Muggle Studies (${modStr})`;
+                        return `Muggle Integration (${modStr})`;
                       } else if (skill === "historyOfMagic") {
                         return `History of Magic (${modStr})`;
                       } else {
@@ -947,7 +947,7 @@ const DowntimeForm = ({
 
                       let displayName;
                       if (skill === "muggleStudies") {
-                        displayName = "Muggle Studies";
+                        displayName = "Muggle Integration";
                       } else if (skill === "historyOfMagic") {
                         displayName = "History of Magic";
                       } else if (skill === "spellcastingAbility") {

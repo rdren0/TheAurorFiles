@@ -73,13 +73,13 @@ const RecipeCookingSystem = ({ character, user, supabase }) => {
 
     const isProficient =
       skillProficiencies.includes("Survival") ||
-      skillProficiencies.includes("Muggle Studies") ||
+      skillProficiencies.includes("Muggle Integration") ||
       skillProficiencies.includes(skillName) ||
       isCulinarian;
 
     const hasExpertise =
       skillExpertise.includes("Survival") ||
-      skillExpertise.includes("Muggle Studies") ||
+      skillExpertise.includes("Muggle Integration") ||
       skillExpertise.includes(skillName);
 
     let skillBonus = 0;
@@ -137,7 +137,7 @@ const RecipeCookingSystem = ({ character, user, supabase }) => {
     let abilityName = "Wisdom";
 
     if (isCulinarian && hasNoReservations) {
-      skillName = "Muggle Studies";
+      skillName = "Muggle Integration";
       abilityName = "Intelligence";
     }
 
@@ -150,12 +150,12 @@ const RecipeCookingSystem = ({ character, user, supabase }) => {
 
     const isProficient =
       skillProficiencies.includes("Survival") ||
-      skillProficiencies.includes("Muggle Studies") ||
+      skillProficiencies.includes("Muggle Integration") ||
       isCulinarian;
 
     const hasExpertise =
       skillExpertise.includes("Survival") ||
-      skillExpertise.includes("Muggle Studies");
+      skillExpertise.includes("Muggle Integration");
 
     const proficiencyBonus = Math.ceil((currentCharacter?.level || 1) / 4) + 1;
 

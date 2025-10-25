@@ -543,7 +543,8 @@ const CharacterSheet = ({
         "History of Magic": "historyOfMagic",
         Investigation: "investigation",
         "Magical Theory": "magicalTheory",
-        "Muggle Studies": "muggleStudies",
+        "Muggle Integration": "muggleIntegration",
+        "Muggle Studies": "muggleIntegration", // Legacy support
         Insight: "insight",
         "Magical Creatures": "magicalCreatures",
         Medicine: "medicine",

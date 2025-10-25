@@ -232,7 +232,7 @@ export const getRecipeCheckDescription = (checkType) => {
     case "Survival":
       return "Roll Survival + Wisdom modifier to test practical cooking techniques and ingredient knowledge";
     case "Cultural Research":
-      return "Roll either Muggle Studies OR History of Magic + Intelligence modifier to research cultural food traditions and historical recipes";
+      return "Roll either Muggle Integration OR History of Magic + Intelligence modifier to research cultural food traditions and historical recipes";
     case "Spellcasting Ability":
       return "Roll with your Spellcasting Ability modifier to infuse magical properties into the recipe";
     default:

@@ -330,7 +330,7 @@ export const potions = {
       rarity: "uncommon",
       description: "Restores lost memories, advantage on knowledge checks",
       longDescription:
-        "When you drink this potion, lost memories are restored to you and you're able to recall more details than usual. You have advantage on Intelligence (Herbology), Intelligence (Magical Theory) and Intelligence (Muggle Studies) checks for 10 minutes.\n\nAntidote to: Forgetfulness Potion, obliviate",
+        "When you drink this potion, lost memories are restored to you and you're able to recall more details than usual. You have advantage on Intelligence (Herbology), Intelligence (Magical Theory) and Intelligence (Muggle Integration) checks for 10 minutes.\n\nAntidote to: Forgetfulness Potion, obliviate",
     },
     {
       name: "Murtlap Essence",
