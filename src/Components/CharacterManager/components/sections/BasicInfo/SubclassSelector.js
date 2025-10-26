@@ -28,14 +28,40 @@ const SubclassSelector = ({ character, onChange, disabled = false }) => {
       setLoading(true);
       try {
         if (isCustomClass) {
-          // Handle custom class subclasses from level_features
+          // Handle custom class subclasses
           const customSubclasses = [];
 
-          if (customClassData.level_features) {
+          // NEW FORMAT: Check for branches object
+          if (customClassData.branches) {
+            Object.entries(customClassData.branches).forEach(([branchName, branchData]) => {
+              if (!branchData.progression) return;
+
+              // Get the first level at which this branch appears
+              const levels = Object.keys(branchData.progression).map(Number).sort((a, b) => a - b);
+              const firstLevel = levels[0];
+
+              if (!firstLevel) return;
+
+              // Get initial features for this branch
+              const initialFeatures = branchData.progression[firstLevel] || [];
+
+              customSubclasses.push({
+                index: branchData.branchPath.toLowerCase().replace(/\s+/g, "_"),
+                name: branchData.branchPath,
+                level: firstLevel,
+                description: branchData.tagline || initialFeatures.map(f => f.name).join(", "),
+                features: initialFeatures,
+                isCustom: true,
+                branchData: branchData
+              });
+            });
+          }
+          // OLD FORMAT FALLBACK: Only use if class doesn't have new branches format
+          else if (customClassData.level_features) {
             customClassData.level_features.forEach((levelFeature) => {
               levelFeature.features.forEach((feature) => {
                 if (feature.options && feature.options.length > 0) {
-                  // This is a subclass/branch choice
+                  // This is a subclass/branch choice (old format)
                   feature.options.forEach((option) => {
                     customSubclasses.push({
                       index: option.name.toLowerCase().replace(/\s+/g, "_"),

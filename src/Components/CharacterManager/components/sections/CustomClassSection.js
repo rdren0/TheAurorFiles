@@ -10,8 +10,10 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
   const { theme } = useTheme();
   const styles = createBackgroundStyles(theme);
   const [expandedClasses, setExpandedClasses] = useState(new Set());
+  const [expandedFeatures, setExpandedFeatures] = useState(new Set());
 
   const selectedClass = character?.class || "";
+  const classFeatureChoices = character?.classFeatureChoices || {};
 
   // Get all custom classes except base Witch/Wizard
   const availableClasses = useMemo(() => {
@@ -68,7 +70,56 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
     });
   };
 
+  const toggleFeatureExpansion = (featureKey) => {
+    setExpandedFeatures((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(featureKey)) {
+        newSet.delete(featureKey);
+      } else {
+        newSet.add(featureKey);
+      }
+      return newSet;
+    });
+  };
+
+  const handleFeatureOptionChange = (featureName, optionName) => {
+    const newChoices = {
+      ...classFeatureChoices,
+      [featureName]: optionName,
+    };
+    onChange("classFeatureChoices", newChoices);
+  };
+
   const hasSelectedClass = selectedClass ? 1 : 0;
+
+  // Count feature choices for the selected class
+  const getFeatureChoiceCounts = (classData, characterLevel) => {
+    if (!classData?.level_features) return { required: 0, selected: 0 };
+
+    let required = 0;
+    let selected = 0;
+
+    classData.level_features.forEach((levelFeature) => {
+      if (levelFeature.level <= characterLevel) {
+        levelFeature.features.forEach((feature) => {
+          if (feature.options && feature.options.length > 0) {
+            required++;
+            if (classFeatureChoices[feature.name]) {
+              selected++;
+            }
+          }
+        });
+      }
+    });
+
+    return { required, selected };
+  };
+
+  const featureChoiceCounts = useMemo(() => {
+    if (!selectedClass) return { required: 0, selected: 0 };
+    const classData = getCustomClassDetails(selectedClass);
+    return getFeatureChoiceCounts(classData, character?.level || 1);
+  }, [selectedClass, classFeatureChoices, character?.level]);
 
   // Get features up to character level
   const getAccessibleFeatures = (classData, characterLevel) => {
@@ -88,6 +139,33 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
           ✓ Class selected:{" "}
           {availableClasses.find((cls) => cls.id === selectedClass)?.name ||
             selectedClass}
+          {featureChoiceCounts.required > 0 && (
+            <span
+              style={{
+                marginLeft: "12px",
+                padding: "4px 10px",
+                backgroundColor:
+                  featureChoiceCounts.selected === featureChoiceCounts.required
+                    ? `${theme.success}20`
+                    : `${theme.warning}20`,
+                borderRadius: "12px",
+                fontSize: "13px",
+                fontWeight: "600",
+                color:
+                  featureChoiceCounts.selected === featureChoiceCounts.required
+                    ? theme.success
+                    : theme.warning,
+                border: `1px solid ${
+                  featureChoiceCounts.selected === featureChoiceCounts.required
+                    ? theme.success
+                    : theme.warning
+                }50`,
+              }}
+            >
+              Feature Choices: {featureChoiceCounts.selected}/
+              {featureChoiceCounts.required}
+            </span>
+          )}
         </div>
       )}
 
@@ -297,90 +375,229 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
                         </div>
                     </div>
 
-                    {/* Accessible features - Card layout */}
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
-                        gap: "12px",
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {accessibleFeatures.map((levelFeature) =>
-                        levelFeature.features.map((feature, index) => (
+                    {/* Accessible features - Grouped by level */}
+                    <div style={{ marginBottom: "16px" }}>
+                      {accessibleFeatures.map((levelFeature, levelIndex) => (
+                        <div
+                          key={`level-${levelFeature.level}`}
+                          style={{
+                            marginBottom: levelIndex < accessibleFeatures.length - 1 ? "24px" : "0",
+                          }}
+                        >
+                          {/* Level Header */}
                           <div
-                            key={`level-${levelFeature.level}-${index}`}
                             style={{
-                              backgroundColor: isSelected
-                                ? theme.background
-                                : theme.backgroundAlt,
-                              border: `1px solid ${
-                                isSelected ? theme.success : theme.border
-                              }`,
-                              borderRadius: "8px",
-                              padding: "12px",
-                              transition: "transform 0.2s, box-shadow 0.2s",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.transform =
-                                "translateY(-2px)";
-                              e.currentTarget.style.boxShadow = `0 4px 12px ${theme.shadowColor}40`;
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.transform =
-                                "translateY(0)";
-                              e.currentTarget.style.boxShadow = "none";
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "12px",
+                              marginBottom: "12px",
+                              paddingBottom: "8px",
+                              borderBottom: `2px solid ${isSelected ? theme.success : theme.border}`,
                             }}
                           >
                             <div
                               style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                alignItems: "center",
-                                marginBottom: "8px",
+                                fontSize: "16px",
+                                fontWeight: "700",
+                                color: isSelected ? theme.success : theme.primary,
                               }}
                             >
-                              <strong
-                                style={{
-                                  color: isSelected
-                                    ? theme.success
-                                    : theme.text,
-                                  fontSize: "14px",
-                                  fontWeight: "600",
-                                }}
-                              >
-                                {feature.name}
-                              </strong>
-                              <span
+                              Level {levelFeature.level} Features
+                            </div>
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                fontWeight: "500",
+                                color: theme.textSecondary,
+                                padding: "2px 8px",
+                                backgroundColor: theme.surface,
+                                borderRadius: "12px",
+                                border: `1px solid ${theme.border}`,
+                              }}
+                            >
+                              {levelFeature.features.length} feature{levelFeature.features.length > 1 ? "s" : ""}
+                            </div>
+                          </div>
+
+                          {/* Features list */}
+                          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                            {levelFeature.features.map((feature, index) => (
+                              <div
+                                key={`level-${levelFeature.level}-${index}`}
                                 style={{
                                   backgroundColor: isSelected
-                                    ? theme.success
-                                    : theme.primary,
-                                  color: theme.background,
-                                  padding: "2px 8px",
-                                  borderRadius: "12px",
-                                  fontSize: "12px",
-                                  fontWeight: "500",
+                                    ? theme.background
+                                    : theme.backgroundAlt,
+                                  border: `1px solid ${
+                                    isSelected ? theme.success : theme.border
+                                  }`,
+                                  borderRadius: "8px",
+                                  padding: "14px",
                                 }}
                               >
-                                Lv {levelFeature.level}
-                              </span>
-                            </div>
-                            <p
-                              style={{
-                                color: isSelected
-                                  ? theme.text
-                                  : theme.textSecondary,
-                                fontSize: "13px",
-                                lineHeight: "1.5",
-                                margin: 0,
-                              }}
-                            >
-                              {feature.description}
-                            </p>
+                                <div
+                                  style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    alignItems: "flex-start",
+                                    marginBottom: "8px",
+                                  }}
+                                >
+                                  <strong
+                                    style={{
+                                      color: isSelected
+                                        ? theme.success
+                                        : theme.text,
+                                      fontSize: "14px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {feature.name}
+                                  </strong>
+                                </div>
+                                <p
+                                  style={{
+                                    color: isSelected
+                                      ? theme.text
+                                      : theme.textSecondary,
+                                    fontSize: "13px",
+                                    lineHeight: "1.5",
+                                    margin: 0,
+                                  }}
+                                >
+                                  {feature.description}
+                                </p>
+
+                                {/* Display feature options if they exist */}
+                                {feature.options && feature.options.length > 0 && (
+                                  <div
+                                    style={{
+                                      marginTop: "12px",
+                                      paddingTop: "12px",
+                                      borderTop: `1px solid ${
+                                        isSelected ? theme.border : theme.border + "80"
+                                      }`,
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        fontSize: "12px",
+                                        fontWeight: "600",
+                                        color: isSelected ? theme.success : theme.primary,
+                                        marginBottom: "8px",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <span>Choose one option:</span>
+                                      {classFeatureChoices[feature.name] && (
+                                        <span
+                                          style={{
+                                            fontSize: "11px",
+                                            fontWeight: "500",
+                                            color: theme.success,
+                                            backgroundColor: `${theme.success}15`,
+                                            padding: "2px 8px",
+                                            borderRadius: "8px",
+                                            border: `1px solid ${theme.success}50`,
+                                          }}
+                                        >
+                                          ✓ Selected
+                                        </span>
+                                      )}
+                                    </div>
+                                    {feature.options.map((option, optIndex) => {
+                                      const featureKey = `${classData.id}-${levelFeature.level}-${feature.name}`;
+                                      const isFeatureExpanded = expandedFeatures.has(featureKey + '-' + optIndex);
+                                      const isOptionSelected = classFeatureChoices[feature.name] === option.name;
+
+                                      return (
+                                        <div
+                                          key={optIndex}
+                                          style={{
+                                            marginBottom: "8px",
+                                            backgroundColor: isOptionSelected
+                                              ? `${theme.success}10`
+                                              : isSelected
+                                              ? theme.backgroundAlt
+                                              : theme.background,
+                                            borderRadius: "6px",
+                                            border: `2px solid ${
+                                              isOptionSelected
+                                                ? theme.success
+                                                : theme.border
+                                            }`,
+                                            overflow: "hidden",
+                                            transition: "all 0.2s",
+                                          }}
+                                        >
+                                          <label
+                                            style={{
+                                              display: "flex",
+                                              alignItems: "flex-start",
+                                              padding: "10px",
+                                              cursor: disabled ? "not-allowed" : "pointer",
+                                            }}
+                                            onClick={(e) => {
+                                              if (e.target.tagName !== "INPUT") {
+                                                handleFeatureOptionChange(feature.name, option.name);
+                                              }
+                                            }}
+                                          >
+                                            <input
+                                              type="radio"
+                                              name={`${classData.id}-${feature.name}`}
+                                              value={option.name}
+                                              checked={isOptionSelected}
+                                              onChange={() => handleFeatureOptionChange(feature.name, option.name)}
+                                              disabled={disabled}
+                                              style={{
+                                                width: "18px",
+                                                height: "18px",
+                                                marginRight: "10px",
+                                                marginTop: "2px",
+                                                cursor: disabled ? "not-allowed" : "pointer",
+                                                accentColor: theme.success,
+                                                flexShrink: 0,
+                                              }}
+                                            />
+                                            <div style={{ flex: 1 }}>
+                                              <div
+                                                style={{
+                                                  fontSize: "13px",
+                                                  fontWeight: "600",
+                                                  color: isOptionSelected
+                                                    ? theme.success
+                                                    : isSelected
+                                                    ? theme.text
+                                                    : theme.primary,
+                                                  marginBottom: "4px",
+                                                }}
+                                              >
+                                                {option.name}
+                                              </div>
+                                              <div
+                                                style={{
+                                                  fontSize: "12px",
+                                                  color: theme.textSecondary,
+                                                  lineHeight: "1.4",
+                                                }}
+                                              >
+                                                {option.description}
+                                              </div>
+                                            </div>
+                                          </label>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
                           </div>
-                        ))
-                      )}
+                        </div>
+                      ))}
                     </div>
 
                     {/* Locked features */}
@@ -417,7 +634,7 @@ const CustomClassSection = ({ character, onChange, disabled = false }) => {
 
       <div style={styles.helpText}>
         Note: All characters also have the base Witch / Wizard class
-        automatically. Choose a profession class to specialize your magical
+        automatically. Choose a subclass to specialize your magical
         training.
         {selectedClass && (
           <span

@@ -238,6 +238,7 @@ export const createCharacterGalleryStyles = (theme) => ({
     overflow: "hidden",
     transition: "all 0.2s ease",
     cursor: "pointer",
+    padding: "12px",
   },
   characterCardHover: {
     transform: "translateY(-4px)",
@@ -246,17 +247,21 @@ export const createCharacterGalleryStyles = (theme) => ({
   },
   imageContainer: {
     position: "relative",
-    height: "300px",
-    width: "100%",
+    height: "240px",
+    width: "70%",
+    margin: "0 auto",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    borderRadius: "12px",
+    backgroundColor: theme.background,
   },
   characterImage: {
     width: "100%",
     height: "100%",
-    objectFit: "cover",
+    objectFit: "contain",
+    borderRadius: "12px",
   },
   imagePlaceholder: {
     width: "100%",
@@ -273,7 +278,7 @@ export const createCharacterGalleryStyles = (theme) => ({
     marginTop: "8px",
   },
   characterInfo: {
-    padding: "16px",
+    padding: "16px 16px 0 16px",
   },
   characterName: {
     fontSize: "18px",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useTheme } from "../../../../contexts/ThemeContext";
 import { createBackgroundStyles } from "../../../../styles/masterStyles";
 import {
@@ -25,27 +25,57 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
       if (classInfo.index === "base_witch_wizard") return;
 
       const classData = getCustomClassDetails(classInfo.index);
-      if (!classData || !classData.level_features) return;
+      if (!classData) return;
 
-      classData.level_features.forEach((levelFeature) => {
-        levelFeature.features.forEach((feature) => {
-          if (feature.options && feature.options.length > 0) {
-            // This is a subclass/specialization choice
-            feature.options.forEach((option) => {
-              subclasses.push({
-                id: option.name.toLowerCase().replace(/\s+/g, "_"),
-                name: option.name,
-                level: levelFeature.level,
-                description: feature.description || "",
-                features: option.features || [],
-                parentFeatureName: feature.name,
-                className: classData.name,
-                classId: classData.id,
-              });
-            });
-          }
+      // NEW FORMAT: Check for branches object
+      if (classData.branches) {
+        Object.entries(classData.branches).forEach(([branchName, branchData]) => {
+          if (!branchData.progression) return;
+
+          // Get the first level at which this branch appears
+          const levels = Object.keys(branchData.progression).map(Number).sort((a, b) => a - b);
+          const firstLevel = levels[0];
+
+          if (!firstLevel) return;
+
+          // Get initial features for this branch
+          const initialFeatures = branchData.progression[firstLevel] || [];
+
+          subclasses.push({
+            id: branchData.branchPath.toLowerCase().replace(/\s+/g, "_"),
+            name: branchData.branchPath,
+            level: firstLevel,
+            description: branchData.tagline || "",
+            features: initialFeatures,
+            parentFeatureName: "Branch of Study", // Generic name
+            className: classData.name,
+            classId: classData.id,
+            branchData: branchData, // Store full branch data for future use
+          });
         });
-      });
+      }
+      // OLD FORMAT FALLBACK: Only use if class doesn't have new branches format
+      else if (classData.level_features) {
+        classData.level_features.forEach((levelFeature) => {
+          levelFeature.features.forEach((feature) => {
+            if (feature.options && feature.options.length > 0) {
+              // This is a subclass/specialization choice (old format)
+              feature.options.forEach((option) => {
+                subclasses.push({
+                  id: option.name.toLowerCase().replace(/\s+/g, "_"),
+                  name: option.name,
+                  level: levelFeature.level,
+                  description: feature.description || "",
+                  features: option.features || [],
+                  parentFeatureName: feature.name,
+                  className: classData.name,
+                  classId: classData.id,
+                });
+              });
+            }
+          });
+        });
+      }
     });
 
     return subclasses;
@@ -142,6 +172,42 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
     return getCustomClassDetails(characterClass);
   }, [characterClass]);
 
+  // Helper function to get all progression levels for a branch
+  const getBranchProgression = (subclass) => {
+    if (!subclass) return [];
+
+    if (!subclass.branchData || !subclass.branchData.progression) {
+      // Old format - just return the initial features
+      return [
+        {
+          level: subclass.level || 1,
+          features: subclass.features || [],
+          isAccessible: (subclass.level || 1) <= characterLevel,
+        },
+      ];
+    }
+
+    // New format - get all progression levels
+    const progression = [];
+    const levels = Object.keys(subclass.branchData.progression)
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    levels.forEach((level) => {
+      const features = subclass.branchData.progression[level] || [];
+      // Only add levels that have features
+      if (features.length > 0) {
+        progression.push({
+          level: level,
+          features: features,
+          isAccessible: level <= characterLevel,
+        });
+      }
+    });
+
+    return progression;
+  };
+
   const minSubclassLevel =
     accessibleSubclasses.length > 0
       ? Math.min(...accessibleSubclasses.map((sc) => sc.level))
@@ -153,7 +219,7 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
       <div style={styles.fieldContainer}>
         <h3 style={styles.skillsHeader}>Class Specialization</h3>
         <div style={styles.helpText}>
-          Please select a profession class first to view available
+          Please select a subclass first to view available
           specializations.
         </div>
       </div>
@@ -334,35 +400,130 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                             : styles.featDescription
                         }
                       >
-                        {subclass.features.map((feature, index) => (
-                          <div
-                            key={index}
-                            style={
-                              isSelected
-                                ? styles.singleFeatureSelected
-                                : styles.singleFeature
-                            }
-                          >
-                            <strong
-                              style={
-                                isSelected
-                                  ? styles.featureNameSelected
-                                  : styles.featureName
-                              }
-                            >
-                              {feature.name}:
-                            </strong>
-                            <p
-                              style={
-                                isSelected
-                                  ? styles.featureDescriptionSelected
-                                  : styles.featureDescription
-                              }
-                            >
-                              {feature.description}
-                            </p>
+                        {/* Display full progression tree */}
+                        {getBranchProgression(subclass).length > 0 ? (
+                          getBranchProgression(subclass).map(
+                          (progressionLevel, progIndex) => (
+                            <div key={`prog-${progIndex}`}>
+                              {/* Level header within the branch */}
+                              <div
+                                style={{
+                                  fontSize: "13px",
+                                  fontWeight: "700",
+                                  color: progressionLevel.isAccessible
+                                    ? theme.primary
+                                    : theme.textSecondary,
+                                  marginTop: progIndex > 0 ? "16px" : "0",
+                                  marginBottom: "8px",
+                                  paddingBottom: "4px",
+                                  borderBottom: `1px solid ${
+                                    progressionLevel.isAccessible
+                                      ? theme.border
+                                      : theme.border + "50"
+                                  }`,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "8px",
+                                  opacity: progressionLevel.isAccessible
+                                    ? 1
+                                    : 0.6,
+                                }}
+                              >
+                                {!progressionLevel.isAccessible && "🔒 "}
+                                Level {progressionLevel.level} Features
+                                {!progressionLevel.isAccessible && (
+                                  <span
+                                    style={{
+                                      fontSize: "11px",
+                                      fontWeight: "500",
+                                      padding: "2px 6px",
+                                      backgroundColor: `${theme.warning}15`,
+                                      borderRadius: "8px",
+                                      border: `1px solid ${theme.warning}50`,
+                                      color: theme.warning,
+                                    }}
+                                  >
+                                    Unlocks in{" "}
+                                    {progressionLevel.level - characterLevel}{" "}
+                                    level
+                                    {progressionLevel.level - characterLevel > 1
+                                      ? "s"
+                                      : ""}
+                                  </span>
+                                )}
+                                {progressionLevel.isAccessible &&
+                                  progressionLevel.level === characterLevel && (
+                                    <span
+                                      style={{
+                                        fontSize: "11px",
+                                        fontWeight: "600",
+                                        color: theme.success,
+                                        padding: "2px 8px",
+                                        backgroundColor: `${theme.success}15`,
+                                        borderRadius: "8px",
+                                        border: `1px solid ${theme.success}50`,
+                                      }}
+                                    >
+                                      ✓ CURRENT
+                                    </span>
+                                  )}
+                              </div>
+
+                              {/* Features for this level */}
+                              {progressionLevel.features.map(
+                                (feature, featureIndex) => (
+                                  <div
+                                    key={featureIndex}
+                                    style={{
+                                      ...(isSelected
+                                        ? styles.singleFeatureSelected
+                                        : styles.singleFeature),
+                                      opacity: progressionLevel.isAccessible
+                                        ? 1
+                                        : 0.5,
+                                      backgroundColor: progressionLevel.isAccessible
+                                        ? undefined
+                                        : `${theme.surface}80`,
+                                      border: progressionLevel.isAccessible
+                                        ? undefined
+                                        : `1px dashed ${theme.border}`,
+                                    }}
+                                  >
+                                    <strong
+                                      style={{
+                                        ...(isSelected
+                                          ? styles.featureNameSelected
+                                          : styles.featureName),
+                                        color: progressionLevel.isAccessible
+                                          ? undefined
+                                          : theme.textSecondary,
+                                      }}
+                                    >
+                                      {feature.name}:
+                                    </strong>
+                                    <p
+                                      style={{
+                                        ...(isSelected
+                                          ? styles.featureDescriptionSelected
+                                          : styles.featureDescription),
+                                        color: progressionLevel.isAccessible
+                                          ? undefined
+                                          : theme.textSecondary,
+                                      }}
+                                    >
+                                      {feature.description}
+                                    </p>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )
+                        )
+                        ) : (
+                          <div style={{ padding: "12px", color: theme.textSecondary, fontStyle: "italic" }}>
+                            No features available for this specialization.
                           </div>
-                        ))}
+                        )}
                       </div>
                     )}
                   </div>
@@ -469,7 +630,7 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
 
       <div style={styles.helpText}>
         Note: Specialization is optional and represents your character's focused
-        training path within their chosen profession.
+        training path within their chosen subclass.
         {selectedSubclass && (
           <span
             style={{

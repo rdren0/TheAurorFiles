@@ -662,7 +662,6 @@ const HomePage = ({ user, customUsername, hasCharacters }) => {
           </p>
         )}
 
-
         {hasCharacters && (
           <div style={styles.featureGrid}>
             <div
