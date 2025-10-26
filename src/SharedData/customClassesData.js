@@ -194,8 +194,8 @@ export const customClassesData = {
     },
   },
 
-  profession_healer_alchemist: {
-    id: "profession_healer_alchemist",
+  healer_alchemist: {
+    id: "healer_alchemist",
     type: "Cleric",
     name: "Healer-Alchemist",
     description:
@@ -305,6 +305,7 @@ export const customClassesData = {
             options: [
               {
                 name: "Medicinal Healer",
+                branchPath: "Medicinal Healer",
                 tagline: "Where compassion meets craft.",
                 features: [
                   {
@@ -321,6 +322,7 @@ export const customClassesData = {
               },
               {
                 name: "Forensic Alchemist",
+                branchPath: "Forensic Alchemist",
                 tagline: "Every crime leaves a trace.",
                 features: [
                   {
@@ -337,6 +339,7 @@ export const customClassesData = {
               },
               {
                 name: "Battle Chemist",
+                branchPath: "Battle Chemist",
                 tagline: "Brew fast, throw faster.",
                 features: [
                   {
@@ -403,19 +406,23 @@ export const customClassesData = {
           {
             name: "Discipline Feature (5th)",
             description: "Your chosen Discipline grants an additional benefit.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Medicinal Healer — Revitalizing Surge",
+                requiresBranch: "Medicinal Healer",
                 description:
                   "When you heal a creature to its maximum hit points, it gains advantage on its next attack roll or saving throw made within 1 minute.",
               },
               {
                 name: "Forensic Alchemist — Perfect Solvent",
+                requiresBranch: "Forensic Alchemist",
                 description:
                   "Spend 1 BP to dissolve or neutralize a single magical adhesive, alchemical snare, or curse residue you can touch without triggering it.",
               },
               {
                 name: "Battle Chemist — Controlled Detonation",
+                requiresBranch: "Battle Chemist",
                 description:
                   "When you use Volatile Flask, you can exclude a number of creatures from the effect equal to your spellcasting ability modifier (minimum 1).",
               },
@@ -474,19 +481,23 @@ export const customClassesData = {
           {
             name: "Discipline Feature (9th)",
             description: "Your Discipline grants a powerful feature.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Medicinal Healer — Mass Triage",
+                requiresBranch: "Medicinal Healer",
                 description:
                   "When you cast a healing spell of 3rd level or higher, choose a number of creatures within 30 ft equal to your Wisdom or Intelligence modifier (your choice). Each regains hit points equal to your proficiency bonus + your spellcasting modifier.",
               },
               {
                 name: "Forensic Alchemist — Arcane Autopsy",
+                requiresBranch: "Forensic Alchemist",
                 description:
                   "Spend 2 BP and 1 hour examining a creature that died within the past week to learn: exact cause of death, any spells cast on it in the last hour before death, and a 30-second glimpse of its final memories.",
               },
               {
                 name: "Battle Chemist — Volatile Saturation",
+                requiresBranch: "Battle Chemist",
                 description:
                   "Your Volatile Flask affects a 10-ft radius and deals 4d6 damage. The area becomes hazardous terrain for 1 minute; a creature entering or starting its turn there takes 1d6 of the flask's damage type (Dex save halves, using your spell save DC).",
               },
@@ -535,19 +546,23 @@ export const customClassesData = {
           {
             name: "Discipline Feature (13th)",
             description: "Your Discipline reaches expert tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Medicinal Healer — Life Ward",
+                requiresBranch: "Medicinal Healer",
                 description:
                   "When a creature you can see within 30 ft would be reduced to 0 hit points, you can use your reaction and spend 3 BP to leave it at 1 hit point and grant it temporary hit points equal to your Healer-Alchemist level + your spellcasting modifier.",
               },
               {
                 name: "Forensic Alchemist — Retrocognition",
+                requiresBranch: "Forensic Alchemist",
                 description:
                   "Spend 3 BP and 10 minutes to witness a ghostly echo of events that occurred in your current location within the past 24 hours, up to 10 minutes of activity. This reveals sights and muffled sounds but not secrets warded by powerful magic (GM's call).",
               },
               {
                 name: "Battle Chemist — Adaptive Catalyst",
+                requiresBranch: "Battle Chemist",
                 description:
                   "When you use Volatile Flask, choose acid, fire, cold, or lightning damage. Creatures that fail the save are also affected for 1 minute: acid (corroded, −1 AC), fire (burning, 1d4 ongoing at start of turn), cold (slowed, −10 ft speed), or lightning (shocked, can't take reactions). Affected creatures can repeat the save at the end of each of their turns, ending the effect on a success.",
               },
@@ -591,19 +606,23 @@ export const customClassesData = {
           {
             name: "Discipline Feature (17th)",
             description: "Your Discipline reaches master tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Medicinal Healer — Resurrection Elixir",
+                requiresBranch: "Medicinal Healer",
                 description:
                   "During a long rest, you can spend 10 BP and 300 gp in reagents to create a special elixir. If administered to a creature that died within the past 10 days, it returns to life as per *Raise Dead* (no slot required). The elixir lasts 7 days. You can have only one such elixir at a time.",
               },
               {
                 name: "Forensic Alchemist — Perfect Analysis",
+                requiresBranch: "Forensic Alchemist",
                 description:
                   "Chemical Forensics no longer costs BP and works on samples up to 1 year old. You automatically succeed on checks to identify potions, poisons, and mundane alchemical substances. Once per long rest, you can replicate *Zone of Truth* (spell save DC equals your own) without expending a spell slot.",
               },
               {
                 name: "Battle Chemist — Alchemical Arsenal",
+                requiresBranch: "Battle Chemist",
                 description:
                   "As an action, spend 5 BP to unleash an alchemical barrage. Choose up to three points within 60 ft. At each point, a Volatile Flask detonates (10-ft radius) using your current Volatile Flask damage and save rules. You can choose damage type separately for each point.",
               },
@@ -655,8 +674,8 @@ export const customClassesData = {
     },
   },
 
-  profession_spellwright: {
-    id: "profession_spellwright",
+  spellwright: {
+    id: "spellwright",
     name: "Spellwright",
     type: "Artificer",
     description:
@@ -780,6 +799,7 @@ export const customClassesData = {
             options: [
               {
                 name: "Runesmith",
+                branchPath: "Runesmith",
                 features: [
                   {
                     name: "Weapon Runes",
@@ -795,6 +815,7 @@ export const customClassesData = {
               },
               {
                 name: "Animaturgist",
+                branchPath: "Animaturgist",
                 features: [
                   {
                     name: "Construct Companion",
@@ -810,6 +831,7 @@ export const customClassesData = {
               },
               {
                 name: "Thaumaturgic Engineer",
+                branchPath: "Thaumaturgic Engineer",
                 features: [
                   {
                     name: "Arcane Capacitor",
@@ -825,6 +847,7 @@ export const customClassesData = {
               },
               {
                 name: "Enchanter",
+                branchPath: "Enchanter",
                 features: [
                   {
                     name: "Emotion Resonance",
@@ -880,24 +903,29 @@ export const customClassesData = {
           {
             name: "Branch Feature (5th)",
             description: "Your Branch grants a new feature.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Runesmith — Overloaded Strike",
+                requiresBranch: "Runesmith",
                 description:
                   "When you hit with a runed weapon, you can expend a spell slot to deal +2d8 elemental damage of the rune's type (+1d8 per slot level above 1st).",
               },
               {
                 name: "Animaturgist — Modular Upgrade",
+                requiresBranch: "Animaturgist",
                 description:
                   "Add one module to your construct: flight (30 ft), swim (30 ft), or arcane discharge (ranged spell attack, 30/120 ft, 1d8 force). You can swap modules over a long rest.",
               },
               {
                 name: "Thaumaturgic Engineer — Ley Pulse",
+                requiresBranch: "Thaumaturgic Engineer",
                 description:
                   "When you trigger Arcane Capacitor, you may instead emit a supportive pulse: allies within 10 ft gain temporary HP equal to your Intelligence modifier and +10 ft speed until the start of your next turn.",
               },
               {
                 name: "Enchanter — Resonant Feedback",
+                requiresBranch: "Enchanter",
                 description:
                   "When a creature benefiting from your Charm Matrix scores a critical hit or succeeds on a saving throw, you may either regain 1d4 HP or recover one 1st-level spell slot (once per turn).",
               },
@@ -926,24 +954,29 @@ export const customClassesData = {
           {
             name: "Branch Feature (7th)",
             description: "Your Branch improves.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Runesmith — Layered Inscriptions",
+                requiresBranch: "Runesmith",
                 description:
                   "A single item can hold up to two different runes at once. Activating both in the same turn requires a bonus action and can occur once per turn.",
               },
               {
                 name: "Animaturgist — Swarm Protocol",
+                requiresBranch: "Animaturgist",
                 description:
                   "You can maintain up to two Tiny constructs simultaneously (or one Small construct that uses the Steel Defender-style stat template). Only one construct can benefit from a Spell Design at a time.",
               },
               {
                 name: "Thaumaturgic Engineer — Overcharge Matrix",
+                requiresBranch: "Thaumaturgic Engineer",
                 description:
                   "When releasing Arcane Capacitor, you may expend a spell slot: increase the cone to 30 ft and add +2d8 force damage per slot level.",
               },
               {
                 name: "Enchanter — Sympathetic Resonance",
+                requiresBranch: "Enchanter",
                 description:
                   "When an ally affected by your Emotion Resonance deals damage, they regain HP equal to your Intelligence modifier (once per turn). Your Charm Matrix radius increases to 20 ft.",
               },
@@ -992,24 +1025,29 @@ export const customClassesData = {
           {
             name: "Branch Feature (11th)",
             description: "Your Branch reaches expert tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Runesmith — Explosive Runes",
+                requiresBranch: "Runesmith",
                 description:
                   "As a bonus action, detonate one rune inscribed on a weapon or surface to force creatures in a 15-ft radius to make a Dexterity save. On a failure they take 6d6 damage of the rune's type, or half on a success. The detonated rune is removed and can be re-inscribed during a short rest.",
               },
               {
                 name: "Animaturgist — Hivemind Coordination",
+                requiresBranch: "Animaturgist",
                 description:
                   "When one of your constructs hits a creature, other constructs you control have advantage on attacks against that creature until the end of your turn. You can also see and hear through any of your constructs while they are within 1 mile (no action required).",
               },
               {
                 name: "Thaumaturgic Engineer — Ley Amplifier",
+                requiresBranch: "Thaumaturgic Engineer",
                 description:
                   "Once per short rest, when you cast a spell, you can treat it as if cast using a spell slot one level higher (to a maximum of 5th-level spell slot effects).",
               },
               {
                 name: "Enchanter — Grand Charm",
+                requiresBranch: "Enchanter",
                 description:
                   "Creatures have disadvantage on saving throws against your enchantment spells. When you cast an enchantment spell that targets a creature, you may grant one ally within your Charm Matrix a mirrored secondary benefit if applicable (e.g., inspiration-like +1d4 on one roll within 1 minute).",
               },
@@ -1053,24 +1091,29 @@ export const customClassesData = {
           {
             name: "Branch Feature (15th)",
             description: "Your Branch reaches master tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Runesmith — Mythic Inscription",
+                requiresBranch: "Runesmith",
                 description:
                   "Over 24 hours, inscribe a mythic rune onto one weapon or armor you touch. While inscribed: weapons gain +2 to attack and damage and deal +2d6 of the rune's type; armor grants +2 AC and resistance to one damage type you choose when inscribing. You may have only one Mythic Inscription at a time.",
               },
               {
                 name: "Animaturgist — Apex Construct",
+                requiresBranch: "Animaturgist",
                 description:
                   "Upgrade one construct to a powerful form (Medium; uses enhanced Steel Defender-style stat template). It gains proficiency bonus to AC/attacks/saves, HP equal to twice your level + Intelligence modifier, and can cast one 3rd-level spell you know once per long rest (using your spell DC).",
               },
               {
                 name: "Thaumaturgic Engineer — Perpetual Engine",
+                requiresBranch: "Thaumaturgic Engineer",
                 description:
                   "When you roll initiative, regain one expended spell slot of 3rd level or lower. You also have advantage on Constitution saving throws to maintain concentration.",
               },
               {
                 name: "Enchanter — Aura of Empowerment",
+                requiresBranch: "Enchanter",
                 description:
                   "Your Charm Matrix becomes a 30-ft aura. Allies in the aura add your Intelligence modifier to spell damage rolls and gain +1 to spell attack rolls.",
               },
@@ -1145,71 +1188,63 @@ export const customClassesData = {
     },
   },
 
-  profession_naturalist: {
-    id: "profession_naturalist",
+  naturalist: {
+    id: "naturalist",
     name: "Naturalist",
     type: "Druid",
     description:
-      "Naturalists are experts in living magic—flora, fauna, and the ley-ecology that binds them. They heal, wrangle, and weaponize the natural world through field research, herbology, and magizoology.",
+      "Naturalists are experts in dangerous magical flora and fauna—the kind that kills, poisons, or drives men mad. They work the dark edges of magizoology: tracking werewolf packs through urban sprawl, harvesting venom from illegal Acromantula farms, or investigating when magical creatures start turning up dead. Part forensic expert, part beast wrangler, part black market supplier—they know that nature, magical or not, is rarely kind.",
     hit_die: "d8",
-    primary_abilities: ["Wisdom"],
+    primary_abilities: ["Wisdom", "Constitution"],
     saving_throws: ["Wisdom", "Intelligence"],
-    armor_proficiencies: ["Light Armor"],
+    armor_proficiencies: ["Light Armor", "Dragon Hide"],
     weapon_proficiencies: ["Wands", "Daggers", "Quarterstaffs"],
-    tool_proficiencies: ["Herbalism Kit"],
+    tool_proficiencies: ["Herbalism Kit", "Poisoner's Kit"],
     skill_choices: {
-      choose: 1,
+      choose: 2,
       options: [
         "Nature",
         "Animal Handling",
         "Medicine",
         "Survival",
-        "Arcana",
         "Investigation",
         "Perception",
       ],
     },
     spellcasting: {
       progression_type: "augmented",
-      casting_ability_choice: ["Wisdom"],
+      casting_ability: "Wisdom",
       notes:
-        "Naturalist levels do not grant additional spell slots. They add themed spells and techniques fueled by Field Manifestation and Living Reagents.",
+        "Naturalists enhance base magic with creature abilities and deadly plants. They don't gain extra slots but add specialized nature magic.",
       bonus_spells: {
-        cantrips: ["Druidcraft", "Guidance"],
-        level_1_to_3: [
-          "Speak with Animals",
-          "Animal Friendship",
-          "Entangle",
-          "Goodberry",
-          "Beast Sense",
-          "Lesser Restoration",
-          "Spike Growth",
-          "Plant Growth",
-          "Conjure Animals",
-        ],
+        cantrips: ["Thorn Whip", "Poison Spray"],
+        1: ["Beast Speech", "Creature Command", "Devil's Snare", "Blood Replenisher"],
+        2: ["Beast Sight", "Antivenom", "Venomous Tentacula"],
+        3: ["Fungal Bloom", "Pack Summons"],
       },
     },
     class_resources: [
       {
         name: "Field Manifestation",
-        uses_formula: "proficiency_bonus per short rest",
-        duration: "10 minutes (can be ended early as a bonus action)",
-        recharge: "Short Rest",
+        uses_formula: "proficiency_bonus",
+        recovery: "short rest",
+        duration: "10 minutes",
         modes: [
-          "Embody Traits: Choose one natural trait you have documented (two traits at level 5; three traits at level 13). Examples: climb speed equal to your speed, darkvision 60 ft, keen smell (advantage on Perception relying on smell), resistance to poison, swim speed equal to your speed, water breathing, tremorsense 10 ft.",
-          "Manifest Companion: Summon a Primal Companion (beast/plant spirit) that uses a Naturalist Primal Companion stat block scaling with your level and proficiency bonus. It acts on your initiative, obeys your commands, and vanishes at 0 HP or when the effect ends.",
+          "Beast Traits: Adopt abilities from creatures you've studied (werewolf regeneration, Acromantula climb, Thestral death sight)",
+          "Manifest Companion: Summon a magical creature ally (uses Naturalist Companion stat block). It obeys without question—you've earned its respect or fear.",
         ],
       },
       {
         name: "Living Reagents",
-        uses_formula:
-          "proficiency_bonus + Wisdom_mod (minimum proficiency_bonus) per long rest",
-        recharge: "Long Rest",
-        range: "30 ft (touch if you lack line of sight)",
+        uses_formula: "proficiency_bonus + Wisdom_mod",
+        recovery: "long rest",
+        description:
+          "Vials of venom, spores, and worse things. The Ministry would arrest you for half of what's in your kit.",
         spend_examples: [
-          "Vital Tincture: As a bonus action, a creature regains 1d6 + Wisdom_mod HP.",
-          "Antitoxin Draught: A creature gains +1d4 to its next saving throw against poison or disease within 1 minute.",
-          "Catalytic Infusion: Your next spell cast this turn adds +1d4 to one damage or healing roll.",
+          "Healing Draught: Restore 1d6 + WIS HP (tastes like blood)",
+          "Antitoxin: +1d4 to saves vs poison/disease",
+          "Catalyst Venom: Next spell adds +1d4 poison damage",
+          "Paralytic Spores: Target must save or be paralyzed 1 round",
         ],
       },
     ],
@@ -1255,50 +1290,59 @@ export const customClassesData = {
           {
             name: "Branch of Study",
             description:
-              "Choose Herbology, Zoology, or Mycology. You gain its 3rd-level features now and additional benefits at level 5.",
+              "Choose your specialization in the dark edges of nature magic: Herbology, Zoology, or Mycology.",
             options: [
               {
-                name: "Branch of Herbology",
+                name: "Herbology",
+                branchPath: "Herbology",
+                description:
+                  "Specialist in magical plants—the dangerous kind the Ministry regulates",
                 features: [
                   {
-                    name: "Bonus Spells (Herbology)",
+                    name: "Devil's Snare Expert",
                     description:
-                      "Entangle and Barkskin are always prepared and don't count against your limit.",
+                      "You have advantage on saves against plant-based effects and can identify plant-based poisons by taste. You gain immunity to poison damage from plant sources.",
                   },
                   {
-                    name: "Verdant Surge",
+                    name: "Venomous Cultivation",
                     description:
-                      "When you cast a spell that creates/manipulates plants or terrain, choose one: (a) one ally you can see regains 1d8 + WIS HP, or (b) one creature affected by the spell must succeed on a STR save (DC = 8 + PB + WIS) or become restrained by roots until the start of your next turn.",
+                      "You can cultivate dangerous plants. During a long rest, you can prepare one plant-based poison (uses Poisoner's Kit). The poison deals 2d6 poison damage (CON save half, DC = 8 + PB + WIS) and lasts 24 hours.",
                   },
                 ],
               },
               {
-                name: "Branch of Zoology",
+                name: "Zoology",
+                branchPath: "Zoology",
+                description:
+                  "Magical creature tracker—specializes in the ones that kill",
                 features: [
                   {
-                    name: "Bonus Spells (Zoology)",
+                    name: "Predator Tracker",
                     description:
-                      "Animal Friendship and Beast Sense are always prepared and don't count against your limit.",
+                      "You have advantage on checks to track magical creatures. You can identify bite marks, claw patterns, and creature residue. You have advantage on saves against being frightened by beasts and monstrosities.",
                   },
                   {
-                    name: "Field Familiar",
+                    name: "Beast Handler",
                     description:
-                      "Gain a loyal magical companion (use Beast of the Land/Air/Sea style stat block; PB to AC/attacks/saves). It acts on your turn and adds your Wisdom modifier to its damage rolls. If dismissed or reduced to 0 HP, you can resummon it after a short or long rest or by expending a Field Manifestation use.",
+                      "You can cast Speak with Animals at will. Additionally, when you use Field Manifestation to adopt beast traits, you gain two traits instead of one.",
                   },
                 ],
               },
               {
-                name: "Branch of Mycology",
+                name: "Mycology",
+                branchPath: "Mycology",
+                description:
+                  "Fungal specialist—deals in spores, molds, and magical plagues",
                 features: [
                   {
-                    name: "Bonus Spells (Mycology)",
+                    name: "Toxic Immunity",
                     description:
-                      "Ray of Sickness and Blindness/Deafness are always prepared and don't count against your limit.",
+                      "You have immunity to poison damage and the poisoned condition. You can touch and handle toxic substances safely.",
                   },
                   {
                     name: "Spore Cloud",
                     description:
-                      "As an action, release spores in a 15-ft radius within 30 ft. Creatures of your choice must succeed on a CON save (DC = 8 + PB + WIS) or become poisoned until the start of your next turn. Allies in the area gain 1d4 temp HP. Uses: PB per long rest.",
+                      "As an action, release toxic spores in a 15-ft radius centered on you. Creatures of your choice must succeed on a CON save (DC = 8 + PB + WIS) or become poisoned until the start of your next turn. Uses: proficiency bonus per long rest.",
                   },
                 ],
               },
@@ -1349,19 +1393,23 @@ export const customClassesData = {
           {
             name: "Branch Feature (5th)",
             description: "Your chosen Branch grants an additional benefit.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Herbology — Animate Flora",
+                requiresBranch: "Herbology",
                 description:
                   "Once per short rest, animate nearby plants for 1 minute as a vine swarm (CR 1/2) under your control acting on your turn. Creatures that start their turn in the swarm's space must make a STR save or have speed reduced to 0 until the start of their next turn.",
               },
               {
                 name: "Zoology — Pack Tactics",
+                requiresBranch: "Zoology",
                 description:
                   "When you or your Field Familiar hits a creature with an attack, the other gains advantage on the next attack roll against that creature before the end of your next turn.",
               },
               {
                 name: "Mycology — Fungal Network",
+                requiresBranch: "Mycology",
                 description:
                   "While in dim light, underground, or dense vegetation, you and any creature affected by your Spore Cloud can communicate telepathically within 60 ft for 1 hour. Your Spore Cloud can exclude a number of creatures equal to your Wisdom modifier.",
               },
@@ -1601,15 +1649,15 @@ export const customClassesData = {
     ],
     design_notes: {
       concept:
-        "Combined herbology + magizoology chassis that fills the Druid niche via living-magic science.",
-      tone: "Field biologist meets eco-witch: specimens, spores, and spectral companions.",
+        "Newt Scamander meets noir—handles the magical creatures and plants that proper wizards fear.",
+      tone: "Professional but dangerous. The person you call when a Nundu escapes or when bodies show strange bite marks.",
       balance_notes:
-        "Augmented progression prevents slot bloat. Short-rest Field Manifestation mirrors Wild Shape flexibility; Living Reagents provide low-die support without eclipsing Healer.",
+        "Augmented progression prevents slot bloat. Living Reagents provide utility without stepping on Mediwizard's healing role. Field Manifestation offers flexibility for investigation and combat.",
     },
   },
 
-  profession_auror: {
-    id: "profession_auror",
+  auror: {
+    id: "auror",
     name: "Auror",
     type: "Paladin",
     description:
@@ -1723,6 +1771,7 @@ export const customClassesData = {
             options: [
               {
                 name: "Mandate of Justice",
+                branchPath: "Justice",
                 features: [
                   {
                     name: "Bonus Spells (Justice)",
@@ -1743,6 +1792,7 @@ export const customClassesData = {
               },
               {
                 name: "Mandate of Redemption",
+                branchPath: "Redemption",
                 features: [
                   {
                     name: "Bonus Spells (Redemption)",
@@ -1763,6 +1813,7 @@ export const customClassesData = {
               },
               {
                 name: "Mandate of the Veil",
+                branchPath: "Veil",
                 features: [
                   {
                     name: "Bonus Spells (Veil)",
@@ -1783,6 +1834,7 @@ export const customClassesData = {
               },
               {
                 name: "Mandate of Retribution",
+                branchPath: "Retribution",
                 features: [
                   {
                     name: "Bonus Spells (Retribution)",
@@ -1848,24 +1900,29 @@ export const customClassesData = {
           {
             name: "Mandate Feature (5th)",
             description: "Your chosen Mandate grants an additional benefit.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Justice — Incontrovertible Proof",
+                requiresBranch: "Justice",
                 description:
                   "Creatures you have affected with True Bearing have disadvantage on Deception checks against you and allies within your Field Aegis.",
               },
               {
                 name: "Redemption — Pacifying Presence",
+                requiresBranch: "Redemption",
                 description:
                   "Creatures of your choice that start their turn within your Field Aegis must succeed on a WIS save or have disadvantage on attack rolls until the start of their next turn.",
               },
               {
                 name: "Veil — Quiet Step",
+                requiresBranch: "Veil",
                 description:
                   "Allies inside your Field Aegis ignore nonmagical difficult terrain and gain +5 to Dexterity (Stealth) checks.",
               },
               {
                 name: "Retribution — Relentless Pursuit",
+                requiresBranch: "Retribution",
                 description:
                   "When your marked target moves, you may use your reaction to move up to half your speed toward it without provoking opportunity attacks.",
               },
@@ -1899,24 +1956,29 @@ export const customClassesData = {
           {
             name: "Mandate Feature (7th)",
             description: "Your Mandate grants enhanced abilities.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Justice — Witness Protection",
+                requiresBranch: "Justice",
                 description:
                   "Allies within your Field Aegis cannot be surprised and gain your proficiency bonus to initiative rolls. Additionally, they have advantage on Insight checks to detect lies.",
               },
               {
                 name: "Redemption — Sanctuary Pulse",
+                requiresBranch: "Redemption",
                 description:
                   "Once per short rest, when you activate Field Aegis, you can emit a sanctuary pulse. All creatures of your choice within 30 ft must succeed on a Charisma save or be unable to attack you or your allies until the end of their next turn.",
               },
               {
                 name: "Veil — Obscuring Mist",
+                requiresBranch: "Veil",
                 description:
                   "While your Field Aegis is active, the area is lightly obscured to enemies outside the radius. Allies inside the aegis can see normally. Ranged attacks from outside targeting creatures inside have disadvantage.",
               },
               {
                 name: "Retribution — Hunter's Mark (Enhanced)",
+                requiresBranch: "Retribution",
                 description:
                   "When you use Mark the Guilty, its duration becomes 1 hour and you sense the target's general direction and distance within 1 mile. The first time each turn you hit the marked creature, it takes an extra 2d6 radiant damage.",
               },
@@ -1945,24 +2007,29 @@ export const customClassesData = {
           {
             name: "Mandate Feature (9th)",
             description: "Your Mandate reaches expert tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Justice — Inescapable Justice",
+                requiresBranch: "Justice",
                 description:
                   "Creatures affected by your True Bearing can't turn invisible or teleport. Once per long rest, you can cast Zone of Truth without expending a slot; creatures have disadvantage on saves against it.",
               },
               {
                 name: "Redemption — Redemptive Strike",
+                requiresBranch: "Redemption",
                 description:
                   "When you would reduce a creature to 0 HP with Discharge Hex, you may instead leave it at 1 HP, unconscious and stable. Also, you can cast Calm Emotions proficiency_bonus times per long rest without expending a slot.",
               },
               {
                 name: "Veil — Shadow Step",
+                requiresBranch: "Veil",
                 description:
                   "Bonus action while in dim light/darkness: teleport up to 60 ft to a space you can see also in dim light/darkness. You may bring one willing ally within 5 ft. Uses: proficiency_bonus per long rest.",
               },
               {
                 name: "Retribution — Executioner's Focus",
+                requiresBranch: "Retribution",
                 description:
                   "When you hit your Marked target, you may force a Con save. On a failure, it takes +4d8 radiant damage and is blinded until the end of your next turn; on a success, it takes half damage and isn't blinded. Uses: casting_ability_mod per long rest.",
               },
@@ -2011,24 +2078,29 @@ export const customClassesData = {
           {
             name: "Mandate Feature (13th)",
             description: "Your Mandate reaches master tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Justice — Truth Incarnate",
+                requiresBranch: "Justice",
                 description:
                   "You can activate a 15-ft aura of undeniable truth for 1 minute (1/long rest): creatures in the aura can't lie (as Zone of Truth), and illusory effects in the aura are suppressed (as Dispel Magic vs 3rd level; higher-level illusions contest with a check).",
               },
               {
                 name: "Redemption — Sacrifice Ward",
+                requiresBranch: "Redemption",
                 description:
                   "When a creature within 30 ft would be reduced to 0 HP, you can use your reaction to teleport to an adjacent space and take the damage instead. If this would reduce you to 0 HP, you drop to 1 HP instead. Uses: 1 per long rest.",
               },
               {
                 name: "Veil — Greater Invisibility",
+                requiresBranch: "Veil",
                 description:
                   "You can cast Greater Invisibility on yourself without expending a slot proficiency_bonus times per long rest. While invisible, your first attack each turn deals +2d6 force damage.",
               },
               {
                 name: "Retribution — Overwhelming Vengeance",
+                requiresBranch: "Retribution",
                 description:
                   "When a creature you've Marked damages you or an ally within 30 ft, you may use your reaction to make a weapon attack against it with advantage; on a hit, add radiant damage equal to your Auror level.",
               },
@@ -2072,24 +2144,29 @@ export const customClassesData = {
           {
             name: "Mandate Feature (17th)",
             description: "Your Mandate achieves legendary power.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Justice — Final Judgment",
+                requiresBranch: "Justice",
                 description:
                   "Once per long rest, you can cast Plane Shift (hostile target only) without a slot. Creatures that knowingly utter a lie within your Truth Incarnate aura take 3d10 psychic damage (once per creature per round).",
               },
               {
                 name: "Redemption — Martyr's Blessing",
+                requiresBranch: "Redemption",
                 description:
                   "The first time each long rest you would be reduced to 0 HP, you instead drop to 1 HP and emit a 30-ft burst: each ally in the area regains 25 HP, gains immunity to fear for 1 minute, and has advantage on their next attack roll or save.",
               },
               {
                 name: "Veil — Master of Shadows",
+                requiresBranch: "Veil",
                 description:
                   "You gain Truesight 60 ft. Once per long rest, you may cast Etherealness without expending a slot.",
               },
               {
                 name: "Retribution — Death Sentence",
+                requiresBranch: "Retribution",
                 description:
                   "Once per long rest, when you hit a creature with Discharge Hex, you can pronounce a death sentence for 1 minute: the creature has vulnerability to your weapon attacks and Discharge Hex damage and can't regain HP. The effect ends early if you are incapacitated.",
               },
@@ -2142,8 +2219,8 @@ export const customClassesData = {
     },
   },
 
-  profession_wordsmith: {
-    id: "profession_wordsmith",
+  wordsmith: {
+    id: "wordsmith",
     name: "Wordsmith",
     type: "Bard",
     description:
@@ -2635,8 +2712,8 @@ export const customClassesData = {
     },
   },
 
-  profession_hitwizard: {
-    id: "profession_hitwizard",
+  hitwizard: {
+    id: "hitwizard",
     name: "Hit Wizard",
     type: "Rogue",
     description:
@@ -3142,8 +3219,8 @@ export const customClassesData = {
     },
   },
 
-  profession_field_hunter: {
-    id: "profession_field_hunter",
+  field_hunter: {
+    id: "field_hunter",
     name: "Field Hunter",
     type: "Ranger",
     description:
@@ -3264,6 +3341,7 @@ export const customClassesData = {
             options: [
               {
                 name: "Witchcatcher",
+                branchPath: "Witchcatcher",
                 features: [
                   {
                     name: "Hex Net",
@@ -3279,6 +3357,7 @@ export const customClassesData = {
               },
               {
                 name: "Relic Seeker",
+                branchPath: "Relic Seeker",
                 features: [
                   {
                     name: "Relic Sense",
@@ -3299,6 +3378,7 @@ export const customClassesData = {
               },
               {
                 name: "Beast Reclaimer",
+                branchPath: "Beast Reclaimer",
                 features: [
                   {
                     name: "Calming Sign",
@@ -3363,19 +3443,23 @@ export const customClassesData = {
           {
             name: "Branch Feature (5th)",
             description: "Your Branch grants a new benefit.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Witchcatcher — Null Tether",
+                requiresBranch: "Witchcatcher",
                 description:
                   "Your weapon attacks against your Mark impose disadvantage on its concentration checks until the start of your next turn. Also, your Mark can't benefit from invisibility while within 30 ft of you.",
               },
               {
                 name: "Relic Seeker — Recall Tag",
+                requiresBranch: "Relic Seeker",
                 description:
                   "Bonus action to call a tagged object (your Mark or an item you handled within 24h) from a creature within 30 ft. Holder makes a Str save vs your DC or the object teleports to your hand. Uses: 1/short or long rest.",
               },
               {
                 name: "Beast Reclaimer — Pacification Net",
+                requiresBranch: "Beast Reclaimer",
                 description:
                   "When you hit your Mark with a weapon attack, reduce its speed by 10 ft and give it disadvantage on its next attack roll before your next turn. Uses per long rest = Wisdom_mod (minimum 1).",
               },
@@ -3409,19 +3493,23 @@ export const customClassesData = {
           {
             name: "Branch Feature (7th)",
             description: "Enhanced tracking utilities.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Witchcatcher — Spell Trace",
+                requiresBranch: "Witchcatcher",
                 description:
                   "When a spell is cast within 60 ft, you learn what spell it was and who cast it. You can sense when your Mark casts a spell within 1 mile (direction only).",
               },
               {
                 name: "Relic Seeker — Object Reading",
+                requiresBranch: "Relic Seeker",
                 description:
                   "Touch an object and concentrate 1 minute to glimpse the last creature to possess it and its general location when last held (within the past week). Uses: Wisdom_mod per long rest.",
               },
               {
                 name: "Beast Reclaimer — Beast Bond",
+                requiresBranch: "Beast Reclaimer",
                 description:
                   "Bond with one beast/magical beast of CR 1 or lower (friendly; follows commands; acts on your turn). If it dies, you may bond another after a long rest. At 11th level, CR limit increases to 2.",
               },
@@ -3455,19 +3543,23 @@ export const customClassesData = {
           {
             name: "Branch Feature (9th)",
             description: "Branch reaches expert tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Witchcatcher — Silencing Strike",
+                requiresBranch: "Witchcatcher",
                 description:
                   "Once per turn when you hit your Mark with a weapon attack, force a Con save. On a fail, it can't cast spells or use verbal components for 1 minute (repeat save at end of each of its turns). Uses: Wisdom_mod per long rest.",
               },
               {
                 name: "Relic Seeker — Acquisition Expert",
+                requiresBranch: "Relic Seeker",
                 description:
                   "You can cast **Knock** and **Arcane Lock** once per long rest each without slots. **Relic Sense** range increases to 5 miles and lasts 8 hours.",
               },
               {
                 name: "Beast Reclaimer — Pack Tactics",
+                requiresBranch: "Beast Reclaimer",
                 description:
                   "When your bonded beast is within 30 ft of your Mark, you both have advantage on attack rolls against it. You and the beast can communicate telepathically on the same plane.",
               },
@@ -3521,19 +3613,23 @@ export const customClassesData = {
           {
             name: "Branch Feature (13th)",
             description: "Branch reaches master tier.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Witchcatcher — Mage Breaker",
+                requiresBranch: "Witchcatcher",
                 description:
                   "When your Mark casts a spell, use your reaction to make one weapon attack. On a hit, the spell fails (slot expended). Uses: 3 per long rest.",
               },
               {
                 name: "Relic Seeker — Master Retriever",
+                requiresBranch: "Relic Seeker",
                 description:
                   "Once per long rest, cast **Dimension Door** without a slot, but only to a space within 10 ft of your Mark or a marked object. **Recall Tag** range increases to 60 ft.",
               },
               {
                 name: "Beast Reclaimer — Primal Command",
+                requiresBranch: "Beast Reclaimer",
                 description:
                   "Beast Bond affects CR 3 or lower. Once per long rest, summon a spectral pack (3 wolves using dire wolf stats) for 1 minute; they obey you and act on your turn.",
               },
@@ -3588,19 +3684,23 @@ export const customClassesData = {
             name: "Branch Feature (17th)",
             description:
               "Branch achieves legendary mastery (tuned to avoid full Antimagic Field or at-will True Polymorph).",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Witchcatcher — Silence Lockdown",
+                requiresBranch: "Witchcatcher",
                 description:
                   "Once per long rest, center a 30-ft-radius zone on your Mark for 1 minute: **Silence**; invisibility is suppressed; and creatures attempting to cast a spell must succeed on a Con save or the spell fails (slot expended). You can exempt a number of creatures up to your Wisdom modifier.",
               },
               {
                 name: "Relic Seeker — Planar Retrieval",
+                requiresBranch: "Relic Seeker",
                 description:
                   "Your **Relic Sense** works across planes for Marked objects. Once per week, you can cast **Plane Shift** without components to travel to (or from) the plane containing your marked object/creature; you may bring up to 8 willing creatures.",
               },
               {
                 name: "Beast Reclaimer — Beast Lord",
+                requiresBranch: "Beast Reclaimer",
                 description:
                   "Beast Bond affects CR 5 or lower. As an action 2/day, you may assume a bonded beast's form (up to CR 5) for 10 minutes as per **Polymorph** (self only; retain mental stats; no spellcasting while transformed).",
               },
@@ -3652,8 +3752,8 @@ export const customClassesData = {
     },
   },
 
-  profession_muggle_liaison: {
-    id: "profession_muggle_liaison",
+  muggle_liaison: {
+    id: "muggle_liaison",
     name: "Muggle Liaison",
     type: "Monk",
     description:
@@ -4137,8 +4237,8 @@ export const customClassesData = {
       ],
     },
   },
-  profession_arcanist: {
-    id: "profession_arcanist",
+  arcanist: {
+    id: "arcanist",
     name: "Arcanist",
     type: "Warlock",
     description:
@@ -4249,6 +4349,7 @@ export const customClassesData = {
             options: [
               {
                 name: "Temporal Study",
+                branchPath: "Temporal",
                 features: [
                   {
                     name: "Tactical Rewind",
@@ -4264,6 +4365,7 @@ export const customClassesData = {
               },
               {
                 name: "Mentalism Study",
+                branchPath: "Mentalism",
                 features: [
                   {
                     name: "Telepathic Link",
@@ -4279,6 +4381,7 @@ export const customClassesData = {
               },
               {
                 name: "Void Study",
+                branchPath: "Void",
                 features: [
                   {
                     name: "Gravitic Tug",
@@ -4294,6 +4397,7 @@ export const customClassesData = {
               },
               {
                 name: "Soulcraft Study",
+                branchPath: "Soulcraft",
                 features: [
                   {
                     name: "Warding Spirit",
@@ -4350,24 +4454,29 @@ export const customClassesData = {
             name: "Branch Feature (5th)",
             description:
               "Your chosen Branch of Study grants an additional benefit.",
+            isAutomaticFromBranch: true,
             options: [
               {
                 name: "Temporal — Freeze Frame",
+                requiresBranch: "Temporal",
                 description:
                   "As an action, choose a creature within 30 ft. It must succeed on a Wisdom saving throw or be restrained until the start of your next turn as time partially locks around it. Attacks against it have advantage.",
               },
               {
                 name: "Mentalism — Compel Truth",
+                requiresBranch: "Mentalism",
                 description:
                   "As an action, force creatures of your choice in a 15-ft cone to make a Charisma saving throw. On a failure, a creature cannot knowingly speak a lie until the end of your next turn.",
               },
               {
                 name: "Void — Rift Step",
+                requiresBranch: "Void",
                 description:
                   "When you cast a spell, you can teleport up to 30 ft to an unoccupied space you can see and deal force damage equal to your proficiency bonus to a creature adjacent to either your starting or ending point.",
               },
               {
                 name: "Soulcraft — Bind Malice",
+                requiresBranch: "Soulcraft",
                 description:
                   "As an action, target a creature within 60 ft. It must succeed on a Charisma saving throw or be unable to regain hit points or gain temporary hit points until the start of your next turn.",
               },
@@ -4386,69 +4495,68 @@ export const customClassesData = {
         "Save DCs = 8 + proficiency bonus + Intelligence modifier. Research Insights mimic Invocations but re-flavored for experimental academia. Branch spells are always prepared.",
     },
   },
-  profession_obscurial: {
-    id: "profession_obscurial",
+  obscurial: {
+    id: "obscurial",
     name: "Obscurial",
     type: "Barbarian",
     description:
-      "Obscurials are witches and wizards whose magic turns inward—repressed, volatile, and devastating when unleashed. In the field they are living anomalies: bursts of destructive power wrapped in flesh, feared by criminals and bureaucrats alike.",
-    hit_die: "d12",
-    primary_abilities: ["Strength", "Constitution"],
-    saving_throws: ["Strength", "Constitution"],
-    armor_proficiencies: ["Light Armor", "Medium Armor", "Shields"],
-    weapon_proficiencies: ["Simple Weapons", "Martial Weapons"],
+      "Obscurials are witches and wizards whose repressed magic turns inward—volatile, devastating, and barely contained. They wield raw, wandless magic through emotion or endurance, walking the line between power and destruction.",
+    hit_die: "d10",
+    primary_abilities: ["Constitution", "Charisma"],
+    saving_throws: ["Constitution", "Charisma"],
+    armor_proficiencies: ["Light Armor", "Medium Armor"],
+    weapon_proficiencies: ["Simple Weapons"],
     tool_proficiencies: [],
     skill_choices: {
       choose: 2,
       options: [
-        "Athletics",
-        "Intimidation",
+        "Arcana",
         "Insight",
+        "Intimidation",
+        "Investigation",
         "Perception",
         "Survival",
-        "Arcana",
       ],
     },
+
     spellcasting: {
-      progression_type: "none",
+      progression_type: "half",
+      spellcasting_ability_choice: true,
       notes:
-        "Obscurials do not gain spell slots from this class. They rely on innate, unstable magic expressed through Outbursts rather than structured casting.",
+        "At 1st level, choose Charisma (emotion-driven) or Constitution (survival-driven) as your spellcasting ability. Once chosen, it cannot be changed. Obscurials use unstable, wandless casting — gaining power at the risk of magical backlash.",
     },
+
     class_resources: [
       {
-        name: "Outburst",
+        name: "Wandless Channeling",
         description:
-          "You unleash the unstable magic inside you in a controlled frenzy.",
-        activation: "Bonus Action",
-        duration: "1 minute",
-        effects_summary: [
-          "While Outburst is active and you aren't wearing heavy armor:",
-          "• You gain advantage on Strength checks and Strength saving throws.",
-          "• When you make a melee weapon attack using Strength, you gain a bonus to the damage roll (see Surge Damage Bonus).",
-          "• You have resistance to bludgeoning, piercing, and slashing damage.",
-          "• You cannot cast spells from this class and can't concentrate on spells.",
-          "Backlash: When your Outburst ends, roll a d6. On a 1, you take psychic damage equal to 1d6 × the number of Outbursts you have used since your last long rest.",
-        ],
-        outbursts_per_long_rest_by_level: { 1: 2, 3: 3, 5: 3 },
-        surge_damage_bonus_by_level: { 1: 2, 5: 2 },
-        end_conditions: [
-          "Ends early if you are knocked unconscious or if your turn ends and you haven't attacked a hostile creature or taken damage since your last turn.",
+          "When you cast a spell without using a focus or wand, you gain advantage on spell attack rolls or impose disadvantage on saving throws against your spells. After casting this way, roll on the Obscurial Surge Table to determine side effects.",
+        surge_table: [
+          "1: The spell misfires and targets you instead.",
+          "2–3: A pulse of dark energy deals 1d6 force damage to all creatures within 10 ft.",
+          "4–5: Shadows cling to you—gain advantage on your next attack, but take 1 level of exhaustion.",
+          "6–10: No surge; the spell functions normally.",
+          "11–13: You teleport 10 ft. in a random direction after the spell.",
+          "14–16: You become briefly incorporeal—resist all damage until start of next turn, but cannot speak.",
+          "17–18: You absorb the instability; your next spell is cast at +1 level.",
+          "19–20: The Obscurus manifests—gain temporary HP equal to your level and deal +PB necrotic damage until end of next turn.",
         ],
       },
     ],
+
     level_features: [
       {
         level: 1,
         features: [
           {
-            name: "Outburst",
+            name: "Unstable Magic",
             description:
-              "As detailed under Class Resources. Your repressed magic erupts to empower your body and dull pain, at the risk of backlash.",
+              "You can cast spells from your Obscurial spell slots using raw emotion or sheer will. When you cast a spell without a focus, you may trigger Wandless Channeling.",
           },
           {
-            name: "Unarmored Defense (Warped Physiology)",
+            name: "Repressed Power",
             description:
-              "While you are not wearing any armor, your AC equals 10 + your Dexterity modifier + your Constitution modifier. You can use a shield and still gain this benefit.",
+              "Your innate magic surges defensively. When you take damage that would reduce you below half your HP, you can unleash a burst of energy, dealing 1d6 force damage to creatures within 5 ft (Con save for half). Once per long rest.",
           },
         ],
       },
@@ -4456,14 +4564,9 @@ export const customClassesData = {
         level: 2,
         features: [
           {
-            name: "Chaotic Opening (Reckless Attack)",
+            name: "Unarmored Defense",
             description:
-              "On your turn, you can gain advantage on all melee weapon attack rolls using Strength during this turn, but attack rolls against you have advantage until your next turn.",
-          },
-          {
-            name: "Instability Sense (Danger Sense)",
-            description:
-              "You have advantage on Dexterity saving throws against effects you can see, such as traps and spells. You can't use this benefit while blinded, deafened, or incapacitated.",
+              "While not wearing armor, your AC equals 10 + your Dexterity modifier + your chosen spellcasting ability modifier (Charisma or Constitution).",
           },
         ],
       },
@@ -4471,61 +4574,276 @@ export const customClassesData = {
         level: 3,
         features: [
           {
-            name: "Manifestation (Primal Path)",
+            name: "Manifestation Path",
             description:
-              "Choose how your inner magic expresses itself: **Decaying Touch**, **Icy Grasp**, or **Eyes of Blight**. You gain the Manifestation's 3rd-level features now and additional benefits at 5th level.",
+              "Choose a Manifestation—Decaying Touch, Icy Grasp, or Eyes of Blight—representing how your Obscurus expresses itself. Each grants unique effects to your spells and Outbursts.",
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "Controlled Fury",
+            description:
+              "You may unleash the Obscurus for 1 minute as an action. While active, your spells deal extra damage equal to your proficiency bonus. Each turn you take 1d8 damage from the strain. Afterward, roll once on the Obscurial Surge Table.",
+          },
+        ],
+      },
+      {
+        level: 10,
+        features: [
+          {
+            name: "Obscurial Resilience",
+            description:
+              "You gain resistance to force damage and advantage on saving throws to maintain concentration. You can now choose to ignore a single Surge result once per long rest.",
+          },
+        ],
+      },
+      {
+        level: 14,
+        features: [
+          {
+            name: "Controlled Instability",
+            description:
+              "When you cast a spell using a spell slot, you can amplify it, gaining one of the following benefits:\n- Empowered Fury: Add your proficiency bonus to the spell’s damage.\n- Distorted Flow: The spell ignores one type of resistance for this casting.\n- Corrosive Focus: Enemies have disadvantage on saving throws against the spell.\nAfterward, roll a d6 on the Backlash Table:\n1: Take 2d6 force damage.\n2: Movement halved until your next turn.\n3: Lose concentration on any active spell.\n4–6: No backlash.\nUses per long rest: equal to your proficiency bonus.",
+          },
+        ],
+      },
+    ],
+
+    design_notes: {
+      concept:
+        "A volatile hybrid class blending martial endurance and unstable spellcasting. The Obscurial channels wandless magic as both weapon and curse.",
+      tone: "Power barely contained; fear and mastery intertwined.",
+      balance_notes:
+        "Uses half-caster progression with access to unique 'Surge' mechanics. Controlled Instability provides deliberate risk-reward decisions rather than passive randomness.",
+      rules_consistency:
+        "Save DC = 8 + proficiency bonus + chosen spellcasting modifier (Con or Cha). Wandless Channeling advantage is balanced by the risk of Surge backlash.",
+    },
+  },
+  spellbrawler: {
+    id: "spellbrawler",
+    name: "Spellbrawler",
+    type: "Fighter",
+    description:
+      "Spellbrawlers are underground duelists who merge brutal physical combat with crude battle magic. They learned their craft in illegal fighting rings, wizard gangs, and knockturn alley brawls. Unlike proper duelists with their formal stances and incantations, Spellbrawlers carve runes into their flesh, enchant brass knuckles, and use wands as clubs when the magic runs dry. Every scar tells a story, and every rune was earned in blood.",
+    hit_die: "d10",
+    primary_abilities: ["Strength", "Constitution", "Dexterity"],
+    saving_throws: ["Strength", "Constitution"],
+    armor_proficiencies: ["Light Armor", "Medium Armor", "Shields"],
+    weapon_proficiencies: [
+      "Simple Weapons",
+      "Martial Weapons",
+      "Improvised Weapons",
+      "Wands (as clubs)",
+    ],
+    skill_proficiencies: {
+      choose: 2,
+      from: [
+        "Athletics",
+        "Intimidation",
+        "Perception",
+        "Sleight of Hand",
+        "Survival",
+        "Acrobatics",
+      ],
+    },
+    spellcasting: {
+      progression_type: "rune-based",
+      casting_ability: "Constitution",
+      notes:
+        "Spellbrawlers don't cast spells traditionally. They activate runes carved into their skin and gear. Each rune can be triggered using Rune Charges for combat effects.",
+      rune_slots: {
+        3: 2, // Level 3: 2 runes
+        7: 3, // Level 7: 3 runes
+        10: 4, // Level 10: 4 runes
+        15: 5, // Level 15: 5 runes
+        18: 6, // Level 18: 6 runes
+      },
+    },
+    class_resources: [
+      {
+        name: "Shake It Off",
+        recovery: "short rest",
+        uses_per_rest_by_level: {
+          1: 1,
+          10: 2,
+          18: 3,
+        },
+        description:
+          "As a bonus action, healing runes flare across your scars, knitting wounds. Regain 1d10 + Spellbrawler level hit points.",
+        effects_summary: [
+          "Bonus action: Regain 1d10 + Spellbrawler level hit points",
+          "Healing runes activate across your scars",
+          "Once per short rest (twice at 10th, thrice at 18th)",
+        ],
+      },
+      {
+        name: "Rune Charges",
+        recovery: "short rest",
+        uses: "Constitution modifier (minimum 1)",
+        description:
+          "Fuel for activating your combat runes. The pain of activation would kill a lesser wizard.",
+      },
+    ],
+    level_features: [
+      {
+        level: 1,
+        features: [
+          {
+            name: "Fighting Style",
+            description:
+              "Choose your brawling specialty from years in the fighting pits.",
             options: [
               {
-                name: "Decaying Touch",
+                name: "Cage Fighter",
                 features: [
                   {
-                    name: "Entropic Aura",
+                    name: "Cage Fighter",
                     description:
-                      "While Outburst is active, creatures of your choice that start their turn within 5 ft of you take necrotic damage equal to your proficiency bonus. Objects and nonmagical armor you damage with melee attacks show visible corrosion.",
-                  },
-                  {
-                    name: "Rot-Borne Resilience",
-                    description:
-                      "While Outburst is active, you have resistance to necrotic damage.",
+                      "+1 AC when an enemy is within 5 feet. Your defensive runes react to close threats.",
                   },
                 ],
               },
               {
-                name: "Icy Grasp",
+                name: "Dirty Fighter",
                 features: [
                   {
-                    name: "Freezing Pressure",
+                    name: "Dirty Fighter",
                     description:
-                      "When you hit a creature with a melee attack during Outburst, you can reduce its speed by 10 ft until the start of your next turn (once per turn).",
-                  },
-                  {
-                    name: "Cold Carapace",
-                    description:
-                      "While Outburst is active, you have resistance to cold damage and ignore difficult terrain created by ice or snow.",
+                      "Improvised weapons and unarmed strikes deal +1d4 damage. You can inscribe temporary runes on anything.",
                   },
                 ],
               },
               {
-                name: "Eyes of Blight",
+                name: "Berserker Charge",
                 features: [
                   {
-                    name: "Dreadful Glare",
+                    name: "Berserker Charge",
                     description:
-                      "As a bonus action while Outburst is active, force one creature within 30 ft that can see you to make a Wisdom saving throw (DC = 8 + PB + Con). On a failure, it is frightened of you until the end of your next turn. Uses per Outburst = your Constitution modifier (minimum 1).",
-                  },
-                  {
-                    name: "Psychic Shear",
-                    description:
-                      "While Outburst is active, you have resistance to psychic damage.",
+                      "After Dashing, make one melee attack as a bonus action. Speed runes burn on your legs.",
                   },
                 ],
               },
             ],
           },
           {
-            name: "Bureau Reputation (Ribbon)",
+            name: "Shake It Off",
             description:
-              "You gain proficiency in one of the following skills: Intimidation, Insight, or Investigation. If you are already proficient, you may instead gain expertise with that skill.",
+              "Pain is an old friend. As a bonus action, activate healing runes to regain 1d10 + level hit points. Once per short rest.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Push Through",
+            description:
+              "Overcharge your runes for explosive action. Take one additional action on your turn. Your runes glow white-hot, dealing 1d4 fire damage to you (no resistance applies). Once per short rest (twice at 17th level).",
+            resource_uses: {
+              recovery: "short rest",
+              uses_per_rest_by_level: {
+                2: 1,
+                17: 2,
+              },
+            },
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Rune Carver",
+            description:
+              "You've learned to carve permanent battle runes. During a long rest, inscribe 2 runes on your body or equipment (increases at higher levels). Each provides a passive benefit and can be activated with a Rune Charge.",
+            rune_options: [
+              {
+                name: "Blood Rune",
+                passive: "While below half health, +2 to damage rolls",
+                active:
+                  "Next hit deals 2d6 necrotic damage and heals you for half damage dealt",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Iron Rune",
+                passive: "+1 AC when not wearing heavy armor",
+                active: "Reaction: Reduce damage from one attack by 2d6 + CON mod",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Storm Rune",
+                passive: "Immunity to being paralyzed",
+                active: "Next attack has advantage and deals 1d8 lightning damage",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Beast Rune",
+                passive: "Advantage on Intimidation checks",
+                active:
+                  "Gain 15 temp HP and your attacks knock targets back 10 ft (STR save negates)",
+                cost: "1 Rune Charge",
+              },
+              {
+                name: "Shadow Rune",
+                passive: "Darkvision 30 ft",
+                active: "Bonus action: Teleport 30 ft to unoccupied space you can see",
+                cost: "1 Rune Charge",
+              },
+            ],
+          },
+          {
+            name: "Spellbrawler Archetype",
+            description: "Choose your fighting ring background.",
+            options: [
+              {
+                name: "Pit Fighter",
+                features: [
+                  {
+                    name: "Brutal Strikes",
+                    description:
+                      "Critical hits knock targets prone. When you score a critical, activate one rune without spending a Charge.",
+                  },
+                  {
+                    name: "Scarred Veteran",
+                    description:
+                      "Advantage on saves vs fear. Add CON modifier to death saves.",
+                  },
+                ],
+              },
+              {
+                name: "Gang Enforcer",
+                features: [
+                  {
+                    name: "Pack Fighter",
+                    description:
+                      "When an ally is within 5 ft of your target, your attacks deal +1d4 damage.",
+                  },
+                  {
+                    name: "Threatening Presence",
+                    description:
+                      "Enemies have disadvantage on opportunity attacks against your allies within 5 ft of you.",
+                  },
+                ],
+              },
+              {
+                name: "Prize Fighter",
+                features: [
+                  {
+                    name: "Crowd Pleaser",
+                    description:
+                      "When you reduce an enemy to 0 HP, gain a Rune Charge (once per turn).",
+                  },
+                  {
+                    name: "Champion's Resilience",
+                    description:
+                      "Regain 1 Rune Charge when you succeed on a saving throw against a spell.",
+                  },
+                ],
+              },
+            ],
           },
         ],
       },
@@ -4533,26 +4851,9 @@ export const customClassesData = {
         level: 4,
         features: [
           {
-            name: "Ability Score Improvement or Outburst Feat",
+            name: "Ability Score Improvement",
             description:
-              "Increase one ability score by +2, two by +1, or choose a feat tied to your volatile training.",
-            feat_examples: [
-              {
-                name: "Hardened Vessel",
-                effect:
-                  "Increase Constitution by 1 (to a max of 20). When your Outburst ends, you can choose to negate the Backlash roll once per long rest.",
-              },
-              {
-                name: "Shock Vent",
-                effect:
-                  "When you take damage while Outburst is active, you can use your reaction to deal your proficiency bonus in the Manifestation's damage type to a creature within 5 ft.",
-              },
-              {
-                name: "Containment Scars",
-                effect:
-                  "You have advantage on saving throws to end the frightened or charmed conditions while Outburst is active.",
-              },
-            ],
+              "You can increase one ability score of your choice by 2, or you can increase two ability scores by 1 each. You can't increase an ability score above 20 using this feature.",
           },
         ],
       },
@@ -4564,30 +4865,201 @@ export const customClassesData = {
             description:
               "You can attack twice, instead of once, whenever you take the Attack action on your turn.",
           },
+        ],
+      },
+    ],
+    design_notes: {
+      concept:
+        "Harry Potter meets Fight Club - wizards who learned magic through violence rather than academia.",
+      tone: "Brutal, scarred, survivor. Every rune tells a story of a fight survived.",
+      balance_notes: [
+        "Rune system provides magical flexibility without spell slots",
+        "Constitution-based magic reflects physical toughness",
+        "Limited charges prevent rune spam",
+        "Self-damage on Push Through prevents abuse",
+        "d10 hit die matches Fighter baseline",
+      ],
+      rules_consistency:
+        "Follows 5e Fighter progression pattern. Rune mechanics similar to Rune Knight but more limited and gritty.",
+    },
+  },
+
+  professor: {
+    id: "professor",
+    name: "Professor",
+    type: "Wizard",
+    description:
+      "Professors are the architects of modern magic—the scholars, lecturers, and theorists who built the frameworks everyone else takes for granted. Some are retired educators pulled into fieldwork by necessity; others are researchers who never learned to stop experimenting. In the noir world of magical investigation, Professors are the experts you call when the crime scene doesn't make sense, the spell shouldn't have worked, or the evidence itself hums with residual energy. They wield not just magic, but understanding.",
+    hit_die: "d6",
+    primary_abilities: ["Intelligence", "Wisdom"],
+    saving_throws: ["Intelligence", "Wisdom"],
+    armor_proficiencies: ["Light Armor"],
+    weapon_proficiencies: [
+      "Wands",
+      "Daggers",
+      "Quarterstaffs",
+      "Light Crossbows",
+    ],
+    tool_proficiencies: ["Calligrapher's Tools", "Alchemist's Supplies"],
+    skill_proficiencies: {
+      choose: 2,
+      from: [
+        "Arcana",
+        "History",
+        "Investigation",
+        "Insight",
+        "Nature",
+        "Perception",
+      ],
+    },
+    spellcasting: {
+      progression_type: "full",
+      casting_ability: "Intelligence",
+      notes:
+        "Professors use the same spell slot progression as Wizards. Their spellbook and prepared spells follow the base Witch/Wizard class rules, but they gain additional flexibility through Academic Focus features.",
+    },
+    class_resources: [
+      {
+        name: "Research Dice",
+        description:
+          "You begin with two Research Dice, which are d6s. You regain all expended dice after finishing a long rest. You can spend a Research Die to augment a spell or learn immediate information related to a magical phenomenon.",
+        uses_per_long_rest: 2,
+      },
+    ],
+    level_features: [
+      {
+        level: 1,
+        features: [
           {
-            name: "Surge Pulse",
+            name: "Arcane Academia",
             description:
-              "The first time you drop to half your hit point maximum or lower during an Outburst, you emit a shockwave. Creatures of your choice within 10 ft must make a Constitution saving throw (DC = 8 + PB + Con) or take 2d6 damage of your Manifestation's type (necrotic, cold, or psychic) and be pushed 5 ft; on a success, they take half damage and aren't pushed. Once per Outburst.",
+              "You gain advantage on Arcana and History checks related to magical theory. You can always identify a spell being cast if it is on your spell list.",
           },
           {
-            name: "Manifestation Feature (5th)",
+            name: "Academic Focus (Research Dice)",
             description:
-              "Your chosen Manifestation grants an additional benefit.",
+              "You have a pool of Research Dice that represent your scholarly insight. When you cast a spell, you may spend one Research Die to reroll one damage die, increase the spell save DC by 1, or instantly learn one fact about a magical effect or residue you can see. You start with two d6 Research Dice and regain all expended dice when you finish a long rest.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Study Session (Ritual Focus)",
+            description:
+              "When you finish a short rest, you can replace one prepared spell with another from your spellbook. You can also cast one spell from your spellbook as a ritual even if it lacks the ritual tag, once per long rest.",
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Department of Study",
+            description:
+              "Choose your specialization within the academic world: Theoretical Thaumaturgy, Magical History, or Applied Arcana.",
             options: [
               {
-                name: "Decaying Touch — Ruinous Blows",
-                description:
-                  "Your melee weapon attacks deal an extra 1d4 necrotic damage while Outburst is active. When you reduce a creature to 0 HP, you gain temporary HP equal to your proficiency bonus.",
+                name: "Department of Theoretical Thaumaturgy",
+                features: [
+                  {
+                    name: "Formula Manipulation",
+                    description:
+                      "You gain limited metamagic-style control. When casting a spell, you can spend one Research Die to apply one of the following: increase or decrease the range by 50%, extend the duration by one round (or one minute if it's longer), or reroll one saving throw result for a willing creature affected by your spell.",
+                  },
+                  {
+                    name: "Experimental Surge",
+                    description:
+                      "When you roll a 1 on a Research Die, your spell behaves unpredictably. The DM may choose a minor chaotic effect, but the spell's damage or potency doubles for that instance. You can only trigger this once per long rest.",
+                  },
+                ],
               },
               {
-                name: "Icy Grasp — Absolute Zero",
-                description:
-                  "Creatures you hit while Outburst is active must succeed on a Strength saving throw (DC = 8 + PB + Con) or be restrained by rime until the start of your next turn (once per turn). A restrained target can use an action to make the save again, ending the effect on a success.",
+                name: "Department of Magical History",
+                features: [
+                  {
+                    name: "Forensic Recall",
+                    description:
+                      "You can read residual magic in an area or object. Once per short or long rest, you can spend one minute studying to learn the last spell cast there, its approximate caster level, and a vague sense of its purpose. Functions as a hybrid of Detect Magic and Legend Lore.",
+                  },
+                  {
+                    name: "Arcane Reconstruction",
+                    description:
+                      "You can spend a Research Die and 1 minute examining magical residue to reconstruct a basic illusion of the event that occurred there. The illusion lasts for one minute and reveals shapes or silhouettes, not details. Once per short rest.",
+                  },
+                ],
               },
               {
-                name: "Eyes of Blight — Aura of Despair",
-                description:
-                  "While Outburst is active, hostile creatures within 10 ft of you have disadvantage on the first saving throw they make each round.",
+                name: "Department of Applied Arcana",
+                features: [
+                  {
+                    name: "Practical Experimentation",
+                    description:
+                      "When you cast a spell of 1st level or higher that deals damage, you can change its damage type to another you know from your spell list (acid, cold, fire, lightning, thunder, or force).",
+                  },
+                  {
+                    name: "Arcane Efficiency",
+                    description:
+                      "When you cast a spell that affects multiple creatures, you can choose one affected ally to gain temporary hit points equal to your Intelligence modifier. Once per short rest.",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 4,
+        features: [
+          {
+            name: "Ability Score Improvement",
+            description:
+              "Increase one ability score by 2, or two ability scores by 1, or choose a feat. Professors often improve their Intelligence or Wisdom.",
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "Improved Academic Focus",
+            description:
+              "Your Research Dice become d8s. Additionally, as a bonus action, you can deliver a rapid 'Lecture' to nearby allies. Until the start of your next turn, allies within 30 feet who can hear you gain +1 to spell attack rolls or saving throw DCs. You can use this feature a number of times equal to your Intelligence modifier (minimum once) per long rest.",
+          },
+          {
+            name: "Department Feature (5th)",
+            description: "Each Department grants an additional benefit.",
+            options: [
+              {
+                name: "Theoretical Thaumaturgy — Arcane Symmetry",
+                features: [
+                  {
+                    name: "Arcane Symmetry",
+                    description:
+                      "When a creature you can see casts a spell that targets only you, you can use your reaction to replicate the spell's basic form (damage, healing, or movement) as a reaction using a spell slot of one level lower. Once per long rest.",
+                  },
+                ],
+              },
+              {
+                name: "Magical History — Chrono-Anchor",
+                features: [
+                  {
+                    name: "Chrono-Anchor",
+                    description:
+                      "When a creature casts a spell within 60 ft, you can use your reaction to suspend it in time. The caster makes an Intelligence saving throw (DC 8 + your proficiency + your Int mod). On a failure, the spell's effects are delayed until the start of their next turn. Uses per long rest = your Intelligence modifier.",
+                  },
+                ],
+              },
+              {
+                name: "Applied Arcana — Controlled Detonation",
+                features: [
+                  {
+                    name: "Controlled Detonation",
+                    description:
+                      "When you cast a spell that deals area damage, you can exclude a number of creatures equal to your Intelligence modifier from its effects.",
+                  },
+                ],
               },
             ],
           },
@@ -4596,12 +5068,232 @@ export const customClassesData = {
     ],
     design_notes: {
       concept:
-        "Barbarian remap where Rage becomes Outburst: unstable, internalized magic that empowers the body and warps the battlefield with a small risk of backlash.",
-      tone: "Tragic weapon: feared, powerful, barely contained.",
+        "A full-caster academic archetype that expands on the base Witch/Wizard training. Professors are intellectuals who use study, theory, and experimentation to gain control and insight over magic.",
+      tone: "Analytical, world-weary, brilliant. A magical academic dragged back into the field to solve problems no one else understands.",
       balance_notes:
-        "Tracks Barbarian core: d12 HD, Unarmored Defense, Reckless Attack, Danger Sense, Path at 3, ASI at 4, Extra Attack at 5. Resistances match Barbarian's physical resistances; Manifestations add typed resistances and rider effects without eclipsing casters.",
+        "Uses Wizard's spell slot table. Research Dice emulate light metamagic flexibility without breaking action economy. Department features mirror subclass variety (similar to Wizard traditions).",
       rules_consistency:
-        "Save DCs use 8 + proficiency bonus + Constitution modifier. Outburst uses per long rest follow Rage cadence (2 at 1st, 3 at 3rd). Surge damage bonus mirrors Rage (+2 at this tier). Backlash is a small, thematic risk gate.",
+        "No concentration stacking or spell slot abuse. Dice-based resource prevents overuse of manipulation mechanics.",
+    },
+  },
+
+  urban_shaman: {
+    id: "urban_shaman",
+    name: "Urban Shaman",
+    type: "Druid",
+    description:
+      "Urban Shamans understand that cities are ecosystems too—concrete jungles with their own predators, prey, and magic. They commune with city spirits: rats in the walls, pigeons on rooftops, mold in abandoned buildings, and the electric pulse of the metro. Where traditional druids see forests, Urban Shamans see subway tunnels as root systems and skyscrapers as steel trees.",
+
+    hit_die: "d8",
+    primary_abilities: ["Wisdom", "Constitution"],
+    saving_throws: ["Wisdom", "Intelligence"],
+
+    armor_proficiencies: ["Light armor", "Medium armor", "Shields"],
+    weapon_proficiencies: ["Clubs", "Daggers", "Darts", "Javelins", "Maces", "Quarterstaffs", "Scimitars", "Sickles", "Slings", "Spears"],
+    tool_proficiencies: ["Herbalism kit"],
+
+    skill_choices: {
+      choose: 2,
+      options: [
+        "Animal Handling",
+        "Arcana",
+        "Insight",
+        "Medicine",
+        "Nature",
+        "Perception",
+        "Stealth",
+        "Survival",
+      ],
+    },
+
+    spellcasting: {
+      progression_type: "full-caster",
+      casting_ability: "Wisdom",
+      notes: "Urban Shamans channel the magic of the city itself",
+
+      cantrips_known: {
+        1: 2,
+        4: 3,
+        10: 4,
+      },
+
+      spells_prepared_formula: "wisdom_mod + druid_level",
+
+      bonus_spells: {
+        cantrips: ["Mold Earth", "Control Flames", "Shocking Grasp"],
+        1: ["Speak with Animals", "Fog Cloud", "Grease"],
+        2: ["Web", "Heat Metal", "Shatter"],
+        3: ["Spider Climb", "Gaseous Form", "Meld into Stone"],
+      },
+    },
+
+    class_resources: [
+      {
+        name: "Urban Wild Shape",
+        description: "Transform into urban creatures and swarms",
+        uses_formula: "proficiency_bonus",
+        recovery: "short rest",
+        forms: [
+          "Rat Swarm - Move through spaces, disease attack",
+          "Feral Dog - Track by scent, pack tactics",
+          "Pigeon Flock - Flight, surveillance",
+          "Roach Colony - Immunity to poison, climb speed",
+          "Alley Cat - Stealth, night vision",
+        ],
+      },
+      {
+        name: "City Spirits",
+        description: "Commune with urban infrastructure and city magic",
+        abilities: [
+          "Speak with Machines - Communicate with ATMs, cameras, phones",
+          "Rust and Ruin - Corrode metal rapidly",
+          "Power Surge - Manipulate electrical systems",
+          "Subway Sense - Know all tunnel layouts within city",
+          "Pollution Cloud - Create toxic fog as weapon",
+        ],
+      },
+    ],
+
+    level_features: [
+      {
+        level: 1,
+        features: [
+          {
+            name: "Druidic",
+            description:
+              "You know Druidic, the secret language of druids. Urban Shamans use graffiti tags, scratches on walls, and coded marks.",
+          },
+          {
+            name: "Urban Spellcasting",
+            description:
+              "You can cast druid spells using urban components: rust instead of moss, broken glass instead of crystal, smog instead of fog.",
+          },
+        ],
+      },
+      {
+        level: 2,
+        features: [
+          {
+            name: "Urban Wild Shape",
+            description:
+              "You can use your action to magically assume the shape of an urban creature or swarm. You can use this feature a number of times equal to your proficiency bonus, regaining expended uses on a short or long rest.",
+            resource_uses: {
+              recovery: "short rest",
+              uses_formula: "proficiency_bonus",
+            },
+          },
+          {
+            name: "City Sense",
+            description:
+              "While in an urban environment, you have advantage on Wisdom (Survival) checks to track creatures and on Intelligence checks to recall information about local areas, streets, and infrastructure.",
+          },
+        ],
+      },
+      {
+        level: 3,
+        features: [
+          {
+            name: "Urban Circle",
+            description:
+              "Choose an Urban Circle that reflects your connection to the city: Sewer Shaman, Industrial Druid, or Vermin Lord.",
+            options: [
+              {
+                name: "Sewer Shaman",
+                description: "Master of the undercity - sewers, tunnels, forgotten spaces",
+                features: [
+                  {
+                    name: "Toxic Immunity",
+                    description:
+                      "You have immunity to poison damage and the poisoned condition. Additionally, you can create a 10-foot radius cloud of toxic gas as an action (DC = spell save DC, Constitution save, poisoned on fail).",
+                  },
+                  {
+                    name: "Tunnel Fighter",
+                    description:
+                      "You have darkvision out to 60 feet (or +30 feet if you already have it). You can move through tight spaces and pipes as if you were one size smaller.",
+                  },
+                  {
+                    name: "Fungal Growths",
+                    description:
+                      "You can cast Infestation at will. At 5th level, you can cast Ray of Sickness without using a spell slot a number of times equal to your Wisdom modifier per long rest.",
+                  },
+                ],
+              },
+              {
+                name: "Industrial Druid",
+                description: "Controls machinery, electricity, and urban decay",
+                features: [
+                  {
+                    name: "Technomancy",
+                    description:
+                      "You can speak to machines and understand their function. You have advantage on Intelligence checks related to mechanical or electrical devices.",
+                  },
+                  {
+                    name: "Rust Monster",
+                    description:
+                      "As an action, you can touch a nonmagical metal object and cause it to corrode. Weapons take a permanent -1 penalty to damage rolls (minimum 0), armor takes a permanent -1 penalty to AC. You can use this feature a number of times equal to your Wisdom modifier per long rest.",
+                  },
+                  {
+                    name: "Electric Affinity",
+                    description:
+                      "You gain resistance to lightning damage. At 5th level, you can cast Shocking Grasp as a bonus action.",
+                  },
+                ],
+              },
+              {
+                name: "Vermin Lord",
+                description: "Commands urban wildlife - rats, roaches, pigeons, stray animals",
+                features: [
+                  {
+                    name: "Rat King",
+                    description:
+                      "You can cast Speak with Animals at will, but only with urban creatures (rats, pigeons, dogs, cats, insects). As an action, you can summon a swarm of rats within 60 feet (use Swarm of Rats stat block). The swarm obeys your commands and lasts for 1 hour or until dismissed. Once you use this feature, you can't use it again until you finish a long rest.",
+                  },
+                  {
+                    name: "Disease Carrier",
+                    description:
+                      "You are immune to diseases. When you hit a creature with a melee attack while in Wild Shape, you can force it to make a Constitution saving throw against your spell save DC or become poisoned until the end of your next turn.",
+                  },
+                  {
+                    name: "Urban Pack Master",
+                    description:
+                      "Urban beasts and swarms have advantage on attack rolls against targets within 5 feet of you. You can also add your Wisdom modifier to the damage rolls of any beast you summon.",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        level: 4,
+        features: [
+          {
+            name: "Ability Score Improvement",
+            description:
+              "You can increase one ability score of your choice by 2, or you can increase two ability scores of your choice by 1. You can't increase an ability score above 20 using this feature.",
+          },
+        ],
+      },
+      {
+        level: 5,
+        features: [
+          {
+            name: "City Spirits",
+            description:
+              "You can commune with the spirit of the city itself. Once per long rest, you can cast Commune (city spirits answer instead of a deity). Additionally, you learn one ability from your City Spirits resource based on your Urban Circle.",
+          },
+        ],
+      },
+    ],
+
+    design_notes: {
+      concept:
+        "Urban Shaman is a druid remapping that replaces nature with city. Instead of forests and animals, they work with concrete, vermin, and urban decay. This fits the noir investigator theme perfectly.",
+      tone: "Gritty, street-level, survivalist. Someone who sees magic in rust, power in rats, and wisdom in the city's dark corners.",
+      balance_notes:
+        "Uses Druid's spell slot progression. Wild Shape limited to urban creatures keeps the core druid identity while being thematically distinct. Circles provide variety similar to druid circles.",
+      rules_consistency:
+        "Follows standard Druid progression. Urban Wild Shape uses same mechanics as regular Wild Shape but with different creature options.",
     },
   },
 };

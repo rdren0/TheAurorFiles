@@ -6,15 +6,32 @@ import {
   ChevronDown,
   ChevronRight,
   Info,
+  BookOpen,
 } from "lucide-react";
 import { SubjectCard } from "./SubjectCard";
 import { useTheme } from "../../contexts/ThemeContext";
 import { createSpellBookStyles, searchStyles } from "./styles";
 import { hasSubclassFeature } from "./utils";
+import WizardSpellSelectionModal from "./WizardSpellSelectionModal";
+import { calculateWizardSpellsKnown } from "./wizardSpellUtils";
 
 import { spellsData } from "../../SharedData/spells";
 import { useCallback } from "react";
 import CastingTiles from "../CharacterSheet/CastingTiles";
+
+// Automatically known spells for all trained wizards
+const AUTOMATICALLY_KNOWN_SPELLS = [
+  "Lumos",
+  "Nox",
+  "Alohomora",
+  "Colloportus",
+  "Reparo",
+  "Accio",
+  "Mage Hand",
+  "Prestidigitation",
+  "Message",
+  "Minor Illusion",
+];
 
 const SpellBook = ({
   supabase,
@@ -44,6 +61,10 @@ const SpellBook = ({
   const [selectedLevels, setSelectedLevels] = useState([]);
   const [isLevelDropdownOpen, setIsLevelDropdownOpen] = useState(false);
   const [isAttemptDropdownOpen, setIsAttemptDropdownOpen] = useState(false);
+  const [showAutoUnlockedSpells, setShowAutoUnlockedSpells] = useState(true);
+  const [showKnownSpells, setShowKnownSpells] = useState(true);
+  const [knownSpells, setKnownSpells] = useState([]);
+  const [showSpellSelectionModal, setShowSpellSelectionModal] = useState(false);
   const levelDropdownRef = useRef(null);
   const attemptDropdownRef = useRef(null);
 
@@ -134,6 +155,133 @@ const SpellBook = ({
     loadSpellProgress();
   }, [loadSpellProgress]);
 
+  // Load known spells from spell_progress_summary
+  const loadKnownSpells = useCallback(async () => {
+    if (!selectedCharacter || !supabase) return;
+
+    let characterOwnerDiscordId;
+
+    if (adminMode && isUserAdmin) {
+      characterOwnerDiscordId =
+        selectedCharacter.discord_user_id || selectedCharacter.ownerId;
+    } else {
+      characterOwnerDiscordId =
+        user?.user_metadata?.provider_id || discordUserId;
+    }
+
+    if (!characterOwnerDiscordId) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("spell_progress_summary")
+        .select("spell_name")
+        .eq("character_id", selectedCharacter.id)
+        .eq("discord_user_id", characterOwnerDiscordId);
+
+      if (error) {
+        console.error("Error loading known spells:", error);
+        return;
+      }
+
+      // Extract spell names from the progress data
+      const spellNames = data?.map((item) => item.spell_name) || [];
+      setKnownSpells(spellNames);
+    } catch (error) {
+      console.error("Error loading known spells:", error);
+    }
+  }, [
+    selectedCharacter,
+    supabase,
+    adminMode,
+    isUserAdmin,
+    user,
+    discordUserId,
+  ]);
+
+  useEffect(() => {
+    loadKnownSpells();
+  }, [loadKnownSpells]);
+
+  // Save known spells using spell_progress_summary
+  const handleSaveKnownSpells = async (spells) => {
+    if (!selectedCharacter || !supabase) return;
+
+    let characterOwnerDiscordId;
+
+    if (adminMode && isUserAdmin) {
+      characterOwnerDiscordId =
+        selectedCharacter.discord_user_id || selectedCharacter.ownerId;
+    } else {
+      characterOwnerDiscordId =
+        user?.user_metadata?.provider_id || discordUserId;
+    }
+
+    if (!characterOwnerDiscordId) return;
+
+    try {
+      // Determine which spells are newly added and which were removed
+      const previousSpells = new Set(knownSpells);
+      const newSpells = new Set(spells);
+
+      const addedSpells = spells.filter((spell) => !previousSpells.has(spell));
+      const removedSpells = knownSpells.filter(
+        (spell) => !newSpells.has(spell)
+      );
+
+      // Mark newly added spells as mastered (2 critical successes) in spell_progress_summary
+      if (addedSpells.length > 0) {
+        const progressUpdates = addedSpells.map((spellName) => ({
+          character_id: selectedCharacter.id,
+          discord_user_id: characterOwnerDiscordId,
+          spell_name: spellName,
+          critical_successes: 2,
+          successful_attempts: 2,
+          failures: 0,
+          has_natural_twenty: true,
+          has_failed_attempt: false,
+          researched: false,
+        }));
+
+        // Use upsert to create or update spell progress
+        const { error: progressError } = await supabase
+          .from("spell_progress_summary")
+          .upsert(progressUpdates, {
+            onConflict: "character_id,spell_name",
+          });
+
+        if (progressError) {
+          console.error("Error updating spell progress:", progressError);
+          setError("Failed to save known spells. Please try again.");
+          return;
+        }
+      }
+
+      // Remove spell progress for removed spells
+      if (removedSpells.length > 0) {
+        const { error: deleteError } = await supabase
+          .from("spell_progress_summary")
+          .delete()
+          .eq("character_id", selectedCharacter.id)
+          .eq("discord_user_id", characterOwnerDiscordId)
+          .in("spell_name", removedSpells);
+
+        if (deleteError) {
+          console.error("Error removing spell progress:", deleteError);
+          setError("Failed to remove spells. Please try again.");
+          return;
+        }
+      }
+
+      // Update local state and reload progress
+      setKnownSpells(spells);
+      await loadSpellProgress();
+      await loadKnownSpells();
+    } catch (error) {
+      console.error("Error saving known spells:", error);
+      setError("Failed to save known spells. Please try again.");
+    }
+  };
+
   const attemptFilterOptions = [
     { value: "unattempted", label: "Unattempted" },
     { value: "attempted", label: "Attempted" },
@@ -144,13 +292,15 @@ const SpellBook = ({
 
   const getAvailableSpellsData = useCallback(() => ({ ...spellsData }), []);
 
-  // Define core subjects that are always visible
+  // Define core subjects that are always visible - Investigator Toolkit Categories
   const coreSubjects = [
-    "Charms",
-    "Jinxes, Hexes & Curses",
-    "Transfigurations",
-    "Divinations",
-    "Healing",
+    "Combat Operations",
+    "Crime Scene Analysis",
+    "Surveillance & Tracking",
+    "Interrogation Techniques",
+    "Field Medicine",
+    "Specialized Arsenal",
+    "Unforgivable Curses",
   ];
 
   const isSpecializedSubject = (subjectName) => {
@@ -214,7 +364,7 @@ const SpellBook = ({
   }, [getAvailableSpellsData]);
 
   const classFilterOptions = [
-    { value: "all", label: "All Classes" },
+    { value: "all", label: "All Categories" },
     ...getAvailableClasses().map((className) => ({
       value: className,
       label: className,
@@ -475,10 +625,40 @@ const SpellBook = ({
         }
       });
 
-      return finalFilteredData;
+      filteredData = finalFilteredData;
     }
 
-    return filteredData;
+    // Filter out automatically known spells and manually selected known spells from subject cards
+    const finalData = {};
+    const allKnownSpellNames = new Set([
+      ...AUTOMATICALLY_KNOWN_SPELLS,
+      ...knownSpells,
+    ]);
+
+    Object.entries(filteredData).forEach(([subjectName, subjectData]) => {
+      const filteredLevels = {};
+      let hasMatchingSpells = false;
+
+      Object.entries(subjectData.levels).forEach(([level, spells]) => {
+        const filteredSpells = spells.filter(
+          (spell) => !allKnownSpellNames.has(spell.name)
+        );
+
+        if (filteredSpells.length > 0) {
+          filteredLevels[level] = filteredSpells;
+          hasMatchingSpells = true;
+        }
+      });
+
+      if (hasMatchingSpells) {
+        finalData[subjectName] = {
+          ...subjectData,
+          levels: filteredLevels,
+        };
+      }
+    });
+
+    return finalData;
   }, [
     searchTerm,
     selectedAttemptFilters,
@@ -491,6 +671,7 @@ const SpellBook = ({
     researchedSpells,
     selectedCharacter,
     getSpellAttemptStatus,
+    knownSpells,
   ]);
 
   const getTotalSpells = (dataSource = null) => {
@@ -788,22 +969,6 @@ const SpellBook = ({
     >
       <CastingTiles character={selectedCharacter} />
 
-      {error && (
-        <div
-          style={{
-            backgroundColor: "#FEE2E2",
-            border: "1px solid #FECACA",
-            color: "#DC2626",
-            padding: "12px",
-            borderRadius: "8px",
-            margin: "16px 20px",
-            fontSize: "14px",
-          }}
-        >
-          {error}
-        </div>
-      )}
-
       <div style={styles.searchContainer}>
         <div style={styles.searchInputContainer}>
           <Search
@@ -890,42 +1055,45 @@ const SpellBook = ({
                         (opt) => opt.value === filter
                       );
                       return (
-                        <div
+                        <span
                           key={filter}
                           style={{
-                            display: "flex",
+                            display: "inline-flex",
                             alignItems: "center",
                             gap: "4px",
-                            backgroundColor: theme.primary || "#6366f1",
-                            color: "white",
                             padding: "2px 8px",
                             borderRadius: "12px",
                             fontSize: "12px",
+                            backgroundColor: `${theme.primary}15`,
+                            color: theme.primary,
                             fontWeight: "500",
                           }}
                         >
-                          <span>{option ? option.label : filter}</span>
+                          {option?.label}
                           <X
                             size={12}
-                            style={{ cursor: "pointer" }}
+                            style={{
+                              cursor: "pointer",
+                              marginLeft: "2px",
+                            }}
                             onClick={(e) => {
                               e.stopPropagation();
                               handleAttemptFilterToggle(filter);
                             }}
                           />
-                        </div>
+                        </span>
                       );
                     })
                   )}
                 </div>
                 <ChevronDown
                   size={16}
+                  color={theme.textSecondary}
                   style={{
-                    color: theme.textSecondary,
+                    transition: "transform 0.2s",
                     transform: isAttemptDropdownOpen
                       ? "rotate(180deg)"
                       : "rotate(0deg)",
-                    transition: "transform 0.2s ease",
                   }}
                 />
               </div>
@@ -934,16 +1102,15 @@ const SpellBook = ({
                 <div
                   style={{
                     position: "absolute",
-                    top: "100%",
+                    top: "calc(100% + 4px)",
                     left: 0,
                     right: 0,
-                    zIndex: 1000,
-                    backgroundColor: theme.surface || theme.background,
+                    backgroundColor: theme.surface,
                     border: `1px solid ${theme.border}`,
                     borderRadius: "8px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                    marginTop: "2px",
-                    maxHeight: "200px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    zIndex: 1000,
+                    maxHeight: "300px",
                     overflowY: "auto",
                   }}
                 >
@@ -963,9 +1130,23 @@ const SpellBook = ({
                         color: theme.text,
                       }}
                     >
-                      Filter by Status
+                      Select Filters
                     </span>
                     <div style={{ display: "flex", gap: "4px" }}>
+                      <button
+                        onClick={selectAllAttemptFilters}
+                        style={{
+                          padding: "2px 6px",
+                          fontSize: "10px",
+                          border: `1px solid ${theme.border}`,
+                          borderRadius: "4px",
+                          backgroundColor: "transparent",
+                          color: theme.primary,
+                          cursor: "pointer",
+                        }}
+                      >
+                        All
+                      </button>
                       <button
                         onClick={deselectAllAttemptFilters}
                         style={{
@@ -1008,18 +1189,44 @@ const SpellBook = ({
                           e.target.style.backgroundColor = "transparent";
                         }}
                       >
-                        <input
-                          type="checkbox"
-                          checked={selectedAttemptFilters.includes(
-                            option.value
-                          )}
-                          onChange={() => {}}
+                        <div
                           style={{
-                            accentColor: theme.primary,
-                            pointerEvents: "none",
+                            width: "16px",
+                            height: "16px",
+                            border: `2px solid ${
+                              selectedAttemptFilters.includes(option.value)
+                                ? theme.primary
+                                : theme.border
+                            }`,
+                            borderRadius: "3px",
+                            backgroundColor: selectedAttemptFilters.includes(
+                              option.value
+                            )
+                              ? theme.primary
+                              : "transparent",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                           }}
-                        />
-                        <span>{option.label}</span>
+                        >
+                          {selectedAttemptFilters.includes(option.value) && (
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              fill="none"
+                            >
+                              <path
+                                d="M10 3L4.5 8.5L2 6"
+                                stroke="white"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          )}
+                        </div>
+                        {option.label}
                       </div>
                     ))}
                   </div>
@@ -1029,198 +1236,206 @@ const SpellBook = ({
           </div>
 
           <div
+            ref={levelDropdownRef}
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
+              position: "relative",
+              minWidth: "200px",
             }}
           >
-            <span
-              style={{
-                fontSize: "14px",
-                color: theme.textSecondary,
-                fontWeight: "500",
-              }}
-            >
-              Level:
-            </span>
             <div
-              ref={levelDropdownRef}
+              onClick={toggleLevelDropdown}
               style={{
-                position: "relative",
-                minWidth: "240px",
+                padding: "8px 12px",
+                borderRadius: "6px",
+                border: `1px solid ${theme.border}`,
+                backgroundColor: theme.background,
+                color: theme.text,
+                fontSize: "14px",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                minHeight: "20px",
+                flexWrap: "wrap",
+                gap: "4px",
               }}
             >
               <div
-                onClick={toggleLevelDropdown}
                 style={{
-                  padding: "8px 12px",
-                  borderRadius: "6px",
-                  border: `1px solid ${theme.border}`,
-                  backgroundColor: theme.background,
-                  color: theme.text,
-                  fontSize: "14px",
-                  cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "space-between",
-                  minHeight: "20px",
-                  flexWrap: "wrap",
                   gap: "4px",
+                  flex: 1,
+                  flexWrap: "wrap",
+                }}
+              >
+                {selectedLevels.length === 0 ? (
+                  <span style={{ color: theme.textSecondary }}>All Levels</span>
+                ) : (
+                  selectedLevels.map((level) => (
+                    <span
+                      key={level}
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        padding: "2px 8px",
+                        borderRadius: "12px",
+                        fontSize: "12px",
+                        backgroundColor: `${theme.primary}15`,
+                        color: theme.primary,
+                        fontWeight: "500",
+                      }}
+                    >
+                      {level}
+                      <X
+                        size={12}
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: "2px",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLevelToggle(level);
+                        }}
+                      />
+                    </span>
+                  ))
+                )}
+              </div>
+              <ChevronDown
+                size={16}
+                color={theme.textSecondary}
+                style={{
+                  transition: "transform 0.2s",
+                  transform: isLevelDropdownOpen
+                    ? "rotate(180deg)"
+                    : "rotate(0deg)",
+                }}
+              />
+            </div>
+
+            {isLevelDropdownOpen && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "calc(100% + 4px)",
+                  left: 0,
+                  right: 0,
+                  backgroundColor: theme.surface,
+                  border: `1px solid ${theme.border}`,
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  zIndex: 1000,
+                  maxHeight: "300px",
+                  overflowY: "auto",
                 }}
               >
                 <div
                   style={{
+                    padding: "8px 12px",
+                    borderBottom: `1px solid ${theme.border}`,
                     display: "flex",
+                    justifyContent: "space-between",
                     alignItems: "center",
-                    gap: "4px",
-                    flex: 1,
-                    flexWrap: "wrap",
                   }}
                 >
-                  {selectedLevels.length === 0 ? (
-                    <span style={{ color: theme.textSecondary }}>
-                      All Levels
-                    </span>
-                  ) : (
-                    selectedLevels.map((level) => (
-                      <div
-                        key={level}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          backgroundColor: theme.primary || "#6366f1",
-                          color: "white",
-                          padding: "2px 8px",
-                          borderRadius: "12px",
-                          fontSize: "12px",
-                          fontWeight: "500",
-                        }}
-                      >
-                        <span>{level}</span>
-                        <X
-                          size={12}
-                          style={{ cursor: "pointer" }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleLevelToggle(level);
-                          }}
-                        />
-                      </div>
-                    ))
-                  )}
-                </div>
-                <ChevronDown
-                  size={16}
-                  style={{
-                    color: theme.textSecondary,
-                    transform: isLevelDropdownOpen
-                      ? "rotate(180deg)"
-                      : "rotate(0deg)",
-                    transition: "transform 0.2s ease",
-                  }}
-                />
-              </div>
-
-              {isLevelDropdownOpen && (
-                <div
-                  onClick={(e) => e.stopPropagation()}
-                  style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: 0,
-                    right: 0,
-                    zIndex: 1000,
-                    backgroundColor: theme.surface || theme.background,
-                    border: `1px solid ${theme.border}`,
-                    borderRadius: "8px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-                    marginTop: "2px",
-                    maxHeight: "200px",
-                    overflowY: "auto",
-                  }}
-                >
-                  <div
+                  <span
                     style={{
-                      padding: "8px 12px",
-                      borderBottom: `1px solid ${theme.border}`,
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      fontSize: "12px",
+                      fontWeight: "600",
+                      color: theme.text,
                     }}
                   >
-                    <span
+                    Select Levels
+                  </span>
+                  <div style={{ display: "flex", gap: "4px" }}>
+                    <button
+                      onClick={deselectAllLevels}
                       style={{
-                        fontSize: "12px",
-                        fontWeight: "600",
-                        color: theme.text,
+                        padding: "2px 6px",
+                        fontSize: "10px",
+                        border: `1px solid ${theme.border}`,
+                        borderRadius: "4px",
+                        backgroundColor: "transparent",
+                        color: theme.primary,
+                        cursor: "pointer",
                       }}
                     >
-                      Select Levels
-                    </span>
-                    <div style={{ display: "flex", gap: "4px" }}>
-                      <button
-                        onClick={deselectAllLevels}
-                        style={{
-                          padding: "2px 6px",
-                          fontSize: "10px",
-                          border: `1px solid ${theme.border}`,
-                          borderRadius: "4px",
-                          backgroundColor: "transparent",
-                          color: theme.primary,
-                          cursor: "pointer",
-                        }}
-                      >
-                        Clear
-                      </button>
-                    </div>
-                  </div>
-
-                  <div style={{ padding: "4px" }}>
-                    {getAvailableLevels().map((level) => (
-                      <div
-                        key={level}
-                        onClick={() => handleLevelToggle(level)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          padding: "8px 12px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          fontSize: "14px",
-                          color: theme.text,
-                          backgroundColor: "transparent",
-                          transition: "background-color 0.15s ease",
-                          ":hover": {
-                            backgroundColor: theme.background,
-                          },
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.backgroundColor =
-                            theme.background || "#f8fafc";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.backgroundColor = "transparent";
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedLevels.includes(level)}
-                          onChange={() => {}}
-                          style={{
-                            accentColor: theme.primary,
-                            pointerEvents: "none",
-                          }}
-                        />
-                        <span>{level}</span>
-                      </div>
-                    ))}
+                      Clear
+                    </button>
                   </div>
                 </div>
-              )}
-            </div>
+
+                <div style={{ padding: "4px" }}>
+                  {getAvailableLevels().map((level) => (
+                    <div
+                      key={level}
+                      onClick={() => handleLevelToggle(level)}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        padding: "8px 12px",
+                        borderRadius: "4px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        color: theme.text,
+                        backgroundColor: "transparent",
+                        transition: "background-color 0.15s ease",
+                        ":hover": {
+                          backgroundColor: theme.background,
+                        },
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor =
+                          theme.background || "#f8fafc";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "transparent";
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: "16px",
+                          height: "16px",
+                          border: `2px solid ${
+                            selectedLevels.includes(level)
+                              ? theme.primary
+                              : theme.border
+                          }`,
+                          borderRadius: "3px",
+                          backgroundColor: selectedLevels.includes(level)
+                            ? theme.primary
+                            : "transparent",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {selectedLevels.includes(level) && (
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 12 12"
+                            fill="none"
+                          >
+                            <path
+                              d="M10 3L4.5 8.5L2 6"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                      {level}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           <div
@@ -1237,7 +1452,7 @@ const SpellBook = ({
                 fontWeight: "500",
               }}
             >
-              Class:
+              Category:
             </span>
             <select
               value={classFilter}
@@ -1249,7 +1464,7 @@ const SpellBook = ({
                 backgroundColor: theme.background,
                 color: theme.text,
                 fontSize: "14px",
-                minWidth: "130px",
+                minWidth: "180px",
               }}
             >
               {classFilterOptions.map((option) => (
@@ -1322,30 +1537,6 @@ const SpellBook = ({
               Clear Filters
             </button>
           )}
-
-          <a
-            href="https://docs.google.com/document/d/1m-TbIj7gFzYUlA_ASa7pCrW8cbt5KOvV16r8CXF78NE/edit?tab=t.0#heading=h.camndhcqq8qn"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              marginLeft: "auto",
-              padding: "6px 12px",
-              borderRadius: "6px",
-              border: `1px solid ${theme.border}`,
-              backgroundColor: theme.primary || "#6366f1",
-              color: "white",
-              textDecoration: "none",
-              fontSize: "12px",
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              transition: "all 0.2s ease",
-              fontWeight: "500",
-            }}
-            title="View class spell lists"
-          >
-            Classes Spell List
-          </a>
         </div>
 
         {(searchTerm ||
@@ -1359,179 +1550,428 @@ const SpellBook = ({
             {selectedAttemptFilters.length > 0 && (
               <span>
                 {" "}
-                • Status:{" "}
+                • Filters:{" "}
                 {selectedAttemptFilters
-                  .map((filter) => {
-                    const option = attemptFilterOptions.find(
-                      (opt) => opt.value === filter
-                    );
-                    return option ? option.label : filter;
-                  })
+                  .map(
+                    (f) =>
+                      attemptFilterOptions.find((opt) => opt.value === f)?.label
+                  )
                   .join(", ")}
               </span>
             )}
-            {classFilter !== "all" && (
-              <span>
-                {" "}
-                • Class:{" "}
-                {
-                  classFilterOptions.find((opt) => opt.value === classFilter)
-                    ?.label
-                }
-              </span>
-            )}
-            {yearFilter !== "all" && (
-              <span>
-                {" "}
-                • Year:{" "}
-                {
-                  yearFilterOptions.find((opt) => opt.value === yearFilter)
-                    ?.label
-                }
-              </span>
-            )}
-            {selectedLevels.length > 0 && (
-              <span> • Levels: {selectedLevels.join(", ")}</span>
-            )}
-            {totalFilteredSpells < totalSpells && (
-              <span style={styles.searchResultsHint}>
-                {" "}
-                • Try different keywords or filters to find more spells
-              </span>
-            )}
           </div>
         )}
       </div>
 
-      <div style={styles.statsContainer}>
-        <span style={styles.statItem}>
-          <span
-            style={{ ...styles.statDot, backgroundColor: "#34d399" }}
-          ></span>
-          {totalMastered} Mastered
-        </span>
-        <span style={styles.statItem}>
-          <span
-            style={{ ...styles.statDot, backgroundColor: "#fbbf24" }}
-          ></span>
-          {totalAttempted} Attempted
-        </span>
-        <span style={styles.statItem}>
-          <span
-            style={{ ...styles.statDot, backgroundColor: "#f97316" }}
-          ></span>
-          {totalFailed} Failed
-        </span>
-        <span style={styles.statItem}>
-          <span
-            style={{ ...styles.statDot, backgroundColor: "#ef4444" }}
-          ></span>
-          {totalResearched} Researched
-        </span>
-        {hasSubclassFeature(selectedCharacter, "Researcher") &&
-          totalEnhanced > 0 && (
-            <span style={styles.statItem}>
-              <span
-                style={{ ...styles.statDot, backgroundColor: "#d946ef" }}
-              ></span>
-              {totalEnhanced} Enhanced
-            </span>
-          )}
-        <span style={styles.statItem}>
-          {hasSubclassFeature(selectedCharacter, "Researcher") && (
+      {/* Automatically Unlocked Spells Section */}
+      <div
+        style={{
+          margin: "20px",
+          backgroundColor: theme.surface,
+          border: `2px solid ${theme.primary}`,
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+      >
+        <button
+          onClick={() => setShowAutoUnlockedSpells(!showAutoUnlockedSpells)}
+          style={{
+            width: "100%",
+            padding: "16px 20px",
+            backgroundColor: `${theme.primary}15`,
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+            transition: "background-color 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = `${theme.primary}25`;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = `${theme.primary}15`;
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {showAutoUnlockedSpells ? (
+              <ChevronDown size={24} color={theme.primary} />
+            ) : (
+              <ChevronRight size={24} color={theme.primary} />
+            )}
             <span
               style={{
-                marginLeft: "4px",
-                fontSize: "12px",
-                color: "#8b5cf6",
-                fontWeight: "600",
+                fontSize: "18px",
+                fontWeight: "700",
+                color: theme.text,
+                letterSpacing: "0.5px",
               }}
             >
-              📚
+              AUTOMATICALLY KNOWN SPELLS
             </span>
-          )}
-        </span>
-      </div>
+          </div>
+          <span
+            style={{
+              fontSize: "14px",
+              fontWeight: "600",
+              color: theme.primary,
+              backgroundColor: theme.surface,
+              padding: "4px 12px",
+              borderRadius: "12px",
+            }}
+          >
+            No Attempt Required
+          </span>
+        </button>
 
-      {(searchTerm ||
-        selectedAttemptFilters.length > 0 ||
-        yearFilter !== "all" ||
-        classFilter !== "all" ||
-        selectedLevels.length > 0) &&
-        Object.keys(filteredSpellsData).length === 0 && (
-          <div style={styles.noResultsContainer}>
-            <div style={styles.noResultsIcon}>🔍</div>
-            <h3 style={styles.noResultsTitle}>No spells found</h3>
-            <p style={styles.noResultsMessage}>
-              No spells match your current filters.
-              {searchTerm && (
-                <>
-                  <br />
-                  Search term: "<strong>{searchTerm}</strong>"
-                </>
-              )}
-              {selectedAttemptFilters.length > 0 && (
-                <>
-                  <br />
-                  Status filters:{" "}
-                  <strong>
-                    {selectedAttemptFilters
-                      .map((filter) => {
-                        const option = attemptFilterOptions.find(
-                          (opt) => opt.value === filter
-                        );
-                        return option ? option.label : filter;
-                      })
-                      .join(", ")}
-                  </strong>
-                </>
-              )}
-              {classFilter !== "all" && (
-                <>
-                  <br />
-                  Class filter:{" "}
-                  <strong>
-                    {
-                      classFilterOptions.find(
-                        (opt) => opt.value === classFilter
-                      )?.label
-                    }
-                  </strong>
-                </>
-              )}
-              {yearFilter !== "all" && (
-                <>
-                  <br />
-                  Year filter:{" "}
-                  <strong>
-                    {
-                      yearFilterOptions.find((opt) => opt.value === yearFilter)
-                        ?.label
-                    }
-                  </strong>
-                </>
-              )}
-              {selectedLevels.length > 0 && (
-                <>
-                  <br />
-                  Level filters: <strong>{selectedLevels.join(", ")}</strong>
-                </>
-              )}
-              <br />
-              Try:
-            </p>
-            <ul style={styles.searchSuggestions}>
-              <li>Different search keywords</li>
-              <li>Different attempt status filters</li>
-              <li>Different class filters</li>
-              <li>Different year filters</li>
-              <li>Clearing filters to see all spells</li>
-            </ul>
-            <button onClick={clearFilters} style={styles.clearSearchButton}>
-              Clear All Filters
-            </button>
+        {showAutoUnlockedSpells && (
+          <div style={{ padding: "20px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "16px",
+                padding: "12px",
+                backgroundColor: `${theme.primary}10`,
+                borderRadius: "8px",
+                border: `1px solid ${theme.primary}30`,
+              }}
+            >
+              <Info size={16} color={theme.primary} />
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "14px",
+                  color: theme.text,
+                  lineHeight: "1.5",
+                }}
+              >
+                <strong>As a trained wizard,</strong> you automatically know
+                these fundamental spells.
+              </p>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                gap: "12px",
+              }}
+            >
+              {AUTOMATICALLY_KNOWN_SPELLS.map((spellName) => {
+                // Find the spell details from spellsData
+                let spellDetails = null;
+                Object.values(spellsData).forEach((category) => {
+                  Object.values(category.levels || {}).forEach((spells) => {
+                    const found = spells.find((s) => s.name === spellName);
+                    if (found) spellDetails = found;
+                  });
+                });
+
+                if (!spellDetails) return null;
+
+                return (
+                  <div
+                    key={spellName}
+                    style={{
+                      padding: "12px",
+                      backgroundColor: theme.background,
+                      border: `1px solid ${theme.border}`,
+                      borderRadius: "8px",
+                      transition: "all 0.2s ease",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = `${theme.primary}08`;
+                      e.currentTarget.style.borderColor = theme.primary;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = theme.background;
+                      e.currentTarget.style.borderColor = theme.border;
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontWeight: "600",
+                        color: theme.primary,
+                        marginBottom: "4px",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {spellDetails.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        color: theme.textSecondary,
+                        marginBottom: "6px",
+                      }}
+                    >
+                      {spellDetails.level} • {spellDetails.class?.join(", ")}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "12px",
+                        color: theme.textSecondary,
+                        lineHeight: "1.4",
+                      }}
+                    >
+                      {spellDetails.description}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
+      </div>
+
+      {/* Known Spells Section */}
+      <div
+        style={{
+          margin: "20px",
+          backgroundColor: theme.surface,
+          border: `2px solid #a0522d`,
+          borderRadius: "12px",
+          overflow: "hidden",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+      >
+        <button
+          onClick={() => setShowKnownSpells(!showKnownSpells)}
+          style={{
+            width: "100%",
+            padding: "16px 20px",
+            backgroundColor: "#a0522d15",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+            transition: "background-color 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#a0522d25";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "#a0522d15";
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {showKnownSpells ? (
+              <ChevronDown size={24} color="#a0522d" />
+            ) : (
+              <ChevronRight size={24} color="#a0522d" />
+            )}
+            <span
+              style={{
+                fontSize: "18px",
+                fontWeight: "700",
+                color: theme.text,
+                letterSpacing: "0.5px",
+              }}
+            >
+              KNOWN SPELLS
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#a0522d",
+                backgroundColor: theme.surface,
+                padding: "4px 12px",
+                borderRadius: "12px",
+              }}
+            >
+              {knownSpells.length} /{" "}
+              {calculateWizardSpellsKnown(
+                selectedCharacter?.level || 1,
+                selectedCharacter?.class
+              )}
+            </span>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowSpellSelectionModal(true);
+              }}
+              style={{
+                padding: "8px 16px",
+                backgroundColor: "#a0522d",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                fontSize: "14px",
+                fontWeight: "600",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                transition: "opacity 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.opacity = "0.9";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.opacity = "1";
+              }}
+            >
+              <BookOpen size={16} />
+              {knownSpells.length === 0 ? "Select Spells" : "Manage Spells"}
+            </button>
+          </div>
+        </button>
+
+        {showKnownSpells && (
+          <div style={{ padding: "20px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "16px",
+                padding: "12px",
+                backgroundColor: "#a0522d10",
+                borderRadius: "8px",
+                border: "1px solid #a0522d30",
+              }}
+            >
+              <Info size={16} color="#a0522d" />
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: "14px",
+                  color: theme.text,
+                  lineHeight: "1.5",
+                }}
+              >
+                <strong>These are the spells in your spellbook.</strong> As a
+                Level {selectedCharacter?.level || 1} investigator, you can know
+                up to{" "}
+                {calculateWizardSpellsKnown(
+                  selectedCharacter?.level || 1,
+                  selectedCharacter?.class
+                )}{" "}
+                spells total. Select which spells you've learned during your
+                training.
+              </p>
+            </div>
+
+            {knownSpells.length === 0 ? (
+              <div
+                style={{
+                  padding: "40px",
+                  textAlign: "center",
+                  color: theme.textSecondary,
+                }}
+              >
+                <BookOpen
+                  size={48}
+                  color={theme.textSecondary}
+                  style={{ margin: "0 auto 16px" }}
+                />
+                <p style={{ fontSize: "16px", marginBottom: "8px" }}>
+                  No spells selected yet
+                </p>
+                <p style={{ fontSize: "14px" }}>
+                  Click "Select Spells" to choose which spells your character
+                  knows
+                </p>
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+                  gap: "12px",
+                }}
+              >
+                {knownSpells.map((spellName) => {
+                  // Find the spell details from spellsData
+                  let spellDetails = null;
+                  Object.values(spellsData).forEach((category) => {
+                    Object.values(category.levels || {}).forEach((spells) => {
+                      const found = spells.find((s) => s.name === spellName);
+                      if (found) spellDetails = found;
+                    });
+                  });
+
+                  if (!spellDetails) return null;
+
+                  return (
+                    <div
+                      key={spellName}
+                      style={{
+                        padding: "12px",
+                        backgroundColor: theme.background,
+                        border: `1px solid ${theme.border}`,
+                        borderRadius: "8px",
+                        transition: "all 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#a0522d08";
+                        e.currentTarget.style.borderColor = "#a0522d";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor =
+                          theme.background;
+                        e.currentTarget.style.borderColor = theme.border;
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontWeight: "600",
+                          color: "#a0522d",
+                          marginBottom: "4px",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {spellDetails.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          color: theme.textSecondary,
+                          marginBottom: "6px",
+                        }}
+                      >
+                        {spellDetails.level}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          color: theme.textSecondary,
+                          lineHeight: "1.4",
+                        }}
+                      >
+                        {spellDetails.description?.substring(0, 100)}...
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {error && (
+        <div
+          style={{
+            backgroundColor: "#FEE2E2",
+            border: "1px solid #FECACA",
+            color: "#DC2626",
+            padding: "12px",
+            borderRadius: "8px",
+            margin: "16px 20px",
+            fontSize: "14px",
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       <div style={styles.subjectsGrid}>
         {Object.entries(filteredSpellsData)
@@ -1710,6 +2150,16 @@ const SpellBook = ({
           </div>
         )}
       </div>
+
+      {/* Wizard Spell Selection Modal */}
+      <WizardSpellSelectionModal
+        isOpen={showSpellSelectionModal}
+        onClose={() => setShowSpellSelectionModal(false)}
+        character={selectedCharacter}
+        spellsData={spellsData}
+        knownSpells={knownSpells}
+        onSave={handleSaveKnownSpells}
+      />
     </div>
   );
 };

@@ -247,12 +247,11 @@ export const createCharacterGalleryStyles = (theme) => ({
   imageContainer: {
     position: "relative",
     height: "300px",
-    width: "300px",
+    width: "100%",
     overflow: "hidden",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    margin: "auto",
   },
   characterImage: {
     width: "100%",

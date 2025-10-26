@@ -19,7 +19,6 @@ export const DEFAULT_CHARACTER = {
   current_hit_dice: 1,
   discord_user_id: "",
   feat_choices: {},
-  game_session: "",
   asi_choices: {},
   heritage_choices: {},
   subclass_choices: {},

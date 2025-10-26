@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Users,
-  ChevronDown,
-  ChevronUp,
-  Calendar,
-  GraduationCap,
   Search,
   X,
   Save,
@@ -22,30 +18,37 @@ import { ALL_CHARACTERS } from "../../SharedData/charactersData";
 import { filterNPCGalleryCharacters } from "../../utils/characterFiltering";
 
 const DEFAULT_TAGS = [
-  "Study Buddy",
-  "Rival",
-  "Crush",
-  "Quidditch Player",
-  "Prefect",
+  "Informant",
+  "Suspect",
+  "Witness",
+  "Alibi",
+  "Has Intel",
   "Knows Secret",
   "Trustworthy",
   "Suspicious",
-  "Helpful",
+  "Cooperative",
+  "Hostile",
   "Dangerous",
+  "Connected to Victim",
+  "Connected to Crime Scene",
+  "Under Surveillance",
+  "Person of Interest",
   "????",
 ];
 
 const RelationshipBadge = ({ relationship, theme }) => {
   const getRelationshipStyle = (rel) => {
     switch (rel) {
-      case "friend":
-        return { color: "#10b981", icon: Heart, label: "Friend" };
-      case "enemy":
-        return { color: "#ef4444", icon: UserX, label: "Enemy" };
+      case "trusted":
+        return { color: "#10b981", icon: Heart, label: "Trusted" };
+      case "hostile":
+        return { color: "#ef4444", icon: UserX, label: "Hostile" };
       case "neutral":
         return { color: "#6b7280", icon: User, label: "Neutral" };
       case "suspicious":
         return { color: "#f59e0b", icon: AlertTriangle, label: "Suspicious" };
+      case "cooperative":
+        return { color: "#3b82f6", icon: User, label: "Cooperative" };
       default:
         return { color: theme.textSecondary, icon: User, label: "Unknown" };
     }
@@ -250,18 +253,21 @@ const ConnectionManager = ({
   const [description, setDescription] = useState("");
 
   const relationshipTypes = [
-    "Sibling",
-    "Parent",
-    "Child",
-    "Friend",
-    "Rival",
-    "Romantic Interest",
-    "Mentor",
-    "Student",
-    "Colleague",
+    "Partner",
+    "Informant",
+    "Witness",
+    "Suspect",
+    "Accomplice",
+    "Rival Investigator",
+    "Contact",
+    "Informer",
+    "Associate",
     "Enemy",
     "Ally",
-    "Acquaintance",
+    "Business Associate",
+    "Family Member",
+    "Romantic Interest",
+    "Unknown Connection",
     "Other",
   ];
 
@@ -459,7 +465,7 @@ const ConnectionManager = ({
                       <div
                         style={{ fontSize: "10px", color: theme.textSecondary }}
                       >
-                        {character.school} • {character.type}
+                        {character.case_name ? `${character.case_name} • ` : ""}{character.type}
                       </div>
                     </div>
                   </button>
@@ -590,7 +596,7 @@ const CharacterCard = ({
         character_id: selectedCharacter.id,
         discord_user_id: discordUserId,
         npc_name: character.name,
-        npc_school: character.school,
+        npc_case_name: character.case_name,
         npc_type: character.type,
         notes: noteText.trim(),
         relationship: relationship,
@@ -728,10 +734,10 @@ const CharacterCard = ({
             marginBottom: "8px",
           }}
         >
-          {character.school} • {character.type}
+          {character.case_name ? `${character.case_name} • ` : ""}{character.type}
         </div>
 
-        {character.type === "Faculty" && character.subjects && (
+        {false && (
           <div
             style={{
               fontSize: "12px",
@@ -918,10 +924,11 @@ const CharacterCard = ({
                   }}
                 >
                   <option value="unknown">Unknown</option>
-                  <option value="friend">Friend</option>
+                  <option value="trusted">Trusted</option>
+                  <option value="cooperative">Cooperative</option>
                   <option value="neutral">Neutral</option>
                   <option value="suspicious">Suspicious</option>
-                  <option value="enemy">Enemy</option>
+                  <option value="hostile">Hostile</option>
                 </select>
               </div>
 
@@ -1084,143 +1091,6 @@ const CharacterCard = ({
   );
 };
 
-const TypeSection = ({
-  type,
-  characters,
-  theme,
-  styles,
-  isExpanded,
-  onToggle,
-  selectedCharacter,
-  npcNotes,
-  onUpdateNote,
-  supabase,
-  discordUserId,
-  allCharacters,
-}) => {
-  return (
-    <div style={styles.typeSection}>
-      <button
-        style={{
-          ...styles.typeHeader,
-          backgroundColor: isExpanded ? theme.primary + "10" : theme.surface,
-          borderColor: isExpanded ? theme.primary : theme.border,
-          marginLeft: "20px",
-        }}
-        onClick={onToggle}
-      >
-        <div style={styles.typeHeaderLeft}>
-          <Calendar size={18} color={theme.primary} />
-          <h3 style={styles.typeTitle}>{type}</h3>
-          <span style={styles.characterCount}>
-            ({characters.length} {type.toLowerCase()})
-          </span>
-        </div>
-        <div style={styles.typeHeaderRight}>
-          {isExpanded ? (
-            <ChevronUp size={18} color={theme.primary} />
-          ) : (
-            <ChevronDown size={18} color={theme.primary} />
-          )}
-        </div>
-      </button>
-
-      {isExpanded && (
-        <div style={{ ...styles.charactersGrid, marginLeft: "20px" }}>
-          {characters.map((character) => (
-            <CharacterCard
-              key={character.id}
-              character={character}
-              theme={theme}
-              styles={styles}
-              selectedCharacter={selectedCharacter}
-              npcNote={npcNotes[character.name]}
-              onUpdateNote={onUpdateNote}
-              supabase={supabase}
-              discordUserId={discordUserId}
-              characters={allCharacters}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const SchoolSection = ({
-  school,
-  schoolData,
-  theme,
-  styles,
-  isSchoolExpanded,
-  onSchoolToggle,
-  expandedTypes,
-  onTypeToggle,
-  selectedCharacter,
-  npcNotes,
-  onUpdateNote,
-  supabase,
-  discordUserId,
-  allCharacters,
-}) => {
-  const totalCharacters = Object.values(schoolData).reduce(
-    (sum, chars) => sum + chars.length,
-    0
-  );
-
-  return (
-    <div style={styles.schoolSection}>
-      <button
-        style={{
-          ...styles.schoolHeader,
-          backgroundColor: isSchoolExpanded
-            ? theme.primary + "15"
-            : theme.surface,
-          borderColor: isSchoolExpanded ? theme.primary : theme.border,
-        }}
-        onClick={onSchoolToggle}
-      >
-        <div style={styles.schoolHeaderLeft}>
-          <GraduationCap size={24} color={theme.primary} />
-          <h2 style={styles.schoolTitle}>{school}</h2>
-          <span style={styles.schoolCount}>
-            ({totalCharacters} total characters)
-          </span>
-        </div>
-        <div style={styles.schoolHeaderRight}>
-          {isSchoolExpanded ? (
-            <ChevronUp size={24} color={theme.primary} />
-          ) : (
-            <ChevronDown size={24} color={theme.primary} />
-          )}
-        </div>
-      </button>
-
-      {isSchoolExpanded && (
-        <div style={styles.schoolContent}>
-          {Object.entries(schoolData).map(([type, characters]) => (
-            <TypeSection
-              key={`${school}-${type}`}
-              type={type}
-              characters={characters}
-              theme={theme}
-              styles={styles}
-              isExpanded={expandedTypes.has(`${school}-${type}`)}
-              onToggle={() => onTypeToggle(`${school}-${type}`)}
-              selectedCharacter={selectedCharacter}
-              npcNotes={npcNotes}
-              onUpdateNote={onUpdateNote}
-              supabase={supabase}
-              discordUserId={discordUserId}
-              allCharacters={allCharacters}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
 export const CharacterGallery = ({
   characters = ALL_CHARACTERS,
   selectedCharacter,
@@ -1228,82 +1098,17 @@ export const CharacterGallery = ({
   user,
 }) => {
   const { theme } = useTheme();
-  const [expandedSchools, setExpandedSchools] = useState(() => {
-    if (!selectedCharacter?.gameSession) {
-      return new Set();
-    }
-
-    const gameSession = selectedCharacter.gameSession.toLowerCase();
-    const autoOpenSchools = new Set();
-
-    if (gameSession.includes("haunting")) {
-      autoOpenSchools.add("Ilvermorny");
-    }
-    if (gameSession.includes("knights")) {
-      autoOpenSchools.add("Hogwarts");
-    }
-    if (gameSession.includes("jaguaras")) {
-      autoOpenSchools.add("Jaguaras");
-    }
-
-    return autoOpenSchools;
-  });
-  const [expandedTypes, setExpandedTypes] = useState(() => {
-    if (!selectedCharacter?.gameSession) {
-      return new Set();
-    }
-
-    const gameSession = selectedCharacter.gameSession.toLowerCase();
-    const autoOpenTypes = new Set();
-
-    if (gameSession.includes("haunting")) {
-      autoOpenTypes.add("Ilvermorny-Classmate");
-    }
-    if (gameSession.includes("knights")) {
-      autoOpenTypes.add("Hogwarts-Classmate");
-    }
-    if (gameSession.includes("jaguaras")) {
-      autoOpenTypes.add("Jaguaras-Competitor");
-    }
-
-    return autoOpenTypes;
-  });
   const [searchTerm, setSearchTerm] = useState("");
   const [npcNotes, setNpcNotes] = useState({});
+  const [visibleNPCs, setVisibleNPCs] = useState(new Set());
+  const [loadingVisibility, setLoadingVisibility] = useState(true);
 
   const discordUserId = user?.user_metadata?.provider_id;
 
   useEffect(() => {
-    if (!selectedCharacter?.gameSession) {
-      setExpandedSchools(new Set());
-      setExpandedTypes(new Set());
-      return;
-    }
-
-    const gameSession = selectedCharacter.gameSession.toLowerCase();
-    const autoOpenSchools = new Set();
-    const autoOpenTypes = new Set();
-
-    if (gameSession.includes("haunting")) {
-      autoOpenSchools.add("Ilvermorny");
-      autoOpenTypes.add("Ilvermorny-Classmate");
-    }
-    if (gameSession.includes("knights")) {
-      autoOpenSchools.add("Hogwarts");
-      autoOpenTypes.add("Hogwarts-Classmate");
-    }
-    if (gameSession.includes("jaguaras")) {
-      autoOpenSchools.add("Jaguaras");
-      autoOpenTypes.add("Jaguaras-Competitor");
-    }
-
-    setExpandedSchools(autoOpenSchools);
-    setExpandedTypes(autoOpenTypes);
-  }, [selectedCharacter?.gameSession]);
-
-  useEffect(() => {
     if (selectedCharacter && discordUserId && supabase) {
       loadNpcNotes();
+      loadNpcVisibility();
     }
   }, [selectedCharacter?.id, discordUserId]);
 
@@ -1324,6 +1129,28 @@ export const CharacterGallery = ({
       setNpcNotes(notesMap);
     } catch (error) {
       console.error("Error loading NPC notes:", error);
+    }
+  };
+
+  const loadNpcVisibility = async () => {
+    setLoadingVisibility(true);
+    try {
+      const { data, error } = await supabase
+        .from("character_npc_visibility")
+        .select("npc_name")
+        .eq("character_id", selectedCharacter.id);
+
+      if (error) throw error;
+
+      // Create a Set of visible NPC names for fast lookup
+      const visibleSet = new Set(data.map((v) => v.npc_name));
+      setVisibleNPCs(visibleSet);
+    } catch (error) {
+      console.error("Error loading NPC visibility:", error);
+      // If table doesn't exist yet or error, show all NPCs (backward compatibility)
+      setVisibleNPCs(new Set(ALL_CHARACTERS.map((npc) => npc.name)));
+    } finally {
+      setLoadingVisibility(false);
     }
   };
 
@@ -1382,24 +1209,8 @@ export const CharacterGallery = ({
     );
   }
 
-  const filteredCharacters = filterNPCGalleryCharacters(
-    characters,
-    selectedCharacter?.gameSession
-  );
-
-  const charactersBySchool = filteredCharacters.reduce((acc, character) => {
-    const school = character.school;
-    const type = character.type;
-
-    if (!acc[school]) {
-      acc[school] = {};
-    }
-    if (!acc[school][type]) {
-      acc[school][type] = [];
-    }
-    acc[school][type].push(character);
-    return acc;
-  }, {});
+  const filteredCharacters = filterNPCGalleryCharacters(characters)
+    .filter((npc) => visibleNPCs.has(npc.name));
 
   const searchResults = filteredCharacters.filter((character) => {
     if (!searchTerm.trim()) return false;
@@ -1409,7 +1220,7 @@ export const CharacterGallery = ({
 
     return (
       character.name.toLowerCase().includes(searchLower) ||
-      character.school.toLowerCase().includes(searchLower) ||
+      (character.case_name && character.case_name.toLowerCase().includes(searchLower)) ||
       character.type.toLowerCase().includes(searchLower) ||
       (note?.notes && note.notes.toLowerCase().includes(searchLower)) ||
       (note?.relationship &&
@@ -1418,37 +1229,6 @@ export const CharacterGallery = ({
         note.custom_tags.some((tag) => tag.toLowerCase().includes(searchLower)))
     );
   });
-
-  const schoolKeys = Object.keys(charactersBySchool).sort((a, b) => {
-    const order = { Ilvermorny: 1, Hogwarts: 2, Jaguaras: 3 };
-    const aOrder = order[a] || 999;
-    const bOrder = order[b] || 999;
-
-    if (aOrder !== bOrder) {
-      return aOrder - bOrder;
-    }
-    return a.localeCompare(b);
-  });
-
-  const toggleSchool = (school) => {
-    const newExpanded = new Set(expandedSchools);
-    if (newExpanded.has(school)) {
-      newExpanded.delete(school);
-    } else {
-      newExpanded.add(school);
-    }
-    setExpandedSchools(newExpanded);
-  };
-
-  const toggleType = (typeId) => {
-    const newExpanded = new Set(expandedTypes);
-    if (newExpanded.has(typeId)) {
-      newExpanded.delete(typeId);
-    } else {
-      newExpanded.add(typeId);
-    }
-    setExpandedTypes(newExpanded);
-  };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -1467,7 +1247,7 @@ export const CharacterGallery = ({
           <Search size={20} style={styles.searchIcon} />
           <input
             type="text"
-            placeholder="Search NPCs by name, school, type, notes, or tags..."
+            placeholder="Search NPCs by name, case, type, notes, or tags..."
             value={searchTerm}
             onChange={handleSearchChange}
             style={{
@@ -1515,7 +1295,7 @@ export const CharacterGallery = ({
                 <Search size={48} color={theme.textSecondary} />
                 <p>No characters found matching "{searchTerm}"</p>
                 <p style={{ fontSize: "14px", marginTop: "8px" }}>
-                  Try searching by name, school, character type, your notes, or
+                  Try searching by name, case, character type, your notes, or
                   custom tags.
                 </p>
               </div>
@@ -1524,27 +1304,34 @@ export const CharacterGallery = ({
         </div>
       )}
 
-      <div style={styles.schoolContainer}>
-        {schoolKeys.map((school) => (
-          <SchoolSection
-            key={school}
-            school={school}
-            schoolData={charactersBySchool[school]}
-            theme={theme}
-            styles={styles}
-            isSchoolExpanded={expandedSchools.has(school)}
-            onSchoolToggle={() => toggleSchool(school)}
-            expandedTypes={expandedTypes}
-            onTypeToggle={toggleType}
-            selectedCharacter={selectedCharacter}
-            npcNotes={npcNotes}
-            onUpdateNote={updateNpcNote}
-            supabase={supabase}
-            discordUserId={discordUserId}
-            allCharacters={characters}
-          />
-        ))}
-      </div>
+      {!searchTerm && (
+        <div style={{ ...styles.charactersGrid, marginTop: "24px" }}>
+          {filteredCharacters.map((character) => (
+            <CharacterCard
+              key={character.id}
+              character={character}
+              theme={theme}
+              styles={styles}
+              selectedCharacter={selectedCharacter}
+              npcNote={npcNotes[character.name]}
+              onUpdateNote={updateNpcNote}
+              supabase={supabase}
+              discordUserId={discordUserId}
+              characters={characters}
+            />
+          ))}
+        </div>
+      )}
+
+      {!searchTerm && filteredCharacters.length === 0 && (
+        <div style={styles.noResults}>
+          <Users size={48} color={theme.textSecondary} />
+          <p>No NPCs have been revealed to your character yet.</p>
+          <p style={{ fontSize: "14px", marginTop: "8px" }}>
+            Your DM will reveal NPCs as you encounter them in the story.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

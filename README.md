@@ -24,7 +24,7 @@ The Auror Files is a full-featured character management system for a Harry Potte
 
 ### Live Demo
 
-- Production: [WitchesAndSnitches.com](https://witchesandsnitches.com/)
+- Production: [TheAurorFiles.com](https://theaurorfiles.com/)
 - Development: http://localhost:3000
 
 ## ✨ Features
@@ -113,8 +113,8 @@ The Auror Files is a full-featured character management system for a Harry Potte
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/yourusername/witches-and-snitches.git
-cd witches-and-snitches
+git clone https://github.com/yourusername/the-auror-files.git
+cd the-auror-files
 ```
 
 2. **Install dependencies**
@@ -500,7 +500,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Project Lead**: Rachael Drennan
 - **Email**: rachael.drennan@yahoo.com
-- **Issues**: [GitHub Issues](https://github.com/yourusername/witches-and-snitches/issues)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/the-auror-files/issues)
 
 ---
 

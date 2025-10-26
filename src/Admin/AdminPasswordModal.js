@@ -314,7 +314,7 @@ const AdminPasswordModal = ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes spin {
           to {
             transform: rotate(360deg);

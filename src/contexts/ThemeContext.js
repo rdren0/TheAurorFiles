@@ -112,7 +112,7 @@ const HOUSE_THEMES = {
     sidebarBackground: "#252525",
   },
   // Typewriter (High Contrast)
-  "Typewriter": {
+  Typewriter: {
     primary: "#0f0f0f",
     secondary: "#2f2f2f",
     accent: "#1a1a1a",
@@ -203,21 +203,21 @@ const HOUSE_THEMES = {
   },
   // Newspaper Print
   "Newspaper Print": {
-    primary: "#1a1a1d",
-    secondary: "#3a3a40",
-    accent: "#2a2a2d",
+    primary: "#2a2a2e",
+    secondary: "#4a4a50",
+    accent: "#3a3a3e",
     background: "#0d0d10",
-    surface: "#1f1f22",
-    text: "#e6e6ea",
-    textSecondary: "#b6b6ba",
-    border: "#2a2a2d",
-    success: "#5a9a6a",
-    warning: "#d4a580",
-    error: "#9a3a3a",
-    gradient: "linear-gradient(135deg, #1a1a1d 0%, #0d0d10 100%)",
-    cardBackground: "#1f1f22",
-    headerBackground: "#1a1a1d",
-    sidebarBackground: "#16161a",
+    surface: "#2a2a2e",
+    text: "#f5f5f8",
+    textSecondary: "#d0d0d5",
+    border: "#3a3a3e",
+    success: "#60b070",
+    warning: "#e0b590",
+    error: "#b04a4a",
+    gradient: "linear-gradient(135deg, #2a2a2e 0%, #0d0d10 100%)",
+    cardBackground: "#2a2a2e",
+    headerBackground: "#1a1a1e",
+    sidebarBackground: "#1a1a1e",
   },
 };
 
@@ -398,9 +398,24 @@ const THEMES = {
 };
 
 export const SCHOOL_CATEGORIES = {
-  "Classic Detective": ["Classic Noir", "Detective Office", "Typewriter", "Newspaper Print"],
-  "Urban Night": ["Midnight Investigation", "Rain-Soaked Streets", "Foggy Alley", "Street Lamp"],
-  "Investigation Themes": ["Crime Scene", "Case File", "Evidence Board", "Cigarette Smoke"],
+  "Classic Detective": [
+    "Classic Noir",
+    "Detective Office",
+    "Typewriter",
+    "Newspaper Print",
+  ],
+  "Urban Night": [
+    "Midnight Investigation",
+    "Rain-Soaked Streets",
+    "Foggy Alley",
+    "Street Lamp",
+  ],
+  "Investigation Themes": [
+    "Crime Scene",
+    "Case File",
+    "Evidence Board",
+    "Cigarette Smoke",
+  ],
 };
 
 export const ThemeProvider = ({ children }) => {
@@ -412,9 +427,11 @@ export const ThemeProvider = ({ children }) => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("app-theme");
-    const savedHouse = localStorage.getItem("app-theme-house");
-    const savedColorblindType = localStorage.getItem("app-colorblind-type");
+    const savedTheme = localStorage.getItem("aurorfiles-theme");
+    const savedHouse = localStorage.getItem("aurorfiles-theme-house");
+    const savedColorblindType = localStorage.getItem(
+      "aurorfiles-colorblind-type"
+    );
 
     if (
       savedTheme &&
@@ -436,17 +453,17 @@ export const ThemeProvider = ({ children }) => {
 
   const setThemeModeWithPersistence = (newTheme) => {
     setThemeMode(newTheme);
-    localStorage.setItem("app-theme", newTheme);
+    localStorage.setItem("aurorfiles-theme", newTheme);
   };
 
   const setThemeHouseWithPersistence = (newHouse) => {
     setThemeHouse(newHouse);
-    localStorage.setItem("app-theme-house", newHouse);
+    localStorage.setItem("aurorfiles-theme-house", newHouse);
   };
 
   const setSelectedColorblindTypeWithPersistence = (newType) => {
     setSelectedColorblindType(newType);
-    localStorage.setItem("app-colorblind-type", newType);
+    localStorage.setItem("aurorfiles-colorblind-type", newType);
   };
 
   const updateSelectedCharacterFromExternal = (character) => {
@@ -455,19 +472,22 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem("app-theme", themeMode);
+      localStorage.setItem("aurorfiles-theme", themeMode);
     }
   }, [themeMode, isInitialized]);
 
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem("app-theme-house", themeHouse);
+      localStorage.setItem("aurorfiles-theme-house", themeHouse);
     }
   }, [themeHouse, isInitialized]);
 
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem("app-colorblind-type", selectedColorblindType);
+      localStorage.setItem(
+        "aurorfiles-colorblind-type",
+        selectedColorblindType
+      );
     }
   }, [selectedColorblindType, isInitialized]);
 

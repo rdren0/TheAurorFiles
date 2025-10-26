@@ -1,51 +1,21 @@
-import { ALL_CHARACTERS } from "../SharedData/charactersData";
+/**
+ * Character filtering utilities
+ *
+ * Simplified for single-campaign use.
+ * NPC visibility is now managed through the character_npc_visibility table.
+ */
 
-export const OTHER_PLAYERS_EXCEPTIONS = {
-  "Thursday - Jaguaras": ["Pyotr Abramov"],
+// Returns all characters - no filtering needed (visibility managed by database)
+export const filterNPCGalleryCharacters = (characters) => {
+  return characters;
 };
 
-export const getJaguarasStudentNames = () => {
-  return new Set(
-    ALL_CHARACTERS
-      .filter(character => character.school === "Jaguaras" && character.type === "Competitor")
-      .map(character => character.name)
-  );
+// No special NPC badges needed in single campaign
+export const shouldShowNPCBadge = () => {
+  return false;
 };
 
-export const shouldFilterFromOtherPlayers = (characterName, gameSession) => {
-  const jaguarasNames = getJaguarasStudentNames();
-
-  if (!jaguarasNames.has(characterName)) {
-    return false;
-  }
-
-  const exceptions = OTHER_PLAYERS_EXCEPTIONS[gameSession];
-  const isException = exceptions && exceptions.includes(characterName);
-
-  return !isException;
-};
-
-export const shouldShowInOtherPlayers = (characterName, gameSession) => {
-  const exceptions = OTHER_PLAYERS_EXCEPTIONS[gameSession];
-  return exceptions && exceptions.includes(characterName);
-};
-
-export const shouldShowNPCBadge = (characterName, gameSession) => {
-  const jaguarasNames = getJaguarasStudentNames();
-  const isJaguarasNPC = jaguarasNames.has(characterName);
-  const isException = shouldShowInOtherPlayers(characterName, gameSession);
-
-  return isJaguarasNPC && isException;
-};
-
-export const shouldHideFromNPCGallery = (characterName, gameSession) => {
-  return shouldShowInOtherPlayers(characterName, gameSession);
-};
-
-export const filterNPCGalleryCharacters = (characters, gameSession) => {
-  if (!gameSession) return characters;
-
-  return characters.filter(character =>
-    !shouldHideFromNPCGallery(character.name, gameSession)
-  );
+// No filtering needed in single campaign
+export const shouldFilterFromOtherPlayers = () => {
+  return false;
 };

@@ -317,7 +317,22 @@ const verifyAdminPassword = async (discordUserId, password) => {
       "The ancient magic recognizes you as forbidden. Access permanently denied."
     );
   }
+
+  // Check if user is already an admin
+  const alreadyAdmin = await isUserAdmin(discordUserId);
+  if (alreadyAdmin) {
+    console.log("✅ User is already an admin, skipping insert");
+    return true;
+  }
+
   const ADMIN_PASSWORD = process.env.REACT_APP_ADMIN_PASSWORD;
+  console.log("🔑 Password Comparison Debug:");
+  console.log("  Entered password:", password);
+  console.log("  Entered password length:", password?.length);
+  console.log("  Expected password:", ADMIN_PASSWORD);
+  console.log("  Expected password length:", ADMIN_PASSWORD?.length);
+  console.log("  Match:", password === ADMIN_PASSWORD);
+
   if (!ADMIN_PASSWORD) {
     throw new Error("The magical registry is not properly configured");
   }
@@ -329,7 +344,7 @@ const verifyAdminPassword = async (discordUserId, password) => {
   const insertData = {
     discord_user_id: discordUserId,
     role: "admin",
-    granted_by: "website",
+    granted_by: discordUserId, // Self-granted via website password
     granted_at: new Date().toISOString(),
   };
 
@@ -338,8 +353,8 @@ const verifyAdminPassword = async (discordUserId, password) => {
     .insert(insertData)
     .select();
 
-  if (error && error.code !== "23505") {
-    console.error("❌ Database error (not a duplicate key):", error);
+  if (error && error.code !== "23505" && error.code !== "42501") {
+    console.error("❌ Database error (not a duplicate key or RLS):", error);
     console.error("This is the actual error causing the failure!");
     throw new Error(`Database error: ${error.message}`);
   }
@@ -403,6 +418,56 @@ const removeUserRole = async (targetDiscordUserId, role) => {
 
 const saveCharacter = async (characterData, discordUserId) => {
   try {
+    console.log(
+      "📤 characterService.saveCharacter - INSERT payload:",
+      JSON.stringify(
+        {
+          ability_scores: characterData.ability_scores,
+          additional_feats: characterData.additional_feats,
+          additional_asi: characterData.additional_asi,
+          asi_choices: characterData.asi_choices,
+          background: characterData.background,
+          casting_style: characterData.casting_style,
+          casting_style_choices: characterData.casting_style_choices || {},
+          current_hit_dice: characterData.level,
+          current_hit_points: characterData.hit_points,
+          discord_user_id: discordUserId,
+          feat_choices: characterData.feat_choices || {},
+          heritage_choices: characterData.heritage_choices || {},
+          hit_points: characterData.hit_points,
+          house: characterData.house,
+          house_choices: characterData.house_choices,
+          initiative_ability: characterData.initiative_ability,
+          initiative: characterData.initiative || {
+            modifier: 0,
+            override: null,
+          },
+          innate_heritage: characterData.innate_heritage,
+          innate_heritage_skills: characterData.innate_heritage_skills,
+          level: characterData.level,
+          level1_choice_type: characterData.level1_choice_type,
+          magic_modifiers: characterData.magic_modifiers,
+          name: characterData.name,
+          notes: characterData.notes || null,
+          school_year: characterData.schoolYear || characterData.school_year,
+          skill_proficiencies: characterData.skill_proficiencies,
+          skill_expertise: characterData.skill_expertise,
+          temp_hp: characterData.temp_hp || 0,
+          tool_proficiencies: characterData.tool_proficiencies,
+          standard_feats: characterData.standard_feats,
+          subclass: characterData.subclass,
+          subclass_choices: characterData.subclass_choices,
+          wand_type: characterData.wand_type,
+          wand_info: characterData.wand_info,
+          image_url: characterData.image_url || characterData.imageUrl || null,
+          base_ability_scores: characterData.base_ability_scores,
+          metamagic_choices: characterData.metamagic_choices,
+        },
+        null,
+        2
+      )
+    );
+
     const { data: savedCharacter, error: characterError } = await supabase
       .from("characters")
       .insert({
@@ -413,11 +478,11 @@ const saveCharacter = async (characterData, discordUserId) => {
         background: characterData.background,
         casting_style: characterData.casting_style,
         casting_style_choices: characterData.casting_style_choices || {},
+        class: characterData.class,
         current_hit_dice: characterData.level,
         current_hit_points: characterData.hit_points,
         discord_user_id: discordUserId,
         feat_choices: characterData.feat_choices || {},
-        game_session: characterData.game_session,
         heritage_choices: characterData.heritage_choices || {},
         hit_points: characterData.hit_points,
         house: characterData.house,
@@ -448,7 +513,16 @@ const saveCharacter = async (characterData, discordUserId) => {
       .select()
       .single();
 
+    console.log(
+      "📥 characterService.saveCharacter - DB response:",
+      JSON.stringify(savedCharacter, null, 2)
+    );
+
     if (characterError) {
+      console.error(
+        "❌ characterService.saveCharacter - error:",
+        characterError
+      );
       throw characterError;
     }
 
@@ -480,57 +554,70 @@ const saveCharacter = async (characterData, discordUserId) => {
 
 const updateCharacter = async (characterId, characterData, discordUserId) => {
   try {
+    const updatePayload = {
+      ability_scores: characterData.ability_scores,
+      ac: characterData.ac,
+      additional_feats: characterData.additional_feats,
+      additional_asi: characterData.additional_asi,
+      asi_choices: characterData.asi_choices,
+      background: characterData.background,
+      casting_style: characterData.casting_style,
+      casting_style_choices: characterData.casting_style_choices || {},
+      class: characterData.class,
+      current_hit_dice: characterData.level,
+      current_hit_points: characterData.hit_points,
+      feat_choices: characterData.feat_choices || {},
+      heritage_choices: characterData.heritage_choices || {},
+      hit_points: characterData.hit_points,
+      house_choices: characterData.house_choices,
+      house: characterData.house,
+      image_url: characterData.image_url || characterData.imageUrl || null,
+      initiative_ability: characterData.initiative_ability,
+      initiative: characterData.initiative || { modifier: 0, override: null },
+      innate_heritage_skills: characterData.innate_heritage_skills,
+      innate_heritage: characterData.innate_heritage,
+      level: characterData.level,
+      level1_choice_type: characterData.level1_choice_type,
+      magic_modifiers: characterData.magic_modifiers,
+      name: characterData.name,
+      notes: characterData.notes,
+      school_year: characterData.school_year,
+      skill_expertise: characterData.skill_expertise,
+      skill_proficiencies: characterData.skill_proficiencies,
+      temp_hp: characterData.temp_hp || 0,
+      tool_proficiencies: characterData.tool_proficiencies,
+      standard_feats: characterData.standard_feats,
+      subclass_choices: characterData.subclass_choices,
+      subclass: characterData.subclass,
+      updated_at: new Date().toISOString(),
+      wand_type: characterData.wand_type,
+      wand_info: characterData.wand_info,
+      base_ability_scores: characterData.base_ability_scores,
+      metamagic_choices: characterData.metamagic_choices,
+    };
+
+    console.log(
+      "📤 characterService.updateCharacter - UPDATE payload for character ID:",
+      characterId
+    );
+    console.log("UPDATE payload:", JSON.stringify(updatePayload, null, 2));
+
     const { data: updatedCharacter, error: characterError } = await supabase
       .from("characters")
-      .update({
-        ability_scores: characterData.ability_scores,
-        ac: characterData.ac,
-        additional_feats: characterData.additional_feats,
-        additional_asi: characterData.additional_asi,
-        asi_choices: characterData.asi_choices,
-        background: characterData.background,
-        casting_style: characterData.casting_style,
-        casting_style_choices: characterData.casting_style_choices || {},
-        current_hit_dice: characterData.level,
-        current_hit_points: characterData.hit_points,
-        feat_choices: characterData.feat_choices || {},
-        game_session: characterData.game_session,
-        heritage_choices: characterData.heritage_choices || {},
-        hit_points: characterData.hit_points,
-        house_choices: characterData.house_choices,
-        house: characterData.house,
-        image_url: characterData.image_url || characterData.imageUrl || null,
-        initiative_ability: characterData.initiative_ability,
-        initiative: characterData.initiative || { modifier: 0, override: null },
-        innate_heritage_skills: characterData.innate_heritage_skills,
-        innate_heritage: characterData.innate_heritage,
-        level: characterData.level,
-        level1_choice_type: characterData.level1_choice_type,
-        magic_modifiers: characterData.magic_modifiers,
-        name: characterData.name,
-        notes: characterData.notes,
-        school_year: characterData.school_year,
-        skill_expertise: characterData.skill_expertise,
-        skill_proficiencies: characterData.skill_proficiencies,
-        temp_hp: characterData.temp_hp || 0,
-        tool_proficiencies: characterData.tool_proficiencies,
-        standard_feats: characterData.standard_feats,
-        subclass_choices: characterData.subclass_choices,
-        subclass: characterData.subclass,
-        updated_at: new Date().toISOString(),
-        wand_type: characterData.wand_type,
-        wand_info: characterData.wand_info,
-        base_ability_scores: characterData.base_ability_scores,
-        metamagic_choices: characterData.metamagic_choices,
-      })
+      .update(updatePayload)
       .eq("id", characterId)
       .eq("discord_user_id", discordUserId)
       .select()
       .single();
 
+    console.log(
+      "📥 characterService.updateCharacter - DB response:",
+      JSON.stringify(updatedCharacter, null, 2)
+    );
+
     if (characterError) {
       console.error(
-        "characterService.updateCharacter - database error:",
+        "❌ characterService.updateCharacter - database error:",
         characterError
       );
       throw characterError;
@@ -556,9 +643,9 @@ const updateCharacterAsAdmin = async (characterId, characterData) => {
         background: characterData.background,
         casting_style: characterData.casting_style,
         casting_style_choices: characterData.casting_style_choices || {},
+        class: characterData.class,
         current_hit_dice: characterData.level,
         current_hit_points: characterData.hit_points,
-        game_session: characterData.game_session,
         heritage_choices: characterData.heritage_choices || {},
         hit_points: characterData.hit_points,
         house_choices: characterData.house_choices,

@@ -14,6 +14,19 @@ import { useRollModal, useRollFunctions } from "../utils/diceRoller";
 import { sendDiscordRollWebhook } from "../utils/discordWebhook";
 import { getSpellModifier } from "../SpellBook/utils";
 
+const AUTOMATICALLY_KNOWN_SPELLS = [
+  "Lumos",
+  "Nox",
+  "Alohomora",
+  "Colloportus",
+  "Reparo",
+  "Accio",
+  "Mage Hand",
+  "Prestidigitation",
+  "Message",
+  "Minor Illusion",
+];
+
 const SpellSummary = ({
   character,
   supabase,
@@ -33,11 +46,11 @@ const SpellSummary = ({
   const [runicTags, setRunicTags] = useState({});
   const [isExpanded, setIsExpanded] = useState(() => {
     try {
-      const saved = localStorage.getItem("spellSummaryExpanded");
+      const saved = localStorage.getItem("aurorfiles-spellSummaryExpanded");
       return saved !== null ? JSON.parse(saved) : false;
     } catch (error) {
       console.error(
-        "Error reading spellSummaryExpanded from localStorage:",
+        "Error reading aurorfiles-spellSummaryExpanded from localStorage:",
         error
       );
       return false;
@@ -48,11 +61,11 @@ const SpellSummary = ({
   const [selectedSpellLevels, setSelectedSpellLevels] = useState({});
   const [showCanAttempt, setShowCanAttempt] = useState(() => {
     try {
-      const saved = localStorage.getItem("spellSummaryShowCanAttempt");
+      const saved = localStorage.getItem("aurorfiles-spellSummaryShowCanAttempt");
       return saved !== null ? JSON.parse(saved) : false;
     } catch (error) {
       console.error(
-        "Error reading spellSummaryShowCanAttempt from localStorage:",
+        "Error reading aurorfiles-spellSummaryShowCanAttempt from localStorage:",
         error
       );
       return false;
@@ -62,10 +75,10 @@ const SpellSummary = ({
 
   useEffect(() => {
     try {
-      localStorage.setItem("spellSummaryExpanded", JSON.stringify(isExpanded));
+      localStorage.setItem("aurorfiles-spellSummaryExpanded", JSON.stringify(isExpanded));
     } catch (error) {
       console.error(
-        "Error saving spellSummaryExpanded to localStorage:",
+        "Error saving aurorfiles-spellSummaryExpanded to localStorage:",
         error
       );
     }
@@ -74,12 +87,12 @@ const SpellSummary = ({
   useEffect(() => {
     try {
       localStorage.setItem(
-        "spellSummaryShowCanAttempt",
+        "aurorfiles-spellSummaryShowCanAttempt",
         JSON.stringify(showCanAttempt)
       );
     } catch (error) {
       console.error(
-        "Error saving spellSummaryShowCanAttempt to localStorage:",
+        "Error saving aurorfiles-spellSummaryShowCanAttempt to localStorage:",
         error
       );
     }
@@ -866,11 +879,30 @@ const SpellSummary = ({
       });
     });
 
+    // First, add automatically known spells to mastered
+    AUTOMATICALLY_KNOWN_SPELLS.forEach((spellName) => {
+      const spell = allSpells.find((s) => s.name === spellName);
+      if (spell) {
+        stats.mastered.push(spell);
+        const level = spell.level || "Unknown";
+        if (!stats.masteredByLevel[level]) {
+          stats.masteredByLevel[level] = [];
+        }
+        stats.masteredByLevel[level].push(spell);
+      }
+    });
+
     const spellProgressNames = Object.keys(spellAttempts);
     let matchCount = 0;
 
     allSpells.forEach((spell) => {
       const spellName = spell.name;
+
+      // Skip automatically known spells since they're already added
+      if (AUTOMATICALLY_KNOWN_SPELLS.includes(spellName)) {
+        return;
+      }
+
       const attempts = spellAttempts[spellName] || {};
       const successfulAttempts = Object.keys(attempts).filter(
         (key) => attempts[key]

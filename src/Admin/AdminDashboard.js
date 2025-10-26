@@ -1,29 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Shield,
-  Gamepad2,
-  Star,
-  Calendar,
   BarChart3,
   FileText,
-  Database,
-  Loader,
-  AlertCircle,
-  RefreshCw,
+  Eye,
 } from "lucide-react";
 import { useTheme } from "../contexts/ThemeContext";
-import SessionManagement from "./SessionManagement";
-import GameSessionInspirationManager from "./GameSessionInspirationManager";
-import AdminDowntimeManager from "./AdminDowntimeManager";
-import { characterService } from "../services/characterService";
+import NPCVisibilityManager from "./NPCVisibilityManager";
 
 const AdminDashboard = ({ supabase }) => {
   const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState("overview");
   const [dashboardStats, setDashboardStats] = useState({
     totalCharacters: 0,
-    downtimeSheets: 0,
-    activeSessions: 0,
+    activeUsers: 0,
   });
 
   const adminStyles = {
@@ -163,42 +153,16 @@ const AdminDashboard = ({ supabase }) => {
     try {
       const { data: allCharacters } = await supabase
         .from("characters")
-        .select("discord_user_id, game_session")
+        .select("discord_user_id")
         .eq("active", true);
 
-      const validCharacters =
-        allCharacters?.filter(
-          (char) =>
-            char.game_session &&
-            char.game_session.trim() !== "" &&
-            char.game_session.toLowerCase() !== "development"
-        ) || [];
-
       const uniqueUsers = new Set(
-        validCharacters.map((c) => c.discord_user_id)
+        (allCharacters || []).map((c) => c.discord_user_id)
       );
-
-      const uniqueSessions = new Set(
-        validCharacters.map((c) => c.game_session)
-      );
-
-      const { data: downtimeSheets } = await supabase
-        .from("character_downtime")
-        .select("review_status, is_draft")
-        .eq("archived", false);
-
-      const pendingReviewCount =
-        downtimeSheets?.filter(
-          (sheet) =>
-            !sheet.is_draft &&
-            (!sheet.review_status || sheet.review_status === "pending")
-        ).length || 0;
 
       setDashboardStats({
-        totalCharacters: validCharacters.length,
+        totalCharacters: allCharacters?.length || 0,
         activeUsers: uniqueUsers.size,
-        downtimeSheets: pendingReviewCount,
-        activeSessions: uniqueSessions.size,
       });
     } catch (error) {
       console.error("Error loading dashboard stats:", error);
@@ -223,26 +187,10 @@ const AdminDashboard = ({ supabase }) => {
       ),
     },
     {
-      id: "sessions",
-      label: "Sessions",
-      icon: Gamepad2,
-      component: <SessionManagement supabase={supabase} />,
-    },
-    {
-      id: "inspiration",
-      label: "Inspiration",
-      icon: Star,
-      component: <GameSessionInspirationManager supabase={supabase} />,
-    },
-    {
-      id: "downtime",
-      label: "Downtime",
-      icon: Calendar,
-      component: <AdminDowntimeManager supabase={supabase} />,
-      badge:
-        dashboardStats.downtimeSheets > 0
-          ? dashboardStats.downtimeSheets
-          : undefined,
+      id: "npc-visibility",
+      label: "NPC Gallery",
+      icon: Eye,
+      component: <NPCVisibilityManager supabase={supabase} />,
     },
   ];
 
@@ -313,25 +261,9 @@ const OverviewTab = ({ stats, styles, onTabChange }) => {
       icon: FileText,
       number: stats.totalCharacters,
       label: "Total Characters",
-      description: "Characters in active sessions",
+      description: "Active player characters",
       color: "#06b6d4",
-      clickAction: () => onTabChange("inspiration"),
-    },
-    {
-      icon: Database,
-      number: stats.activeSessions,
-      label: "Active Sessions",
-      description: "Unique game sessions",
-      color: "#8b5cf6",
-      clickAction: () => onTabChange("sessions"),
-    },
-    {
-      icon: Calendar,
-      number: stats.downtimeSheets,
-      label: "Pending Reviews",
-      description: "Downtime sheets awaiting admin review",
-      color: "#f59e0b",
-      clickAction: () => onTabChange("downtime"),
+      clickAction: () => onTabChange("npc-visibility"),
     },
   ];
 

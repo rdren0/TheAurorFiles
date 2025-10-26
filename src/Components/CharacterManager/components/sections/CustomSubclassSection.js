@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../../../../contexts/ThemeContext";
 import { createBackgroundStyles } from "../../../../styles/masterStyles";
-import { getCustomClasses, getCustomClassDetails } from "../../../../SharedData/customClassesData";
+import {
+  getCustomClasses,
+  getCustomClassDetails,
+} from "../../../../SharedData/customClassesData";
 
 const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
   const { theme } = useTheme();
@@ -90,8 +93,12 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
   }, [lockedSubclasses]);
 
   // Get sorted level keys
-  const accessibleLevels = Object.keys(subclassesByLevel).map(Number).sort((a, b) => a - b);
-  const lockedLevels = Object.keys(lockedSubclassesByLevel).map(Number).sort((a, b) => a - b);
+  const accessibleLevels = Object.keys(subclassesByLevel)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const lockedLevels = Object.keys(lockedSubclassesByLevel)
+    .map(Number)
+    .sort((a, b) => a - b);
 
   useEffect(() => {
     if (selectedSubclass) {
@@ -135,9 +142,10 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
     return getCustomClassDetails(characterClass);
   }, [characterClass]);
 
-  const minSubclassLevel = accessibleSubclasses.length > 0
-    ? Math.min(...accessibleSubclasses.map((sc) => sc.level))
-    : 3;
+  const minSubclassLevel =
+    accessibleSubclasses.length > 0
+      ? Math.min(...accessibleSubclasses.map((sc) => sc.level))
+      : 3;
 
   // If no class selected, show message
   if (!characterClass) {
@@ -145,7 +153,8 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
       <div style={styles.fieldContainer}>
         <h3 style={styles.skillsHeader}>Class Specialization</h3>
         <div style={styles.helpText}>
-          Please select a profession class first to view available specializations.
+          Please select a profession class first to view available
+          specializations.
         </div>
       </div>
     );
@@ -159,15 +168,25 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
 
       <div style={styles.helpText}>
         Choose your specialization path within the {classData?.name} class.
-        {characterLevel < minSubclassLevel && accessibleSubclasses.length === 0 && (
-          <span style={{ display: "block", marginTop: "4px", color: theme.warning }}>
-            ⚠️ Specializations become available at level {minSubclassLevel}.
-            Your character is currently level {characterLevel}.
-          </span>
-        )}
+        {characterLevel < minSubclassLevel &&
+          accessibleSubclasses.length === 0 && (
+            <span
+              style={{
+                display: "block",
+                marginTop: "4px",
+                color: theme.warning,
+              }}
+            >
+              ⚠️ Specializations become available at level {minSubclassLevel}.
+              Your character is currently level {characterLevel}.
+            </span>
+          )}
         {accessibleSubclasses.length > 0 && (
-          <span style={{ display: "block", marginTop: "4px", fontStyle: "italic" }}>
-            Character Level {characterLevel}: {accessibleSubclasses.length} specialization
+          <span
+            style={{ display: "block", marginTop: "4px", fontStyle: "italic" }}
+          >
+            Character Level {characterLevel}: {accessibleSubclasses.length}{" "}
+            specialization
             {accessibleSubclasses.length > 1 ? "s" : ""} available.
           </span>
         )}
@@ -175,9 +194,9 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
 
       {hasSelectedSubclass === 1 && (
         <div style={styles.completionMessage}>
-          ✓ Specialization selected: {
-            accessibleSubclasses.find((sc) => sc.id === selectedSubclass)?.name || selectedSubclass
-          }
+          ✓ Specialization selected:{" "}
+          {accessibleSubclasses.find((sc) => sc.id === selectedSubclass)
+            ?.name || selectedSubclass}
         </div>
       )}
 
@@ -218,7 +237,8 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                     border: `1px solid ${theme.border}`,
                   }}
                 >
-                  {subclassesByLevel[level].length} option{subclassesByLevel[level].length > 1 ? "s" : ""}
+                  {subclassesByLevel[level].length} option
+                  {subclassesByLevel[level].length > 1 ? "s" : ""}
                 </div>
                 {characterLevel === level && (
                   <div
@@ -246,7 +266,9 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                   <div
                     key={subclass.id}
                     style={{
-                      ...( isSelected ? styles.selectedElementCard : styles.featCard),
+                      ...(isSelected
+                        ? styles.selectedElementCard
+                        : styles.featCard),
                       marginBottom: "12px",
                     }}
                   >
@@ -255,7 +277,7 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                         style={styles.featLabelClickable}
                         onClick={(e) => {
                           // Prevent double-firing when clicking the checkbox itself
-                          if (e.target.tagName === 'INPUT') return;
+                          if (e.target.tagName === "INPUT") return;
                           handleSubclassToggle(subclass.id);
                         }}
                       >
@@ -278,7 +300,13 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                             transform: "scale(1.2)",
                           }}
                         />
-                        <span style={isSelected ? styles.featNameSelected : styles.featName}>
+                        <span
+                          style={
+                            isSelected
+                              ? styles.featNameSelected
+                              : styles.featName
+                          }
+                        >
                           {subclass.name}
                         </span>
                       </label>
@@ -394,7 +422,8 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                         opacity: 0.7,
                       }}
                     >
-                      Unlocks in {level - characterLevel} level{level - characterLevel > 1 ? "s" : ""}
+                      Unlocks in {level - characterLevel} level
+                      {level - characterLevel > 1 ? "s" : ""}
                     </div>
                   </div>
 
@@ -426,7 +455,8 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
                           fontStyle: "italic",
                         }}
                       >
-                        Unlocks when your character reaches Level {subclass.level}
+                        Unlocks when your character reaches Level{" "}
+                        {subclass.level}
                       </div>
                     </div>
                   ))}
@@ -449,7 +479,8 @@ const CustomSubclassSection = ({ character, onChange, disabled = false }) => {
               color: theme.success,
             }}
           >
-            Uncheck the selected specialization to see all available options again.
+            Uncheck the selected specialization to see all available options
+            again.
           </span>
         )}
       </div>

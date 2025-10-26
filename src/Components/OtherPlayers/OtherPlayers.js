@@ -19,10 +19,6 @@ import {
 } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { getOtherPlayersStyles } from "./styles";
-import {
-  shouldFilterFromOtherPlayers,
-  shouldShowNPCBadge,
-} from "../../utils/characterFiltering";
 
 const DEFAULT_PC_TAGS = [
   "Study Partner",
@@ -270,7 +266,6 @@ const PlayerCard = ({
   supabase,
   currentCharacterId,
   discordUserId,
-  gameSession,
 }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -358,8 +353,6 @@ const PlayerCard = ({
       pcNote.last_interaction?.trim() ||
       (pcNote.custom_tags && pcNote.custom_tags.length > 0));
 
-  const showNPCBadge = shouldShowNPCBadge(character.name, gameSession);
-
   return (
     <div style={styles.playerCard}>
       <div style={styles.imageContainer}>
@@ -421,7 +414,6 @@ const PlayerCard = ({
       <div style={styles.playerInfo}>
         <h3 style={styles.playerName}>
           {character.name}
-          {showNPCBadge && <NPCBadge theme={theme} />}
         </h3>
         <div style={styles.playerDetails}>
           {(character.currentHp !== undefined ||
@@ -791,10 +783,10 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
   const discordUserId = user?.user_metadata?.provider_id;
 
   useEffect(() => {
-    if (selectedCharacter?.gameSession && supabase) {
+    if (selectedCharacter && supabase) {
       loadOtherPlayers();
     }
-  }, [selectedCharacter?.id, selectedCharacter?.gameSession]);
+  }, [selectedCharacter?.id]);
 
   useEffect(() => {
     if (selectedCharacter && discordUserId && supabase) {
@@ -803,11 +795,6 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
   }, [selectedCharacter?.id, discordUserId]);
 
   const loadOtherPlayers = async () => {
-    if (!selectedCharacter?.gameSession) {
-      setLoading(false);
-      return;
-    }
-
     try {
       setLoading(true);
       setError(null);
@@ -816,7 +803,6 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
         .from("characters")
         .select("*")
         .eq("active", true)
-        .eq("game_session", selectedCharacter.gameSession)
         .neq("id", selectedCharacter.id)
         .order("name", { ascending: true });
 
@@ -869,12 +855,6 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
   };
 
   const filteredPlayers = otherPlayers
-    .filter((player) => {
-      return !shouldFilterFromOtherPlayers(
-        player.name,
-        selectedCharacter.gameSession
-      );
-    })
     .filter((player) => {
       if (!searchTerm.trim()) return true;
 
@@ -930,19 +910,6 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
     );
   }
 
-  if (!selectedCharacter.gameSession) {
-    return (
-      <div style={styles.noSessionContainer}>
-        <Users size={64} color={theme.textSecondary} />
-        <h2 style={styles.noSessionTitle}>No Game Session</h2>
-        <p style={styles.noSessionText}>
-          Your character is not assigned to a game session. Contact your DM to
-          be added to a session.
-        </p>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div style={styles.loadingContainer}>
@@ -973,11 +940,11 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
     <div style={styles.container}>
       <div style={styles.header}>
         <h1 style={styles.title}>
-          Other Players in {selectedCharacter.gameSession}
+          Other Players
         </h1>
         <p style={styles.subtitle}>
           {filteredPlayers.length} player
-          {filteredPlayers.length !== 1 ? "s" : ""} in your session
+          {filteredPlayers.length !== 1 ? "s" : ""}
         </p>
       </div>
 
@@ -1020,7 +987,6 @@ export const OtherPlayers = ({ selectedCharacter, supabase, user }) => {
               supabase={supabase}
               currentCharacterId={selectedCharacter.id}
               discordUserId={discordUserId}
-              gameSession={selectedCharacter.gameSession}
             />
           ))}
         </div>

@@ -543,7 +543,7 @@ const BackgroundSection = ({
                             >
                               Features:
                             </strong>
-                            {data.features.slice(0, 2).map((feature, idx) => (
+                            {data.features.map((feature, idx) => (
                               <div key={idx} style={{ marginTop: "6px" }}>
                                 <div
                                   style={{
@@ -560,26 +560,10 @@ const BackgroundSection = ({
                                     lineHeight: "1.3",
                                   }}
                                 >
-                                  {feature.description.substring(0, 100)}
-                                  {feature.description.length > 100
-                                    ? "..."
-                                    : ""}
+                                  {feature.description}
                                 </div>
                               </div>
                             ))}
-                            {data.features.length > 2 && (
-                              <div
-                                style={{
-                                  fontSize: "11px",
-                                  color: theme.textSecondary,
-                                  fontStyle: "italic",
-                                  marginTop: "4px",
-                                }}
-                              >
-                                +{data.features.length - 2} more feature
-                                {data.features.length > 3 ? "s" : ""}
-                              </div>
-                            )}
                           </div>
                         )}
                       </div>
